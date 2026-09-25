@@ -53,8 +53,22 @@ def freeze_split(
     version: str = "v1",
 ) -> dict[str, Any]:
     """Component-disjoint train/val split of S1 entities; write manifests."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    frozen = out_dir / f"split_{version}.json"
+    if frozen.exists():
+        meta = json.loads(frozen.read_text(encoding="utf-8"))
+        train_ids, val_ids = set(meta["train_ids"]), set(meta["val_ids"])
+        if (meta["seed"] != seed or meta["val_frac"] != val_frac
+                or meta["version"] != version or train_ids & val_ids
+                or train_ids | val_ids != set(gt)):
+            raise ValueError(f"Frozen split conflicts with current inputs: {frozen}")
+        for component in build_positive_components(gt):
+            if component & train_ids and component & val_ids:
+                raise ValueError(f"Frozen split leaks a positive component: {frozen}")
+        return meta
+
     rng = np.random.default_rng(seed)
-    components = build_positive_components(gt)
+    components = sorted(build_positive_components(gt), key=min)
     # Stratify-ish: shuffle components, fill val until frac
     order = np.arange(len(components))
     rng.shuffle(order)
@@ -69,9 +83,7 @@ def freeze_split(
             train |= comp
     # Ensure train non-empty
     if not train:
-        move = next(iter(val))
-        val.remove(move)
-        train.add(move)
+        raise ValueError("Cannot create a component-disjoint split with these labels")
 
     def dist(ids: set[str]) -> dict[str, Any]:
         match_counts = [len(gt[i]) for i in ids]
