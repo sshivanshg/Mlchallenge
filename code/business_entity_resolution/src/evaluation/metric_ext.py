@@ -24,7 +24,7 @@ def ensure_complete(pred: dict[str, set[str]], universe: Mapping[str, set[str]])
 
 
 def score_predictions(truth: dict[str, set[str]], pred: dict[str, set[str]]) -> dict:
-    return evaluate(truth, ensure_complete(pred, truth))
+    return evaluate(truth, pred)
 
 
 def candidate_diagnostics(
