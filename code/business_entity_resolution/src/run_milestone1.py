@@ -174,10 +174,16 @@ def _error_analysis(
 
 
 def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
-    from data.provenance import require_official_dataset
+    from data.provenance import load_manifest, require_official_dataset
 
     prov = require_official_dataset(dataset_root, require=("train", "test"), check_hashes=True)
     provenance = f"official_challenge_dataset:{prov.manifest_version}"
+    manifest = load_manifest()
+    gt_hash = manifest["files"]["train/train_ground_truth.tsv"]["sha256"]
+    split_version = f"official_{gt_hash[:12]}"
+    reports_root = reports_root / split_version
+    if (reports_root / "experiments" / "milestone1_summary.json").exists():
+        raise FileExistsError("Refusing to overwrite completed official milestone report")
     print(
         f"DATA PROVENANCE: {provenance} "
         f"(verified {len(prov.checked_files)} files via schema+sha256 manifest)"
@@ -206,10 +212,10 @@ def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
 
     # --- Freeze split ---
     split_dir = REPO / "experiments" / "splits"
-    split = freeze_split(gt, countries, split_dir, seed=seed, val_frac=0.25, version="v1")
+    split = freeze_split(gt, countries, split_dir, seed=seed, val_frac=0.25, version=split_version)
     train_ids, val_ids = split["train_ids"], split["val_ids"]
     val_gt = {i: gt[i] for i in val_ids}
-    print(f"Split v1: train={len(train_ids)} val={len(val_ids)}")
+    print(f"Split {split_version}: train={len(train_ids)} val={len(val_ids)}")
 
     # --- Candidates on full train pool (realistic target universe) ---
     t0 = time.time()
@@ -227,7 +233,7 @@ def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
                 "# Blocking baseline",
                 "",
                 f"**Provenance:** `{provenance}`",
-                f"**Validation:** split_v1 ({len(val_ids)} S1)",
+                f"**Validation:** {split_version} ({len(val_ids)} S1)",
                 "",
                 f"- micro candidate recall: {block_diag['micro_candidate_recall']}",
                 f"- S2 recall: {block_diag['s2_recall']}; S3 recall: {block_diag['s3_recall']}",
@@ -256,7 +262,7 @@ def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
                 "experiment_id": exp_id,
                 "timestamp": ts,
                 "hypothesis": hypothesis,
-                "validation_version": "split_v1",
+                "validation_version": split_version,
                 "blocking_config": kwargs.get("blocking_config", "union:exact+prefix+token+num+tfidf_char"),
                 "feature_config": kwargs.get("feature_config", ""),
                 "model": model,
@@ -430,8 +436,8 @@ def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
 
     summary = {
         "provenance": provenance,
-        "hashes": hashes,
-        "split": {"version": "v1", "n_train": len(train_ids), "n_val": len(val_ids), "seed": seed},
+        "hashes": {rel: data["sha256"] for rel, data in live.items()},
+        "split": {"version": split_version, "n_train": len(train_ids), "n_val": len(val_ids), "seed": seed},
         "blocking": block_diag,
         "baselines": {k: v for k, v, _, _ in ranked},
         "best_experiment": best[0],

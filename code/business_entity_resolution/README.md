@@ -65,3 +65,25 @@ python3 src/run_milestone1.py \
 Do **not** pass any synthetic generator flags. Competition entrypoints call
 `data.provenance.require_official_dataset` (schema + SHA-256 manifest) and will
 fail closed on fixtures/stubs/non-official paths.
+
+## First official-data measurement (bounded RAM)
+
+From the repository root, with the organizer's verified TSVs installed:
+
+```bash
+python3 code/business_entity_resolution/src/run_official_audit.py \
+  --dataset-root student_resource/dataset \
+  --output reports/eda/official_audit.json
+```
+
+This rechecks all seven SHA-256 hashes, streams the training TSVs, checks S1/label
+coverage with a temporary SQLite index, and records source counts, country and
+missingness counts, label cardinality, singleton prevalence, and the exact
+all-empty macro F0.5 baseline. It uses temporary disk space; pass
+`--work-dir /path/with/free/space` if needed. It refuses to overwrite an existing
+report. It does not measure candidate recall, matcher scores, or test labels.
+
+The older `run_milestone1.py` remains a research scaffold: its full-corpus
+pandas copies and brute-force TF-IDF neighbors have not been validated at the
+official dataset scale. Do not treat the archived synthetic reports as measured
+official-data performance.
