@@ -2,6 +2,11 @@
 
 MIT/Apache-2.0 stack. Matcher is a **from-scratch JAX logistic regression** (no >8B pretrained model).
 
+Research process is governed by the vendored
+[`aws-entity-resolution`](../../.agents/skills/aws-entity-resolution/SKILL.md)
+Agent Skill (from [sshivanshg/aws-entity-resolution-skill](https://github.com/sshivanshg/aws-entity-resolution-skill)).
+`src/metrics.py` delegates to the skill's set-level F0.5 reference.
+
 ## Layout
 
 ```

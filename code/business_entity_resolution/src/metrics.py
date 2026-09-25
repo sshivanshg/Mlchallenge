@@ -1,33 +1,42 @@
-"""Macro F0.5 scorer matching the challenge definition (incl. singletons)."""
+"""Macro F0.5 — thin wrapper over the installed aws-entity-resolution skill metric.
+
+Canonical implementation: ``.agents/skills/aws-entity-resolution/scripts/metric.py``.
+Argument order for ``entity_f05`` / ``evaluate`` follows the skill: (truth, prediction).
+"""
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 
-def f05(precision: float, recall: float) -> float:
-    if precision == 0.0 and recall == 0.0:
-        return 0.0
-    return (1.25 * precision * recall) / (0.25 * precision + recall)
+_SKILL_SCRIPTS = (
+    Path(__file__).resolve().parents[3]
+    / ".agents"
+    / "skills"
+    / "aws-entity-resolution"
+    / "scripts"
+)
+if _SKILL_SCRIPTS.is_dir() and str(_SKILL_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SKILL_SCRIPTS))
 
-
-def entity_f05(pred: set[str], truth: set[str]) -> float:
-    if not truth and not pred:
-        return 1.0
-    if not truth and pred:
-        return 0.0
-    if truth and not pred:
-        return 0.0
-    tp = len(pred & truth)
-    precision = tp / len(pred) if pred else 0.0
-    recall = tp / len(truth) if truth else 0.0
-    return f05(precision, recall)
+from metric import entity_f05, evaluate  # noqa: E402  (skill script)
 
 
 def macro_f05(
     predictions: dict[str, set[str]],
     ground_truth: dict[str, set[str]],
 ) -> float:
-    scores = []
-    for s1, truth in ground_truth.items():
-        pred = predictions.get(s1, set())
-        scores.append(entity_f05(pred, truth))
-    return sum(scores) / len(scores) if scores else 0.0
+    """End-to-end macro F0.5; requires complete S1 key coverage in both maps."""
+    preds = {k: set(predictions.get(k, set())) for k in ground_truth}
+    return float(evaluate(ground_truth, preds)["macro_F0.5"])
+
+
+def evaluate_predictions(
+    predictions: dict[str, set[str]],
+    ground_truth: dict[str, set[str]],
+) -> dict:
+    preds = {k: set(predictions.get(k, set())) for k in ground_truth}
+    return evaluate(ground_truth, preds)
+
+
+__all__ = ["entity_f05", "evaluate", "evaluate_predictions", "macro_f05"]

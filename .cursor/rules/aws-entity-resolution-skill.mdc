@@ -1,0 +1,25 @@
+---
+description: Use the aws-entity-resolution Agent Skill for all ER research and pipeline work in this repo.
+alwaysApply: true
+---
+
+# AWS Entity Resolution Skill
+
+Canonical skill path: `.agents/skills/aws-entity-resolution/` (also mirrored under `.claude/skills/` and `.cursor/skills/`).
+
+Before changing the ER pipeline, read and follow:
+
+1. `SKILL.md` (operating contract + research loop)
+2. `references/challenge.md` (provenance / fair-play / model gate)
+3. `references/validation.md` (splits + macro F0.5 diagnostics)
+4. `references/research.md` (blocking / features / models)
+5. `references/experimentation.md` (ledger + error analysis)
+6. `references/submission.md` (frozen inference + codec checks)
+
+Metric reference and tests:
+
+```bash
+python3 -m unittest discover -s .agents/skills/aws-entity-resolution/scripts -p 'test_*.py'
+```
+
+Pipeline code that must stay aligned with the skill lives in `code/business_entity_resolution/`. Work only on `main` unless explicitly told otherwise. No external entity lookups.

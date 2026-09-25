@@ -14,7 +14,7 @@ from jax import random
 from blocking import blocking_recall, generate_candidates
 from features import FEATURE_NAMES, build_feature_matrix
 from io_utils import read_ground_truth, read_sources, write_id_list_tsv
-from metrics import macro_f05
+from metrics import evaluate_predictions, macro_f05
 from model import params_from_numpy, params_to_numpy, score_pairs, train_logistic, tune_threshold
 
 ROOT = Path(__file__).resolve().parent
@@ -99,20 +99,34 @@ def train_and_tune(
     scores = score_pairs(params, x_va).tolist()
     val_gt = {s: gt[s] for s in val_ids}
     threshold, val_f = tune_threshold(scores, y_va.tolist(), g_va, val_gt, c_va, macro_f05)
-    print(f"validation macro F0.5: {val_f:.4f} @ threshold={threshold:.3f}")
+    # Rebuild preds at chosen threshold for skill-aligned diagnostics
+    val_preds: dict[str, set[str]] = {s1: set() for s1 in val_gt}
+    for s, gid, cid in zip(scores, g_va, c_va):
+        if s >= threshold:
+            val_preds[gid].add(cid)
+    diag = evaluate_predictions(val_preds, val_gt)
+    print(
+        f"validation macro F0.5: {diag['macro_F0.5']:.4f} @ threshold={threshold:.3f} "
+        f"(precision={diag['precision']}, recall={diag['recall']}, "
+        f"singleton_accuracy={diag['singleton_accuracy']})"
+    )
 
     model_dir.mkdir(parents=True, exist_ok=True)
     blob = params_to_numpy(params)
     np.savez(model_dir / "jax_logistic.npz", **blob)
     meta = {
         "threshold": threshold,
-        "val_macro_f05": val_f,
+        "val_macro_f05": float(diag["macro_F0.5"]),
+        "val_precision": diag["precision"],
+        "val_recall": diag["recall"],
+        "val_singleton_accuracy": diag["singleton_accuracy"],
         "blocking_recall_train": br,
         "feature_names": FEATURE_NAMES,
         "max_candidates": max_candidates,
         "seed": seed,
         "n_train_pairs": int(len(y_tr)),
         "n_val_pairs": int(len(y_va)),
+        "skill": "aws-entity-resolution",
         "model_license": "Original code MIT; JAX Apache-2.0; no pretrained >8B models used",
     }
     (model_dir / "meta.json").write_text(json.dumps(meta, indent=2))
