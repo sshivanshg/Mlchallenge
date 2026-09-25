@@ -175,17 +175,29 @@ def _error_analysis(
 
 def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
     train_dir = dataset_root / "train"
+    s1_path = train_dir / "train_source1.tsv"
+    if not s1_path.is_file():
+        raise FileNotFoundError(
+            f"Missing {s1_path}. Install the official dataset with: "
+            "bash scripts/download_dataset.sh"
+        )
+    # Heuristic: official dump is ~2M+ S1 rows; synthetic stubs are tiny.
+    with s1_path.open(encoding="utf-8") as f:
+        n_lines = sum(1 for _ in f)
     provenance_file = dataset_root / "PROVENANCE.txt"
-    if provenance_file.is_file():
+    if n_lines >= 100_000:
+        provenance = "official_challenge_dataset"
+    elif provenance_file.is_file():
         provenance = provenance_file.read_text().splitlines()[0].strip()
     else:
-        # Detect tiny Acme synthetic vs unknown
-        provenance = "unspecified_local_dataset"
-        s1_probe = (train_dir / "train_source1.tsv").read_text(encoding="utf-8")[:200]
-        if "Acme Business" in s1_probe:
-            provenance = "synthetic_smoke_v1_legacy"
+        provenance = "unspecified_local_dataset_SMALL"
+        raise RuntimeError(
+            f"train_source1.tsv has only {n_lines} lines — refusing to run research "
+            "on a synthetic/stub dump. Install the official data: "
+            "bash scripts/download_dataset.sh"
+        )
 
-    print(f"DATA PROVENANCE: {provenance}")
+    print(f"DATA PROVENANCE: {provenance} (train_source1 lines={n_lines})")
     hashes = dataset_hashes(train_dir, dataset_root / "test")
     write_json({"provenance": provenance, "hashes": hashes}, reports_root / "eda" / "data_hashes.json")
 
@@ -443,7 +455,11 @@ def main():
     p.add_argument("--dataset-root", type=Path, default=REPO / "student_resource" / "dataset")
     p.add_argument("--reports-root", type=Path, default=REPO / "reports")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--make-hard-synthetic", action="store_true")
+    p.add_argument(
+        "--make-hard-synthetic",
+        action="store_true",
+        help="DEV ONLY: write a tiny synthetic stub. Refuses if official dumps exist.",
+    )
     args = p.parse_args()
     if args.make_hard_synthetic:
         from data.make_synthetic_hard import generate

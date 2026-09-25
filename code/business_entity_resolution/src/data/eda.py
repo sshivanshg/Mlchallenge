@@ -136,8 +136,6 @@ def _to_markdown(report: dict[str, Any]) -> str:
         "",
         f"**Provenance:** `{report['provenance']}`",
         "",
-        "> If provenance is synthetic, metrics are for research-engine development only — not official challenge scores.",
-        "",
         "## Sources",
         "",
     ]

@@ -5,11 +5,31 @@ Primary methodology: vendored Agent Skill
 
 Optimize **macro F0.5** (set-level, singletons included). Fair play: competition data only.
 
+## Data (official challenge TSVs)
+
+Use the **real** dataset under `student_resource/dataset/`. Do **not** use synthetic generators for scored research.
+
+```bash
+# From repo root — downloads release assets and extracts TSVs
+bash scripts/download_dataset.sh
+```
+
+Release: https://github.com/sshivanshg/Mlchallenge/releases/tag/dataset-v1  
+Details: [`data/README.md`](../../data/README.md)
+
+Expected layout:
+
+```text
+student_resource/dataset/train/train_source{1,2,3}.tsv
+student_resource/dataset/train/train_ground_truth.tsv
+student_resource/dataset/test/test_source{1,2,3}.tsv
+```
+
 ## Layout
 
 ```
 src/
-  data/            # load, EDA, synthetic fixtures (dev only)
+  data/            # load, EDA (official data)
   normalization/   # multi-view text normalization
   blocking/        # multi-route candidate generation
   features/        # interpretable pairwise features
@@ -19,7 +39,6 @@ src/
   run_milestone1.py
 configs/
 tests/
-experiments/       # local run artifacts (optional)
 ```
 
 Reports land in repo-root `reports/`.
@@ -28,27 +47,19 @@ Reports land in repo-root `reports/`.
 
 ```bash
 python3 -m pip install -r requirements.txt
+bash scripts/download_dataset.sh   # if dataset/ not already present
 ```
 
-## First research milestone
+## First research milestone (official data)
 
 ```bash
-# Metric safeguards
 python3 -m unittest discover -s ../../.agents/skills/aws-entity-resolution/scripts -p 'test_*.py'
 python3 -m unittest discover -s ../tests -p 'test_*.py'
 
-# If official dumps are absent, this builds synthetic_dev_fixture_v2 (NOT official):
 python3 src/run_milestone1.py \
   --dataset-root ../../student_resource/dataset \
   --reports-root ../../reports \
-  --make-hard-synthetic \
   --seed 42
 ```
 
-When official TSVs are placed under `student_resource/dataset/{train,test}/`, omit `--make-hard-synthetic` and re-run.
-
-## Notes
-
-- Country is open-set (never hard-filter to US/India).
-- Validation splits are component-disjoint S1 manifests under `experiments/splits/`.
-- Experiment ledger: `reports/experiments/experiments.csv` (append-only).
+Do **not** pass `--make-hard-synthetic` when working on the competition. That flag is a last-resort local stub only and refuses to overwrite official dumps.

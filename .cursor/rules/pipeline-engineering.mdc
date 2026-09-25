@@ -8,6 +8,7 @@ alwaysApply: false
 
 ## Scale awareness
 - Data is large: train S1 ≈ 2.2M, S2 ≈ 5.0M, S3 ≈ 5.3M rows; test S1 ≈ 1.7M, S2 ≈ 4.9M, S3 ≈ 5.1M.
+- Always use the **official** dumps under `student_resource/dataset/` (`bash scripts/download_dataset.sh` / release `dataset-v1`). Do not run research or submissions on synthetic stubs.
 - Never do all-pairs comparison. Blocking must be sub-quadratic (token/n-gram inverted index, sorted neighbourhood, ANN on embeddings, phonetic keys, etc.).
 - Prototype on a sample (e.g. a subset of S1 IDs plus all their GT matches and random negatives), then scale. Log row counts and timings per stage.
 - Prefer vectorized pandas/numpy/polars, sparse matrices, and chunked processing; avoid Python row loops over millions of rows.

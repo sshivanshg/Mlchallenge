@@ -1,4 +1,7 @@
-# Challenge dataset packages
+# Challenge dataset packages (official)
+
+This is the **real** competition data. Do not substitute synthetic stubs for
+research, validation, or submission.
 
 The raw TSVs are **not** committed to git (too large; see `.gitignore`).
 

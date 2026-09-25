@@ -1,4 +1,7 @@
-"""Clean synthetic dataset generator for local smoke tests."""
+"""DEV-ONLY tiny stub generator. Do NOT use for competition research or scoring.
+
+Prefer the official dumps via ``bash scripts/download_dataset.sh`` (release dataset-v1).
+"""
 
 from __future__ import annotations
 
@@ -145,6 +148,16 @@ def generate_split(
 
 
 def generate(out_dir: Path, n_train: int = 120, n_test: int = 80, seed: int = 42) -> None:
+    out_dir = Path(out_dir)
+    existing = out_dir / "train" / "train_source1.tsv"
+    if existing.is_file():
+        with existing.open(encoding="utf-8") as f:
+            n_lines = sum(1 for _ in f)
+        if n_lines >= 100_000:
+            raise RuntimeError(
+                f"Refusing to overwrite official dataset at {existing} ({n_lines} lines). "
+                "Use bash scripts/download_dataset.sh for real data."
+            )
     train_dir = out_dir / "train"
     test_dir = out_dir / "test"
     train_dir.mkdir(parents=True, exist_ok=True)

@@ -23,3 +23,7 @@ python3 -m unittest discover -s .agents/skills/aws-entity-resolution/scripts -p 
 ```
 
 Pipeline code that must stay aligned with the skill lives in `code/business_entity_resolution/`. Work only on `main` unless explicitly told otherwise. No external entity lookups.
+
+## Official data only
+
+Use the real challenge TSVs under `student_resource/dataset/` (install via `bash scripts/download_dataset.sh` / release `dataset-v1`). Do **not** generate or score synthetic stubs for research or submissions. Ignore outdated reports that mention `synthetic_dev_fixture_*`.

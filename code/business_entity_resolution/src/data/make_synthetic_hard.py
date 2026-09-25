@@ -90,10 +90,21 @@ def addr_for(i: int, country: str, rng: random.Random) -> str:
 
 
 def generate(out_dir: Path, n_train: int = 400, n_test: int = 200, seed: int = 7) -> None:
-    """Create a harder ER fixture with collisions and singletons.
+    """DEV-ONLY stub generator. Never use for competition scoring.
 
-    Provenance label for all reports: synthetic_dev_fixture_v2 (not official).
+    Refuses to overwrite an official challenge dump if one is already present.
     """
+    out_dir = Path(out_dir)
+    existing = out_dir / "train" / "train_source1.tsv"
+    if existing.is_file():
+        with existing.open(encoding="utf-8") as f:
+            n_lines = sum(1 for _ in f)
+        if n_lines >= 100_000:
+            raise RuntimeError(
+                f"Refusing to overwrite official dataset at {existing} "
+                f"({n_lines} lines). Remove it explicitly if you truly want a stub."
+            )
+
     rng = random.Random(seed)
     train_dir, test_dir = out_dir / "train", out_dir / "test"
     train_dir.mkdir(parents=True, exist_ok=True)

@@ -9,7 +9,17 @@ Installed into this challenge repo at:
 - `.cursor/skills/aws-entity-resolution/` (Cursor mirror)
 
 This repository contains the challenge workspace **plus** the skill framework.
-The skill itself does not include challenge data or a competition solution.
+
+## Official dataset
+
+Use the **real** competition TSVs (not synthetic stubs):
+
+```bash
+bash scripts/download_dataset.sh
+```
+
+Release: https://github.com/sshivanshg/Mlchallenge/releases/tag/dataset-v1  
+See `data/README.md`.
 
 ## Verify skill metric
 
@@ -17,7 +27,7 @@ The skill itself does not include challenge data or a competition solution.
 python3 -m unittest discover -s .agents/skills/aws-entity-resolution/scripts -p 'test_*.py'
 ```
 
-## End-to-end smoke (skill tests + synthetic pipeline + validator)
+## End-to-end readiness (skill tests + official data)
 
 ```bash
 bash scripts/setup_and_smoke.sh
