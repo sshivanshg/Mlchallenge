@@ -50,7 +50,22 @@ python3 -m pip install -r requirements.txt
 bash scripts/download_dataset.sh   # if dataset/ not already present
 ```
 
-## Reproduce the submission (frozen policy `v3b_cap300_lgbm_thr0.98_nogate`)
+## Reproduce the submission (final frozen policy `v4all_cap300_lgbm_m2_thr0.70`)
+
+Steps 1–3 below build the shared indexes. Then:
+
+```bash
+S=code/business_entity_resolution/src
+python3 -u $S/build_aux_index_v4.py --split train     # address/compact-name keys, ~4 min
+python3 -u $S/build_aux_index_v4.py --split test
+python3 -u $S/run_matcher_v4.py --variant v4all --fit-s1 15000 --experiments M1b,M2 --tag v4all_m2
+python3 -u $S/verify_infer_v4.py --n 1000             # frozen_v4 == research path
+python3 -u $S/run_infer_v4.py --split test --workers 4 --shard-size 20000 \
+    --out-dir artifacts/submissions/v4all_m2_v1        # ~1.9 h with 4 workers
+python3 scripts/package_submission.py --output-dir artifacts/submissions/v4all_m2_v1/output --team-name <TEAM>
+```
+
+## Previous policy (fallback) `v3b_cap300_lgbm_thr0.98_nogate`
 
 Run from the repository root. Every step reads only `student_resource/dataset/`
 and verifies it against `configs/official_dataset_manifest.json`. Measured on

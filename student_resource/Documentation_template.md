@@ -12,7 +12,8 @@ similarity features, and a LightGBM classifier with a single probability thresho
 macro F0.5 (singletons included) on a held-out, component-disjoint selection fold. Only the official
 challenge TSVs are used (verified by SHA-256 manifest); no external lookups, APIs, or pretrained models.
 
-Frozen policy: `v3b_cap300_lgbm_thr0.98_nogate` (`code/business_entity_resolution/src/frozen_v3b/policy.py`).
+Final frozen policy: `v4all_cap300_lgbm_m2_thr0.70` (`code/business_entity_resolution/src/frozen_v4/policy.py`).
+Previous validated policy (fallback): `v3b_cap300_lgbm_thr0.98_nogate` (`src/frozen_v3b/policy.py`).
 
 ---
 
@@ -46,10 +47,14 @@ earlier-inspected assessment IDs (`experiments/splits/official_70bc1d8a16c6_asse
 - **Blocking keys used:** exact normalized name; sorted informative-token signature; 4-char compact
   name prefix; informative name tokens (rare tokens fetch full postings, common tokens a bounded
   sample); multi-token intersection; address numbers (≥3 digits); **token pairs**; **token × address
-  number**. Per-key lookups are split between S2 and S3 rows so neither source is starved.
+  number**; **address number × informative address token** (recovers cross-script and badly garbled
+  names whose addresses still agree); **pairs of address numbers**; **8-char compact-name prefix**
+  (joined or domain-style names). Per-key lookups are split between S2 and S3 rows so neither source
+  is starved.
 - **Ranking:** additive route scores with an IDF weight on tokens and a soft ×0.55 country mismatch
   down-weight (never a hard filter, so unseen countries such as France keep candidates).
-- **Candidate pairs generated:** top 300 per S1 (select mean 269 candidates).
+- **Candidate pairs generated:** top 300 per S1 (select mean 278 candidates; 461,967,550 test
+  candidate pairs for the v3b run).
 - **How you ensured true matches were not lost:** measured candidate recall and candidate-oracle
   macro F0.5 on held-out S1s, attributed every miss to a stage (missing key, per-key truncation, final
   cap), and changed one variable at a time.
@@ -57,22 +62,37 @@ earlier-inspected assessment IDs (`experiments/splits/official_70bc1d8a16c6_asse
 | Retrieval (select, 5,000 S1) | Cap | Recall | Oracle macro F0.5 |
 |---|---|---|---|
 | v2 (previous) | 120 | 0.615 | 0.785 |
-| v3b (final) | 120 | 0.741 | 0.867 |
-| v3b (final) | 300 | 0.799 | 0.904 |
+| v3b | 120 | 0.741 | 0.867 |
+| v3b | 300 | 0.799 | 0.904 |
+| v3b + address-number × address-token | 300 | 0.866 | 0.937 |
+| v4all (final: all three new routes) | 300 | 0.877 | 0.942 |
+
+At cap 300 under v4all, remaining misses split into per-key truncation (784 links), no shared
+key (989; mostly non-Latin-script names), and final-cap ranking (355). Non-Latin target-name recall
+rose from 0.05 to 0.34; India recall from 0.69 to 0.79.
 
 ---
 
 ## 4. Matching Model
 
-**Features used (9):** name token-sort ratio, informative-name-token Jaccard, exact normalized name,
-address token-sort ratio, address-number Jaccard, country equality, a name-high/address-low conflict
-flag, name partial ratio, address-token Jaccard. IDs, row order, and split membership are never features.
+**Features used (32):**
+- Pairwise (9): name token-sort ratio, informative-name-token Jaccard, exact normalized name,
+  address token-sort ratio, address-number Jaccard, country equality, a name-high/address-low
+  conflict flag, name partial ratio, address-token Jaccard.
+- Candidate competition within the S1's candidate list (8): retrieval rank, log retrieval score,
+  score relative to the best candidate, list size, rank of this candidate's name and address
+  similarity, name-similarity gap to the best other candidate, number of strong-name candidates
+  (total and from the same source).
+- Missing and contradictory evidence (3): S1 address missing, target address missing,
+  both-have-numbers-but-none-shared.
+- Retrieval route indicators (11): which retrieval routes produced the candidate.
+IDs, row order, and split membership are never features.
 
 **Model type:** LightGBM binary classifier (300 trees, 31 leaves, learning rate 0.05; MIT license;
-≈ tens of thousands of parameters). Trained on 103,884 fit-fold candidate pairs (22,165 positives) with
-up to max(8, 3×positives) random non-matching candidates per S1 as negatives.  
-**Threshold selection method:** grid search of a single probability threshold (and an optional
-corroboration gate, which was not selected) maximizing exact macro F0.5 on the selection fold → 0.98.
+≈ tens of thousands of parameters). Trained on **every** v4all candidate of 15,000 fit-fold S1s
+(4,164,594 pairs), so all high-scoring near misses serve as hard negatives.  
+**Threshold selection method:** grid search of a single probability threshold maximizing exact
+macro F0.5 on the selection fold → 0.70.
 
 **Model license record:** LightGBM (MIT), scikit-learn (BSD-3), RapidFuzz (MIT), NumPy (BSD).
 No pretrained or external models.
@@ -83,27 +103,36 @@ No pretrained or external models.
 
 | Policy | Evaluation set | Macro F0.5 | Precision | Recall | Singleton acc. |
 |---|---|---|---|---|---|
-| Previous (v2 cap 120, logistic + gate) | select 5,000 | 0.664 | 0.872 | 0.523 | 0.652 |
-| Final (v3b cap 300, LightGBM) | select 5,000 | 0.796 | 0.944 | 0.659 | 0.889 |
-| Previous | fresh assess 5,000 | 0.664 | 0.863 | 0.532 | 0.612 |
-| **Final** | **fresh assess 5,000** | **0.793** | 0.943 | 0.664 | 0.794 |
+| v2 cap 120, logistic + gate | select 5,000 | 0.664 | 0.872 | 0.523 | 0.652 |
+| v3b cap 300, LightGBM (9 features) | select 5,000 | 0.796 | 0.944 | 0.659 | 0.889 |
+| v3b cap 300, M2 (32 features, all negatives) | select 5,000 | 0.817 | 0.947 | 0.698 | 0.852 |
+| **v4all cap 300, M2 (final)** | select 5,000 | 0.842 | 0.938 | 0.755 | 0.826 |
+| v2 | assess_fresh_v1 5,000 | 0.664 | 0.863 | 0.532 | 0.612 |
+| v3b | assess_fresh_v1 5,000 | 0.793 | 0.943 | 0.664 | 0.794 |
+| v3b | assess_fresh_v2 5,000 | 0.799 | 0.944 | 0.663 | 0.816 |
+| **v4all + M2 (final)** | **assess_fresh_v2 5,000** | **0.848** | 0.937 | 0.763 | 0.803 |
 
-- The fresh-assessment candidate oracle is 0.908, so both retrieval (≈ 19% of true links not
-  retrieved) and matching (≈ 0.115 below the oracle) still limit the score.
+assess_fresh_v1 and assess_fresh_v2 are component-disjoint slices of the assessment fold. Each policy
+was scored once on each; v2 was never used for any development decision before the final comparison.
+By country on assess_fresh_v2 (final policy): India 0.771, US 0.900.
+
+- The final policy's fresh candidate oracle is 0.946, so the remaining gap is now mostly matching
+  (≈ 0.10 below the oracle), with ≈ 12% of true links still not retrieved.
 - **Common false negatives:** cross-script names (Devanagari/Kannada transliterations) sharing no key;
   typos in rare tokens; true matches ranked beyond the cap for very common names.
 - **Common false positives:** same or near-identical names at different addresses (chains,
   generic names), which hurt singletons most.
-- France has no labels, so its accuracy is unmeasured. Unlabeled check: France has more predicted links
-  per S1 (4.7) than US (2.8) or India (2.1).
+- France has no labels, so its accuracy is unmeasured. Unlabeled check (v3b test run): France has
+  more predicted links per S1 (4.9) than US (2.8) or India (2.2).
 
 ---
 
 ## 6. Conclusion
-Retrieval diagnostics showed that most losses came from truncation, and selective composite keys fixed
-much of it. That, plus a small tree model, raised measured macro F0.5 from 0.664 to 0.793 on untouched
-held-out entities. Remaining work: typo-tolerant and cross-script retrieval, and hard-negative mining
-for same-name/different-address pairs.
+Retrieval diagnostics showed that most losses came from truncation and from names that share no key.
+Selective composite keys (name-token pairs, name/address and address/address combinations) fixed much of
+it. Together with a tree model trained on all candidates with competition features, held-out macro F0.5
+rose from 0.664 to 0.848. Remaining work: typo-tolerant and cross-script name retrieval, and better
+separation of same-name/different-address candidates (singleton false merges).
 
 ---
 
@@ -115,8 +144,8 @@ Exact reproduction commands are in `code/business_entity_resolution/README.md`
 ("Reproduce the submission"). Final inference:
 
 ```bash
-python3 -u code/business_entity_resolution/src/run_infer_v3b.py --split test --workers 4 \
-    --shard-size 20000 --out-dir artifacts/submissions/v3b_cap300_lgbm_v1
+python3 -u code/business_entity_resolution/src/run_infer_v4.py --split test --workers 4 \
+    --shard-size 20000 --out-dir artifacts/submissions/v4all_m2_v1
 ```
 
 Submission validation:
