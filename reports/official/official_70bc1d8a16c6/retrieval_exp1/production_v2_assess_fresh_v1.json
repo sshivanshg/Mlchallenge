@@ -1,0 +1,36 @@
+{
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "policy": "v2 cap120 + logistic_corroboration_v1 + corroboration gate",
+  "threshold": 0.97,
+  "assess_ids": "experiments/splits/official_70bc1d8a16c6_assess_fresh_v1.json",
+  "assess_ids_sha256": "dc7081a1f7380d80112a1cf2f5998dc3508efa58195cb56041be7c67403a915b",
+  "metrics": {
+    "macro_F0.5": 0.6641941909427294,
+    "precision": 0.8628539177876023,
+    "recall": 0.5318297773654916,
+    "singleton_accuracy": 0.6120996441281139,
+    "n_s1": 5000,
+    "n_singletons": 281,
+    "tp": 9173,
+    "fp": 1458,
+    "fn": 8075
+  },
+  "blocking": {
+    "micro_recall": 0.6285366419294991,
+    "macro_recall_nonsingleton": 0.6254554368190732,
+    "full_set_coverage": 0.32845941936851025,
+    "oracle_macro_F0.5": 0.7951005890469097,
+    "s2_recall": 0.6666263457118664,
+    "s3_recall": 0.5934751141298297,
+    "cand_mean": 119.0722,
+    "cand_p95": 120.0,
+    "cand_p99": 120.0,
+    "cand_max": 120.0,
+    "alloc_s2_mean": 99.1396,
+    "alloc_s3_mean": 19.9326,
+    "zero_candidate_frac": 0.0,
+    "true_total": 17248,
+    "true_retrieved": 10841
+  },
+  "runtime_sec": 42.89391589164734
+}

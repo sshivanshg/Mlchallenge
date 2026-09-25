@@ -1,0 +1,455 @@
+{
+  "experiment": "retrieval_exp1",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "code_revision_base": "b50bbc5",
+  "code_sha256_16": {
+    "code/business_entity_resolution/src/run_blocking_diag.py": "ff4842def5fc331e",
+    "code/business_entity_resolution/src/build_pair_index.py": "c299ddf9b4e789d3",
+    "code/business_entity_resolution/src/run_matcher_v3.py": "39488b5cc2bcc134",
+    "code/business_entity_resolution/src/eval_production_assess.py": "0c01959ab690c616",
+    "code/business_entity_resolution/src/official_core.py": "869d6281a4cf49c7"
+  },
+  "eval_sets": {
+    "select": "5,000 select IDs (seed 42; same as Stage 4/4e)",
+    "fit": "8,000 fit IDs (seed 42)",
+    "assess_dev_used": "3,000 Stage-4/4e assess IDs: inspected during development, NOT an untouched score",
+    "assess_fresh_v1": "5,000 IDs, component-disjoint from assess_dev_used; sha256 dc7081a1f7380d80112a1cf2f5998dc3508efa58195cb56041be7c67403a915b; scored once per policy"
+  },
+  "target_universe": 10320219,
+  "1_reproduced_baseline": {
+    "cap120": {
+      "micro_recall": 0.6153,
+      "macro_recall_nonsingleton": 0.6152,
+      "full_set_coverage": 0.3161,
+      "oracle_macro_F0.5": 0.7848,
+      "s2_recall": 0.6522,
+      "s3_recall": 0.5803,
+      "cand_mean": 118.9944,
+      "cand_p95": 120.0,
+      "cand_p99": 120.0,
+      "cand_max": 120.0,
+      "alloc_s2_mean": 99.3362,
+      "alloc_s3_mean": 19.6582
+    },
+    "parity_top120_vs_production": {
+      "checked": 200,
+      "identical_top120": 200
+    }
+  },
+  "2_miss_attribution_v2_cap120": {
+    "denominator": 6658,
+    "counts": {
+      "1_target_absent_from_index": 0,
+      "2_no_shared_retrieval_key": 989,
+      "3_shared_key_not_queried": 0,
+      "4_discarded_by_route_limit": 4006,
+      "5_in_pool_below_final_cap": 1663
+    },
+    "by_source": {
+      "1_target_absent_from_index": {},
+      "2_no_shared_retrieval_key": {
+        "S3": 434,
+        "S2": 555
+      },
+      "3_shared_key_not_queried": {},
+      "4_discarded_by_route_limit": {
+        "S3": 2365,
+        "S2": 1641
+      },
+      "5_in_pool_below_final_cap": {
+        "S3": 930,
+        "S2": 733
+      }
+    },
+    "shared_key_types": {
+      "4_discarded_by_route_limit": {
+        "num": 2611,
+        "prefix": 2521,
+        "sig": 257,
+        "token": 2606,
+        "name": 14
+      }
+    },
+    "oracle_gain_if_recovered": {
+      "1_target_absent_from_index": 0.0,
+      "2_no_shared_retrieval_key": 0.0477,
+      "3_shared_key_not_queried": 0.0,
+      "4_discarded_by_route_limit": 0.1516,
+      "5_in_pool_below_final_cap": 0.0649
+    }
+  },
+  "2b_miss_attribution_v3b_cap120": {
+    "counts": {
+      "1_target_absent_from_index": 0,
+      "2_no_shared_retrieval_key": 989,
+      "3_shared_key_not_queried": 0,
+      "4_discarded_by_route_limit": 2041,
+      "5_in_pool_below_final_cap": 1448
+    },
+    "oracle_gain_if_recovered": {
+      "1_target_absent_from_index": 0.0,
+      "2_no_shared_retrieval_key": 0.0437,
+      "3_shared_key_not_queried": 0.0,
+      "4_discarded_by_route_limit": 0.0747,
+      "5_in_pool_below_final_cap": 0.0484
+    }
+  },
+  "3_cap_sweep": {
+    "v2": {
+      "120": {
+        "micro_recall": 0.6153,
+        "macro_recall_nonsingleton": 0.6152,
+        "full_set_coverage": 0.3161,
+        "oracle_macro_F0.5": 0.7848,
+        "s2_recall": 0.6522,
+        "s3_recall": 0.5803,
+        "cand_mean": 118.9944,
+        "cand_p95": 120.0,
+        "cand_p99": 120.0,
+        "cand_max": 120.0,
+        "alloc_s2_mean": 99.3362,
+        "alloc_s3_mean": 19.6582
+      },
+      "300": {
+        "micro_recall": 0.6931,
+        "macro_recall_nonsingleton": 0.6915,
+        "full_set_coverage": 0.4108,
+        "oracle_macro_F0.5": 0.8388,
+        "s2_recall": 0.7238,
+        "s3_recall": 0.6639,
+        "cand_mean": 248.149,
+        "cand_p95": 300.0,
+        "cand_p99": 300.0,
+        "cand_max": 300.0,
+        "alloc_s2_mean": 202.6324,
+        "alloc_s3_mean": 45.5166
+      },
+      "500": {
+        "micro_recall": 0.7082,
+        "macro_recall_nonsingleton": 0.707,
+        "full_set_coverage": 0.4336,
+        "oracle_macro_F0.5": 0.8487,
+        "s2_recall": 0.7374,
+        "s3_recall": 0.6805,
+        "cand_mean": 292.6564,
+        "cand_p95": 500.0,
+        "cand_p99": 500.0,
+        "cand_max": 500.0,
+        "alloc_s2_mean": 233.4188,
+        "alloc_s3_mean": 59.2376
+      },
+      "1000": {
+        "micro_recall": 0.7114,
+        "macro_recall_nonsingleton": 0.7099,
+        "full_set_coverage": 0.4414,
+        "oracle_macro_F0.5": 0.8496,
+        "s2_recall": 0.7393,
+        "s3_recall": 0.6849,
+        "cand_mean": 315.2268,
+        "cand_p95": 705.0,
+        "cand_p99": 952.0,
+        "cand_max": 1000.0,
+        "alloc_s2_mean": 245.8688,
+        "alloc_s3_mean": 69.358
+      },
+      "pool": {
+        "micro_recall": 0.7114,
+        "macro_recall_nonsingleton": 0.7099,
+        "full_set_coverage": 0.4414,
+        "oracle_macro_F0.5": 0.8496,
+        "s2_recall": 0.7393,
+        "s3_recall": 0.6849,
+        "cand_mean": 316.0914,
+        "cand_p95": 705.0,
+        "cand_p99": 952.0,
+        "cand_max": 1511.0,
+        "alloc_s2_mean": 246.4266,
+        "alloc_s3_mean": 69.6648
+      }
+    },
+    "v3a_source_split": {
+      "120": {
+        "micro_recall": 0.6179,
+        "macro_recall_nonsingleton": 0.6176,
+        "full_set_coverage": 0.3186,
+        "oracle_macro_F0.5": 0.7865,
+        "s2_recall": 0.6441,
+        "s3_recall": 0.593,
+        "cand_mean": 119.0016,
+        "cand_p95": 120.0,
+        "cand_p99": 120.0,
+        "cand_max": 120.0,
+        "alloc_s2_mean": 71.4738,
+        "alloc_s3_mean": 47.5278
+      },
+      "300": {
+        "micro_recall": 0.6957,
+        "macro_recall_nonsingleton": 0.694,
+        "full_set_coverage": 0.4148,
+        "oracle_macro_F0.5": 0.8401,
+        "s2_recall": 0.7061,
+        "s3_recall": 0.6858,
+        "cand_mean": 248.2386,
+        "cand_p95": 300.0,
+        "cand_p99": 300.0,
+        "cand_max": 300.0,
+        "alloc_s2_mean": 132.7618,
+        "alloc_s3_mean": 115.4768
+      },
+      "500": {
+        "micro_recall": 0.7106,
+        "macro_recall_nonsingleton": 0.7096,
+        "full_set_coverage": 0.4389,
+        "oracle_macro_F0.5": 0.8493,
+        "s2_recall": 0.7166,
+        "s3_recall": 0.705,
+        "cand_mean": 292.8022,
+        "cand_p95": 500.0,
+        "cand_p99": 500.0,
+        "cand_max": 500.0,
+        "alloc_s2_mean": 148.7508,
+        "alloc_s3_mean": 144.0514
+      },
+      "1000": {
+        "micro_recall": 0.7137,
+        "macro_recall_nonsingleton": 0.7123,
+        "full_set_coverage": 0.4463,
+        "oracle_macro_F0.5": 0.8502,
+        "s2_recall": 0.7179,
+        "s3_recall": 0.7097,
+        "cand_mean": 315.4124,
+        "cand_p95": 705.0,
+        "cand_p99": 953.0,
+        "cand_max": 1000.0,
+        "alloc_s2_mean": 155.4802,
+        "alloc_s3_mean": 159.9322
+      },
+      "pool": {
+        "micro_recall": 0.7137,
+        "macro_recall_nonsingleton": 0.7123,
+        "full_set_coverage": 0.4465,
+        "oracle_macro_F0.5": 0.8502,
+        "s2_recall": 0.7179,
+        "s3_recall": 0.7098,
+        "cand_mean": 316.2802,
+        "cand_p95": 705.0,
+        "cand_p99": 953.0,
+        "cand_max": 1512.0,
+        "alloc_s2_mean": 155.7458,
+        "alloc_s3_mean": 160.5344
+      }
+    },
+    "v3b_source_split+pair+toknum": {
+      "120": {
+        "micro_recall": 0.7412,
+        "macro_recall_nonsingleton": 0.7398,
+        "full_set_coverage": 0.4748,
+        "oracle_macro_F0.5": 0.8671,
+        "s2_recall": 0.7425,
+        "s3_recall": 0.7401,
+        "cand_mean": 119.0424,
+        "cand_p95": 120.0,
+        "cand_p99": 120.0,
+        "cand_max": 120.0,
+        "alloc_s2_mean": 72.235,
+        "alloc_s3_mean": 46.8074
+      },
+      "200": {
+        "micro_recall": 0.7693,
+        "macro_recall_nonsingleton": 0.7686,
+        "full_set_coverage": 0.5199,
+        "oracle_macro_F0.5": 0.885,
+        "s2_recall": 0.7668,
+        "s3_recall": 0.7716,
+        "cand_mean": 193.1746,
+        "cand_p95": 200.0,
+        "cand_p99": 200.0,
+        "cand_max": 200.0,
+        "alloc_s2_mean": 111.3722,
+        "alloc_s3_mean": 81.8024
+      },
+      "300": {
+        "micro_recall": 0.7989,
+        "macro_recall_nonsingleton": 0.7972,
+        "full_set_coverage": 0.5596,
+        "oracle_macro_F0.5": 0.9039,
+        "s2_recall": 0.7919,
+        "s3_recall": 0.8056,
+        "cand_mean": 268.5324,
+        "cand_p95": 300.0,
+        "cand_p99": 300.0,
+        "cand_max": 300.0,
+        "alloc_s2_mean": 148.0042,
+        "alloc_s3_mean": 120.5282
+      },
+      "500": {
+        "micro_recall": 0.818,
+        "macro_recall_nonsingleton": 0.8146,
+        "full_set_coverage": 0.5928,
+        "oracle_macro_F0.5": 0.9125,
+        "s2_recall": 0.8079,
+        "s3_recall": 0.8277,
+        "cand_mean": 356.7852,
+        "cand_p95": 500.0,
+        "cand_p99": 500.0,
+        "cand_max": 500.0,
+        "alloc_s2_mean": 183.084,
+        "alloc_s3_mean": 173.7012
+      },
+      "1000": {
+        "micro_recall": 0.8244,
+        "macro_recall_nonsingleton": 0.8209,
+        "full_set_coverage": 0.6063,
+        "oracle_macro_F0.5": 0.9153,
+        "s2_recall": 0.8131,
+        "s3_recall": 0.8351,
+        "cand_mean": 419.0232,
+        "cand_p95": 905.0,
+        "cand_p99": 1000.0,
+        "cand_max": 1000.0,
+        "alloc_s2_mean": 204.8768,
+        "alloc_s3_mean": 214.1464
+      },
+      "pool": {
+        "micro_recall": 0.8249,
+        "macro_recall_nonsingleton": 0.8214,
+        "full_set_coverage": 0.6076,
+        "oracle_macro_F0.5": 0.9155,
+        "s2_recall": 0.8137,
+        "s3_recall": 0.8355,
+        "cand_mean": 426.2394,
+        "cand_p95": 905.0,
+        "cand_p99": 1235.0,
+        "cand_max": 2592.0,
+        "alloc_s2_mean": 207.3912,
+        "alloc_s3_mean": 218.8482
+      }
+    }
+  },
+  "3b_retrieval_cost": {
+    "v2": {
+      "ms_per_s1": 6.96,
+      "pool_mean": 316.1,
+      "pool_p99": 952.0,
+      "peak_rss_mb": 644
+    },
+    "v3a": {
+      "ms_per_s1": 4.89,
+      "pool_mean": 316.3,
+      "pool_p99": 953.0,
+      "peak_rss_mb": 644
+    },
+    "v3b": {
+      "ms_per_s1": 9.97,
+      "pool_mean": 426.2,
+      "pool_p99": 1235.0,
+      "peak_rss_mb": 822
+    }
+  },
+  "3c_pair_index": {
+    "split": "train",
+    "targets": 10320219,
+    "pair_rows": 20741053,
+    "toknum_rows": 19412477,
+    "max_tokens": 8,
+    "max_nums": 6,
+    "runtime_sec": 221.16035056114197,
+    "bytes": 2328690688
+  },
+  "4_matcher_select": {
+    "v2_cap120": {
+      "logistic": {
+        "threshold": 0.97,
+        "gate": true,
+        "macro_F0.5": 0.6636,
+        "precision": 0.8708,
+        "recall": 0.5231,
+        "singleton_accuracy": 0.6481
+      },
+      "lightgbm": {
+        "threshold": 0.94,
+        "gate": false,
+        "macro_F0.5": 0.7102,
+        "precision": 0.9398,
+        "recall": 0.5369,
+        "singleton_accuracy": 0.863
+      }
+    },
+    "v3b_cap120": {
+      "logistic": {
+        "threshold": 0.99,
+        "gate": false,
+        "macro_F0.5": 0.7251,
+        "precision": 0.8738,
+        "recall": 0.6208,
+        "singleton_accuracy": 0.6556
+      },
+      "lightgbm": {
+        "threshold": 0.935,
+        "gate": false,
+        "macro_F0.5": 0.7816,
+        "precision": 0.9431,
+        "recall": 0.6384,
+        "singleton_accuracy": 0.863
+      }
+    },
+    "v3b_cap300": {
+      "logistic": {
+        "threshold": 0.995,
+        "gate": false,
+        "macro_F0.5": 0.725,
+        "precision": 0.8354,
+        "recall": 0.669,
+        "singleton_accuracy": 0.4593
+      },
+      "lightgbm": {
+        "threshold": 0.98,
+        "gate": false,
+        "macro_F0.5": 0.7963,
+        "precision": 0.9435,
+        "recall": 0.6585,
+        "singleton_accuracy": 0.8889
+      }
+    },
+    "production_E4_reference": 0.664,
+    "fit_pairs": {
+      "v2_cap120": 91770,
+      "v3b_cap120": 100015,
+      "v3b_cap300": 103884
+    },
+    "runtime_sec": {
+      "v3b_cap120": 139,
+      "v3b_cap300": 165
+    },
+    "peak_rss_mb": {
+      "v3b_cap300": 1714
+    }
+  },
+  "5_assess_fresh_v1_once": {
+    "production_v2_logistic_gate": {
+      "macro_F0.5": 0.6642,
+      "precision": 0.8629,
+      "recall": 0.5318,
+      "singleton_accuracy": 0.6121
+    },
+    "production_blocking_recall": 0.6285,
+    "production_oracle": 0.7951,
+    "challenger_v3b_cap300_lightgbm_thr0.98": {
+      "macro_F0.5": 0.7931,
+      "precision": 0.9427,
+      "recall": 0.664,
+      "singleton_accuracy": 0.7936
+    },
+    "challenger_blocking_recall": 0.8071,
+    "challenger_oracle": 0.9076
+  },
+  "test_inference_estimate": {
+    "basis": "measured select: v3b retrieval ~10 ms/S1 + features ~0.02 ms/pair (cap300 ~5.4 ms/S1)",
+    "single_process_hours_est": 6.2,
+    "four_process_hours_est": "1.6-2.0 (not measured)",
+    "prereq": "test pair index (train build measured 221 s) + a v3b inference writer (not yet implemented)"
+  },
+  "recommendation": "PROMOTE v3b retrieval + LightGBM to the next test-inference candidate; keep current validated submission until the new outputs pass the validator.",
+  "open_uncertainty": "Threshold 0.98 and cap 300 were tuned on 5k select only; per-country/France behaviour unmeasured (France absent from train)."
+}

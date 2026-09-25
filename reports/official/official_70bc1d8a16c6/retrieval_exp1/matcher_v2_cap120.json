@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-09-25T18:20:13Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "tag": "v2_cap120",
+  "variant": "v2",
+  "cap": 120,
+  "n_fit_s1": 8000,
+  "n_select_s1": 5000,
+  "fit_pairs": 91770,
+  "fit_pos": 17207,
+  "negative_policy": "random max(8, 3*pos) non-truth candidates per fit S1 (unchanged from Stage 4)",
+  "select_pairs": 594972,
+  "select_blocking": {
+    "micro_recall": 0.6152779382872992,
+    "macro_recall_nonsingleton": 0.6151749219772474,
+    "full_set_coverage": 0.31606765327695563,
+    "oracle_macro_F0.5": 0.784763195420807,
+    "s2_recall": 0.6522203752077891,
+    "s3_recall": 0.580256641152634,
+    "cand_mean": 118.9944,
+    "cand_p95": 120.0,
+    "cand_p99": 120.0,
+    "cand_max": 120.0,
+    "alloc_s2_mean": 99.3362,
+    "alloc_s3_mean": 19.6582,
+    "zero_candidate_frac": 0.0,
+    "true_total": 17306,
+    "true_retrieved": 10648
+  },
+  "results": {
+    "logistic": {
+      "threshold": 0.97,
+      "gate": true,
+      "select": {
+        "macro_F0.5": 0.6635602183764273,
+        "precision": 0.8708156983455175,
+        "recall": 0.5231133710851728,
+        "singleton_accuracy": 0.6481481481481481,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 9053,
+        "fp": 1343,
+        "fn": 8253
+      },
+      "tune_sec": 5.142228603363037
+    },
+    "lightgbm": {
+      "threshold": 0.94,
+      "gate": false,
+      "select": {
+        "macro_F0.5": 0.7102436086599485,
+        "precision": 0.9398199656114089,
+        "recall": 0.5369236103085635,
+        "singleton_accuracy": 0.8629629629629629,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 9292,
+        "fp": 595,
+        "fn": 8014
+      },
+      "tune_sec": 5.853691339492798
+    }
+  },
+  "leader_on_select": "lightgbm",
+  "assess": null,
+  "runtime_sec": {
+    "fit_retrieval": 40.82972502708435,
+    "select_retrieval": 19.30077338218689,
+    "fit_features": 2.350935697555542,
+    "select_features": 10.370839834213257,
+    "total": 93.53640532493591
+  },
+  "select_feature_ms_per_pair": 0.017430803187735315,
+  "peak_rss_mb": 899.46875,
+  "model_path": "/workspace/artifacts/official_index/matcher_v2_cap120.pkl"
+}
