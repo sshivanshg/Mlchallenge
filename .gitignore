@@ -5,6 +5,7 @@ student_resource/dataset/
 **/dataset/
 data/*.zip
 *.zip
+!6ab10eb3b23ba_student_resource.zip
 *.tsv
 *.csv
 *.parquet
