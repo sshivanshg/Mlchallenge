@@ -21,6 +21,7 @@ import sqlite3
 import subprocess
 import sys
 import time
+import unicodedata
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -387,6 +388,7 @@ def main():
     cat_shared_route = defaultdict(Counter)
     recovered_by_cat = defaultdict(lambda: defaultdict(set))
     examples = defaultdict(list)
+    pair_cat: dict[tuple[str, str], str] = {}
     for sid, t in miss_pairs:
         r = s1_map[sid]
         pool = routes_all[sid]
@@ -411,6 +413,7 @@ def main():
                     cat = CATS[2]
                     for k in shared:
                         cat_shared_route[cat][k] += 1
+        pair_cat[(sid, t)] = cat
         cat_counts[cat] += 1
         cat_src[cat][t[:2]] += 1
         recovered_by_cat[cat][sid].add(t)
@@ -425,6 +428,52 @@ def main():
         add_map = recovered_by_cat.get(cat, {})
         pred = {s: (gt[s] & base_cands[s]) | add_map.get(s, set()) for s in eval_ids}
         impact[cat] = score_predictions(gt, pred)["macro_F0.5"] - base_oracle
+
+    # ---- slice breakdown of truth links at the attribution cap ----
+    truth_ids = sorted({t for s in eval_ids for t in gt[s]})
+    raw_name = {}
+    for i in range(0, len(truth_ids), 500):
+        chunk = truth_ids[i : i + 500]
+        q = ",".join("?" * len(chunk))
+        for eid, name in db.execute(f"SELECT id, name FROM targets WHERE id IN ({q})", chunk):
+            raw_name[eid] = name or ""
+
+    def script(name):
+        letters = [ch for ch in name if ch.isalpha()]
+        if not letters:
+            return "no_letters"
+        return "latin" if all("LATIN" in unicodedata.name(ch, "") for ch in letters) else "non_latin"
+
+    ambiguity = {}
+    for sid in eval_ids:
+        nn = norm_name(s1_map[sid]["business_name"])
+        n_same = db.execute("SELECT COUNT(*) FROM (SELECT 1 FROM by_name WHERE key=? LIMIT 51)", (nn,)).fetchone()[0] if nn else 0
+        ambiguity[sid] = "0" if n_same == 0 else "1" if n_same == 1 else "2-5" if n_same <= 5 else "6-50" if n_same <= 50 else ">50"
+
+    def mult(k):
+        return "1" if k == 1 else "2-3" if k <= 3 else "4-5" if k <= 5 else "6+"
+
+    slices = defaultdict(lambda: defaultdict(lambda: Counter()))
+    for sid in eval_ids:
+        top = set(ranked_all[sid][: args.attribute_cap])
+        for t in gt[sid]:
+            keys = {
+                "source": t[:2],
+                "country": s1_map[sid]["country"],
+                "target_script": script(raw_name.get(t, "")),
+                "s1_name_ambiguity(exact-name postings)": ambiguity[sid],
+                "s1_match_multiplicity": mult(len(gt[sid])),
+            }
+            for dim, b in keys.items():
+                c = slices[dim][b]
+                c["truth_links"] += 1
+                c["retrieved"] += int(t in top)
+                if t not in top:
+                    c[pair_cat[(sid, t)]] += 1
+    slice_report = {
+        dim: {b: {**dict(c), "recall": c["retrieved"] / c["truth_links"]} for b, c in sorted(bs.items())}
+        for dim, bs in slices.items()
+    }
 
     rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=REPO).stdout.strip()
     report = {
@@ -460,11 +509,13 @@ def main():
             "oracle_gain_if_category_recovered": impact,
             "examples": dict(examples),
         },
+        "slices_at_attribution_cap": slice_report,
         "runtime_sec": {"retrieval": gen_sec, "total": time.time() - t_all},
         "retrieval_ms_per_s1": 1000 * gen_sec / max(len(eval_ids), 1),
         "peak_rss_mb": rss_mb(),
     }
-    out = out_dir / f"blocking_diag_{args.variant}.json"
+    suffix = "" if args.attribute_cap == 120 else f"_attr{args.attribute_cap}"
+    out = out_dir / f"blocking_diag_{args.variant}{suffix}.json"
     out.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({k: report[k] for k in ("variant", "parity_vs_generate_candidates_v2", "pool_size", "runtime_sec", "peak_rss_mb")}, indent=2))
     print(json.dumps(report["miss_attribution"]["counts"], indent=2))

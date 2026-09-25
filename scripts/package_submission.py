@@ -4,7 +4,8 @@ Layout (student_resource/README.md, "Final Submission Package"):
   output/{matching_results,candidate_pairs}.tsv
   code/business_entity_resolution/{src/,configs/,README.md,requirements.txt}
   Documentation_template.md
-Refuses to package unless the official validator passed on exactly these files.
+Refuses to package unless the official validator passes on matching_results.tsv
+(with --check-ids) and the streaming variant passes on both files.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -39,14 +41,28 @@ def main():
     out = args.output_dir.resolve()
     m, c = out / "matching_results.tsv", out / "candidate_pairs.tsv"
     if not args.skip_validate:
+        test_dir = str(REPO / "student_resource" / "dataset" / "test")
+        # Official validator on the scored file with ID-existence checks. It is run from an
+        # empty directory because, without --candidate, it silently falls back to
+        # ./output/candidate_pairs.tsv; the full-scale candidate mapping does not fit in RAM.
+        with tempfile.TemporaryDirectory() as empty:
+            r = subprocess.run(
+                [sys.executable, str(REPO / "student_resource" / "utils" / "validate_submission.py"),
+                 "--matching", str(m), "--test-dir", test_dir, "--check-ids"],
+                cwd=empty, capture_output=True, text=True,
+            )
+        print(r.stdout[-2000:])
+        if r.returncode != 0 or "PASS" not in r.stdout:
+            raise SystemExit("official validator did not PASS; not packaging")
+        # Same rules applied to candidate_pairs.tsv with streaming (subset check included).
         r = subprocess.run(
-            [sys.executable, "utils/validate_submission.py", "--matching", str(m), "--candidate", str(c),
-             "--test-dir", "dataset/test"],
-            cwd=REPO / "student_resource", capture_output=True, text=True,
+            [sys.executable, str(REPO / "scripts" / "validate_submission_streaming.py"),
+             "--matching", str(m), "--candidate", str(c), "--test-dir", test_dir],
+            capture_output=True, text=True,
         )
         print(r.stdout[-2000:])
         if r.returncode != 0 or "PASS" not in r.stdout:
-            raise SystemExit("validator did not PASS; not packaging")
+            raise SystemExit("streaming candidate validation did not PASS; not packaging")
     args.dest.mkdir(parents=True, exist_ok=True)
     zpath = args.dest / f"{args.team_name}_submission.zip"
     tmp = zpath.with_suffix(".zip.tmp")
