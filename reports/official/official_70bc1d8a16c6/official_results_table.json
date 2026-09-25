@@ -1,0 +1,110 @@
+{
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "note": "All scores measured on official challenge TSVs only. Selection-fold scores are labeled; assess is untouched.",
+  "results": [
+    {
+      "stage": "1",
+      "experiment": "B0_empty_full_train",
+      "fold": "full_train",
+      "macro_F0.5": 0.05584820880352326,
+      "notes": "All-empty baseline; equals singleton rate"
+    },
+    {
+      "stage": "2",
+      "experiment": "blocking_v1",
+      "fold": "select_bounded_n5000",
+      "micro_candidate_recall": 0.30411418005316077,
+      "oracle_macro_F0.5": 0.5272293765987976,
+      "avg_candidates": 50.0
+    },
+    {
+      "stage": "3",
+      "experiment": "B0_empty",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.054,
+      "singleton_accuracy": 1.0
+    },
+    {
+      "stage": "3",
+      "experiment": "B1_exact_norm",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.11021570810080873,
+      "precision": 0.3261608154020385,
+      "recall": 0.03328325436264879,
+      "singleton_accuracy": 0.8333333333333334
+    },
+    {
+      "stage": "3",
+      "experiment": "M0_weighted_select",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.44474171904753546,
+      "threshold": 0.75,
+      "notes": "selection-fold; NOT untouched assess"
+    },
+    {
+      "stage": "4",
+      "experiment": "blocking_v2_idf_sig_accent",
+      "fold": "select_bounded_n5000",
+      "micro_candidate_recall": 0.6152779382872992,
+      "oracle_macro_F0.5": 0.784763195420807,
+      "avg_candidates": 118.9944
+    },
+    {
+      "stage": "4",
+      "experiment": "E1_weighted_v2_select",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.6286627626881974,
+      "threshold": 0.675,
+      "notes": "selection-fold"
+    },
+    {
+      "stage": "4",
+      "experiment": "E2_logistic_select",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.65621435693906,
+      "threshold": 0.95,
+      "notes": "selection-fold; fit on disjoint fit S1s"
+    },
+    {
+      "stage": "4",
+      "experiment": "E3_assess_logistic_gate",
+      "fold": "assess_bounded_n3000",
+      "macro_F0.5": 0.6589517663074742,
+      "precision": 0.835850669706469,
+      "recall": 0.5608030592734226,
+      "singleton_accuracy": 0.48466257668711654,
+      "threshold": 0.95,
+      "notes": "UNTOUCHED assessment; threshold frozen from select"
+    },
+    {
+      "stage": "4e",
+      "experiment": "E4_logistic_corroboration_select",
+      "fold": "select_bounded",
+      "macro_F0.5": 0.6639707807663221,
+      "precision": 0.8720840562945826,
+      "recall": 0.5227666705188951,
+      "singleton_accuracy": 0.6518518518518519,
+      "threshold": 0.97,
+      "notes": "selection-fold"
+    },
+    {
+      "stage": "4e",
+      "experiment": "E4_logistic_corroboration_assess",
+      "fold": "assess_bounded_n3000",
+      "macro_F0.5": 0.6633430373614795,
+      "precision": 0.8686599874765185,
+      "recall": 0.5304971319311663,
+      "singleton_accuracy": 0.5705521472392638,
+      "threshold": 0.97,
+      "notes": "UNTOUCHED assessment; current submission policy"
+    }
+  ],
+  "submission_policy": {
+    "blocking": "v2_idf_sig_accent max_candidates=120",
+    "model": "logistic fit hard-negatives + corroboration gate",
+    "threshold": 0.97,
+    "infer_command": "python3 -u code/business_entity_resolution/src/run_official_infer_test.py --skip-test-index",
+    "validate_command": "cd student_resource && python3 utils/validate_submission.py --matching output/matching_results.tsv --candidate output/candidate_pairs.tsv --test-dir dataset/test"
+  }
+}
