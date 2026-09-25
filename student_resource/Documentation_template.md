@@ -122,8 +122,9 @@ By country on assess_fresh_v2 (final policy): India 0.771, US 0.900.
   typos in rare tokens; true matches ranked beyond the cap for very common names.
 - **Common false positives:** same or near-identical names at different addresses (chains,
   generic names), which hurt singletons most.
-- France has no labels, so its accuracy is unmeasured. Unlabeled check (v3b test run): France has
-  more predicted links per S1 (4.9) than US (2.8) or India (2.2).
+- France has no labels, so its accuracy is unmeasured. Unlabeled check on the final test run:
+  predicted links per S1 are France 3.65, US 3.10, India 2.61 (training mean: 3.46 true matches);
+  empty-prediction rates are 5.4%, 6.2%, and 12.2% (training singleton rate: 5.6%).
 
 ---
 
