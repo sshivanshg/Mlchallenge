@@ -17,9 +17,11 @@ student_resource/dataset/
 output/
 outputs/
 artifacts/
-models/
+/models/
 checkpoints/
 cache/
+# Allow source package named models/; still ignore trained weights elsewhere
+!code/business_entity_resolution/src/models/
 *.joblib
 *.bin
 *.pt
