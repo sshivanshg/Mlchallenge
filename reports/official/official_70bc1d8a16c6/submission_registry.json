@@ -1,0 +1,51 @@
+{
+  "status": "READY_TO_UPLOAD (not uploaded; no receipt recorded)",
+  "recommended_upload": {
+    "policy": "v4all_cap300_lgbm_m2_thr0.70",
+    "matching_results": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
+    "matching_sha256": "dfca3cc0486cd5ca4e98d1e9022f0602e4d45d4669340d8dbc1ee285af9bc01e",
+    "candidate_pairs": "artifacts/submissions/v4all_m2_v1/output/candidate_pairs.tsv",
+    "candidate_sha256": "4dde1576f6ab7f505fd308026a31cc619a438de0ab21f8c550b9e8b4f256c6a5",
+    "package": "artifacts/packages/TEAMNAME_submission.zip",
+    "package_sha256": "085a6c028166896652f733981591d1d5230353cfcfc7196a55b0938aed584031",
+    "run_hash": "82cfb4effd3d9451",
+    "model_sha256": "5f065bda9bd1a11afbf9e3c9f6ae7a455381f44b83a664e7b69075bd0779cdef",
+    "validation": {
+      "official_validator_matching_check_ids": "PASS",
+      "streaming_validator_both_files": "PASS",
+      "candidate_ids_unknown": 0,
+      "candidate_ids_total": 476889176,
+      "merge_checks": "coverage/order/duplicates/subset PASS"
+    },
+    "evidence": {
+      "select_macro_F0.5": 0.8419,
+      "assess_fresh_v2_macro_F0.5_once": 0.8477,
+      "assess_fresh_v2_oracle": 0.9464
+    },
+    "runtime": {
+      "inference_sec": 6747.5,
+      "workers": 4,
+      "s1_per_sec": 256.8,
+      "merge_sec": 99.2
+    }
+  },
+  "fallback_1": {
+    "policy": "v3b_cap300_lgbm_thr0.98_nogate",
+    "matching_results": "artifacts/submissions/v3b_cap300_lgbm_v1/output/matching_results.tsv",
+    "matching_sha256": "e6673a60efc23c846b11a0faa18d3f4bc200eabf22367db6ad90088878915492",
+    "package": "artifacts/packages/TEAMNAME_submission_v3b_fallback.zip",
+    "evidence": {
+      "assess_fresh_v1": 0.7931,
+      "assess_fresh_v2": 0.7988
+    },
+    "validation": "official PASS (matching, check-ids); streaming PASS; 0 unknown candidate ids"
+  },
+  "fallback_0": {
+    "policy": "v2 logistic_corroboration_v1 (earlier upload candidate)",
+    "matching_results": "student_resource/output/matching_results.tsv",
+    "evidence": {
+      "assess_fresh_v1": 0.6642
+    }
+  },
+  "leaderboard": "unknown \u2014 no score or receipt recorded in the repository"
+}
