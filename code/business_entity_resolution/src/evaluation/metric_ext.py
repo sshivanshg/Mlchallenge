@@ -16,7 +16,10 @@ _SKILL = (
 if _SKILL.is_dir() and str(_SKILL) not in sys.path:
     sys.path.insert(0, str(_SKILL))
 
-from metric import entity_f05, evaluate  # noqa: E402
+try:
+    from metric import entity_f05, evaluate  # noqa: E402
+except ImportError:  # standalone submission package: vendored copy of the skill metric
+    from evaluation.skill_metric import entity_f05, evaluate  # noqa: E402
 
 
 def ensure_complete(pred: dict[str, set[str]], universe: Mapping[str, set[str]]) -> dict[str, set[str]]:

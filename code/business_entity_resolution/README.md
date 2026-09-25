@@ -50,6 +50,38 @@ python3 -m pip install -r requirements.txt
 bash scripts/download_dataset.sh   # if dataset/ not already present
 ```
 
+## Reproduce the submission (frozen policy `v3b_cap300_lgbm_thr0.98_nogate`)
+
+Run from the repository root. Every step reads only `student_resource/dataset/`
+and verifies it against `configs/official_dataset_manifest.json`. Measured on
+4 vCPU / 15 GiB RAM; indexes are SQLite files under `artifacts/official_index/`.
+
+```bash
+S=code/business_entity_resolution/src
+# 1. Frozen component-disjoint fit/select/assess split + train S2/S3 index (~5 min each)
+python3 -u $S/run_official_bounded.py                 # writes *_folds.sqlite, targets_index.sqlite
+python3 -u $S/run_official_stage4.py --rebuild-index   # writes targets_index_v2.sqlite
+# 2. Composite-key indexes (pairs of name tokens; name token x address number), ~4 min each
+python3 -u $S/build_pair_index.py --split train
+python3 -u $S/build_pair_index.py --split test
+# 3. Test S2/S3 index (~6 min)
+python3 -c "import sys; sys.path.insert(0, '$S'); from pathlib import Path; \
+from official_core import build_target_index_v2 as b; \
+print(b(Path('student_resource/dataset'), Path('artifacts/official_index/test_targets_index_v2.sqlite'), split='test'))"
+# 4. Train LightGBM on fit-fold candidates, tune threshold on the selection fold
+python3 -u $S/run_matcher_v3.py --variant v3b --cap 300   # writes matcher_v3b_cap300.pkl
+# 5. Sharded, resumable test inference (~2.3 h with 4 workers) -> <out-dir>/output/*.tsv
+python3 -u $S/run_infer_v3b.py --split test --workers 4 --shard-size 20000 \
+    --out-dir artifacts/submissions/v3b_cap300_lgbm_v1
+```
+
+`run_infer_v3b.py` refuses a model whose SHA-256 differs from the frozen bundle,
+reuses a shard only when its manifest `run_hash` (code, model, config, and input
+hashes) matches, and fails on any gap, duplicate, reordering, or match outside the
+exported candidate list. `verify_infer_v3b.py` checks the frozen policy against
+the research reference path. Retrieval, features, and the decision rule used for
+the submission live in `src/frozen_v3b/policy.py`.
+
 ## First research milestone (official data)
 
 ```bash
