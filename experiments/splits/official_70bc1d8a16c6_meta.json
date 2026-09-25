@@ -1,0 +1,36 @@
+{
+  "seed": 42,
+  "fit_frac": 0.7,
+  "select_frac": 0.15,
+  "strategy": "positive-component-disjoint fit/select/assess",
+  "runtime_sec": 30.48265528678894,
+  "fit": {
+    "n_s1": 1544775,
+    "singleton_rate": 0.05577187616319529,
+    "mean_matches": 3.461749445712159,
+    "country_counts": {
+      "US": 926252,
+      "India": 618523
+    }
+  },
+  "select": {
+    "n_s1": 331023,
+    "singleton_rate": 0.05560640801394465,
+    "mean_matches": 3.460792754582008,
+    "country_counts": {
+      "US": 198524,
+      "India": 132499
+    }
+  },
+  "assess": {
+    "n_s1": 331023,
+    "singleton_rate": 0.05644622881189525,
+    "mean_matches": 3.4593940602314643,
+    "country_counts": {
+      "India": 132166,
+      "US": 198857
+    }
+  },
+  "gt_hash": "70bc1d8a16c667e0155c2105d0ab2ebe41d7e7a85d8a529e3ca81c6c3a5af037",
+  "provenance": "official_challenge_dataset:dataset-v1"
+}

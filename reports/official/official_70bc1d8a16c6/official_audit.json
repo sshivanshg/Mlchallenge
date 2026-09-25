@@ -1,0 +1,89 @@
+{
+  "empty_baseline": {
+    "macro_F0.5": 0.05584820880352326,
+    "precision": null,
+    "recall": 0.0,
+    "singleton_accuracy": 1.0
+  },
+  "ground_truth": {
+    "cardinality_0": 123247,
+    "cardinality_1": 119157,
+    "cardinality_10": 534,
+    "cardinality_11": 37,
+    "cardinality_2": 375212,
+    "cardinality_3": 530841,
+    "cardinality_4": 484115,
+    "cardinality_5": 321957,
+    "cardinality_6": 164868,
+    "cardinality_7": 63968,
+    "cardinality_8": 18680,
+    "cardinality_9": 4205,
+    "links": 7638365,
+    "match_count_histogram": {
+      "0": 123247,
+      "1": 119157,
+      "10": 534,
+      "11": 37,
+      "2": 375212,
+      "3": 530841,
+      "4": 484115,
+      "5": 321957,
+      "6": 164868,
+      "7": 63968,
+      "8": 18680,
+      "9": 4205
+    },
+    "s2_links": 3693619,
+    "s3_links": 3944746,
+    "singleton_rate": 0.05584820880352326,
+    "truth_rows": 2206821
+  },
+  "limitations": [
+    "No blocking, matcher, threshold, or test-label metrics were measured.",
+    "Target-ID existence and S2/S3 ID uniqueness were not audited here."
+  ],
+  "provenance": {
+    "verified_files": {
+      "test/test_source1.tsv": "3d4a32c54c2ca9c53fd7c2be105bf26f708f94c4d2f88eb370972a195665c2f5",
+      "test/test_source2.tsv": "79d906c7497af2ace70aa277f6e334a652094909de99bd6c57b53420b6a7b2dd",
+      "test/test_source3.tsv": "850942b11d2a4343486ed0834e28bce9f3b385f3fd497fd60ccf4ea3b8bda035",
+      "train/train_ground_truth.tsv": "70bc1d8a16c667e0155c2105d0ab2ebe41d7e7a85d8a529e3ca81c6c3a5af037",
+      "train/train_source1.tsv": "591af0e1dfeb65cab71ea6ee8cb69df00f92d6ba6fa79e05746c938775d14973",
+      "train/train_source2.tsv": "6336c1a055eec79cf8a6d99fdc8d32a2e4d9dc2662e00963cb35d66b89ed09ed",
+      "train/train_source3.tsv": "67da22f5151898ff3006febd836c1a159e97ae95efa7257a5aff4fda685e58e9"
+    },
+    "version": "dataset-v1"
+  },
+  "sources": {
+    "s1": {
+      "countries": {
+        "India": 883188,
+        "US": 1323633
+      },
+      "missing_business_address": 0,
+      "missing_business_name": 0,
+      "missing_country": 0,
+      "records": 2206821
+    },
+    "s2": {
+      "countries": {
+        "India": 2017799,
+        "US": 3016817
+      },
+      "missing_business_address": 168967,
+      "missing_business_name": 0,
+      "missing_country": 0,
+      "records": 5034616
+    },
+    "s3": {
+      "countries": {
+        "India": 2115547,
+        "US": 3170056
+      },
+      "missing_business_address": 175916,
+      "missing_business_name": 0,
+      "missing_country": 0,
+      "records": 5285603
+    }
+  }
+}

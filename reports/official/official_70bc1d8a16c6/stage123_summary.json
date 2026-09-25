@@ -1,0 +1,95 @@
+{
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "fold": "select_bounded",
+  "n_eval_s1": 5000,
+  "n_target_universe": 10320219,
+  "stage1_empty_baseline_full_train": {
+    "macro_F0.5": 0.05584820880352326,
+    "precision": null,
+    "recall": 0.0,
+    "singleton_accuracy": 1.0
+  },
+  "stage2_blocking": {
+    "micro_candidate_recall": 0.30411418005316077,
+    "s2_recall": 0.3629779149845642,
+    "s3_recall": 0.24831157136425033,
+    "full_set_coverage": 0.0682875264270613,
+    "avg_candidates": 50.0,
+    "median_candidates": 50.0,
+    "p95_candidates": 50.0,
+    "p99_candidates": 50.0,
+    "max_candidates": 50.0,
+    "zero_candidate_frac": 0.0,
+    "reduction_ratio": 0.9999951551415721,
+    "oracle_macro_F0.5": 0.5272293765987976,
+    "true_matches_total": 17306,
+    "true_matches_retrieved": 5263,
+    "true_matches_missed": 12043,
+    "runtime_sec": 11.497302055358887,
+    "n_eval_s1": 5000,
+    "n_target_universe": 10320219,
+    "provenance": "official_challenge_dataset:dataset-v1",
+    "split_version": "official_70bc1d8a16c6",
+    "fold": "select_bounded"
+  },
+  "stage3": {
+    "B0_empty": {
+      "macro_F0.5": 0.054,
+      "precision": null,
+      "recall": 0.0,
+      "singleton_accuracy": 1.0,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 0,
+      "fp": 0,
+      "fn": 17306
+    },
+    "B1_exact_norm": {
+      "macro_F0.5": 0.11021570810080873,
+      "precision": 0.3261608154020385,
+      "recall": 0.03328325436264879,
+      "singleton_accuracy": 0.8333333333333334,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 576,
+      "fp": 1190,
+      "fn": 16730
+    },
+    "B2_exact_on_candidates": {
+      "macro_F0.5": 0.1100844895257821,
+      "precision": 0.3667529107373868,
+      "recall": 0.032763203513232406,
+      "singleton_accuracy": 0.837037037037037,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 567,
+      "fp": 979,
+      "fn": 16739
+    },
+    "M0_weighted_select": {
+      "macro_F0.5": 0.44474171904753546,
+      "precision": 0.8160738848496758,
+      "recall": 0.2399745752918063,
+      "singleton_accuracy": 0.9185185185185185,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 4153,
+      "fp": 936,
+      "fn": 13153,
+      "threshold": 0.75
+    }
+  },
+  "error_counts": {
+    "singleton_fp": 22,
+    "fp": 936,
+    "fn_blocking": 12043,
+    "fn_threshold": 1110
+  },
+  "runtime_total_sec": 346.9526062011719,
+  "next_experiments": [
+    "Raise token/num route budgets or add char n-gram TF-IDF ANN for fn_blocking cluster",
+    "Train logistic on fit-fold hard negatives; tune threshold on select; score untouched assess",
+    "Add name\u2194address contradiction gate to cut singleton_fp without losing recall"
+  ]
+}

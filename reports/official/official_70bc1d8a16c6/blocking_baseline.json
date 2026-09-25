@@ -1,0 +1,23 @@
+{
+  "micro_candidate_recall": 0.30411418005316077,
+  "s2_recall": 0.3629779149845642,
+  "s3_recall": 0.24831157136425033,
+  "full_set_coverage": 0.0682875264270613,
+  "avg_candidates": 50.0,
+  "median_candidates": 50.0,
+  "p95_candidates": 50.0,
+  "p99_candidates": 50.0,
+  "max_candidates": 50.0,
+  "zero_candidate_frac": 0.0,
+  "reduction_ratio": 0.9999951551415721,
+  "oracle_macro_F0.5": 0.5272293765987976,
+  "true_matches_total": 17306,
+  "true_matches_retrieved": 5263,
+  "true_matches_missed": 12043,
+  "runtime_sec": 11.497302055358887,
+  "n_eval_s1": 5000,
+  "n_target_universe": 10320219,
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "fold": "select_bounded"
+}
