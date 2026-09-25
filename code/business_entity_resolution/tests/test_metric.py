@@ -31,6 +31,10 @@ class CompetitionMetricTests(unittest.TestCase):
         self.assertAlmostEqual(m["macro_F0.5"], (1 + 5 / 6 + 5 / 9) / 3)
         self.assertEqual(m["singleton_accuracy"], 1.0)
 
+    def test_missing_s1_prediction_is_an_error(self):
+        with self.assertRaises(ValueError):
+            score_predictions({"a": set(), "b": {"x"}}, {"a": set()})
+
     def test_skill_evaluate_agreement(self):
         truth = {"a": set(), "b": {"z"}}
         pred = {"a": set(), "b": {"z"}}
