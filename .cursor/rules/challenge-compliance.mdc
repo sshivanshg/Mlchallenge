@@ -1,0 +1,37 @@
+---
+description: Hard rules of the Amazon ML Challenge 2026 Business Entity Resolution task (fair play, licensing, output contract, metric). Violations cause rejection or disqualification.
+alwaysApply: true
+---
+
+# Business Entity Resolution — Non-Negotiable Rules
+
+Source of truth: `ProblemStatement.md` and `student_resource/README.md`. Re-read them when unsure; never guess a rule.
+
+## Task
+- Source 1 (S1-) is the deduplicated reference. For EVERY S1 entity, output matching S2-/S3- records (zero, one, or many).
+- Columns: `entity_id, business_name, business_address, country`. Source = ID prefix.
+
+## Fair play (disqualification if violated)
+- NO external lookups of any kind: no entity-resolution APIs, government registries, geocoding APIs, web scraping, or internet data augmentation.
+- Only the provided train/test data may inform the solution. Generic open-source libraries and open-license pretrained models are fine.
+- Never add code that makes network calls at pipeline runtime (except one-time downloads of permitted models/packages).
+
+## Model license
+- Final model(s) must be MIT or Apache-2.0 licensed and ≤ 8B parameters. Verify the license before adopting any pretrained model and record it in the docs.
+
+## Country is an open set
+- Train = {US, India}; test adds France (unseen). Never hard-code, filter, or one-hot to {US, India}. Unknown countries must flow through the pipeline with sensible fallbacks, and every test S1 entity (France included) must appear in the output.
+
+## Files
+- All I/O is TSV: always `pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False)`. Always write with `sep="\t"`, no index, no quoting of ID lists.
+- `output/matching_results.tsv`: header `source1_entity_id	matched_entity_ids`.
+- `output/candidate_pairs.tsv`: header `source1_entity_id	candidate_entity_ids`; must be the exact final candidate set the model scores (last filtering stage).
+- Both: exactly one row per test S1 entity, no duplicate rows, ID lists comma-separated with no spaces, S2-/S3- IDs only, IDs must exist in test files, no duplicates in a list, empty string for no match.
+- Matches must be a subset of candidates.
+- Before calling any output done, run from `student_resource/`:
+  `python3 utils/validate_submission.py --matching output/matching_results.tsv --candidate output/candidate_pairs.tsv --test-dir dataset/test` and require `PASS`.
+
+## Metric: macro F0.5 per S1 entity (precision-weighted)
+- Singletons count: empty prediction on a true singleton = 1.0; any prediction = 0.0.
+- Prefer precision: tune thresholds to maximize macro F0.5 on a held-out validation split, not accuracy, AUC, or pairwise F1.
+- Always report validation macro F0.5 (and blocking recall ceiling) when claiming an improvement.

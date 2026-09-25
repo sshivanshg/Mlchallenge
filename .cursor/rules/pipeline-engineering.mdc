@@ -1,0 +1,35 @@
+---
+description: Engineering conventions for the entity-resolution pipeline code (scale, validation, reproducibility, submission package layout).
+globs: **/*.py,**/*.ipynb
+alwaysApply: false
+---
+
+# Pipeline Engineering Conventions
+
+## Scale awareness
+- Data is large: train S1 ≈ 2.2M, S2 ≈ 5.0M, S3 ≈ 5.3M rows; test S1 ≈ 1.7M, S2 ≈ 4.9M, S3 ≈ 5.1M.
+- Never do all-pairs comparison. Blocking must be sub-quadratic (token/n-gram inverted index, sorted neighbourhood, ANN on embeddings, phonetic keys, etc.).
+- Prototype on a sample (e.g. a subset of S1 IDs plus all their GT matches and random negatives), then scale. Log row counts and timings per stage.
+- Prefer vectorized pandas/numpy/polars, sparse matrices, and chunked processing; avoid Python row loops over millions of rows.
+
+## Pipeline stages (keep them separate and inspectable)
+1. Normalization: casefold, unicode NFKC, punctuation, legal-suffix and address-abbreviation maps (Corp/Corporation, Pvt/Private, Ltd/Limited, Rd/Road, St/Street, &/and). Handle non-Latin scripts (Devanagari seen in India data) and French accents; do not drop them silently.
+2. Blocking / candidate generation: measure recall ceiling and reduction ratio on validation for every change.
+3. Pairwise features: name/address similarities (Jaccard, Levenshtein/Jaro-Winkler, TF-IDF cosine, token overlap, numeric tokens such as house numbers/PIN/ZIP), missingness flags, and country as a string feature that does not break on unseen values.
+4. Matcher: learned model on pair features; threshold tuned for macro F0.5.
+5. Assembly: per-S1 lists, dedupe, write both TSVs, run the validator.
+
+## Validation discipline
+- Split train by S1 entity (group split), never by pair, so no leakage across folds.
+- Implement a local macro-F0.5 scorer that matches the official definition, including singletons.
+- Keep a fixed validation split and a fixed random seed so experiments are comparable.
+
+## Reproducibility and submission package
+- Final code lives in `code/business_entity_resolution/src/` with `requirements.txt` pinning exact versions, plus a README with the exact end-to-end run commands (data → blocking → matching → output).
+- Any path must be configurable (no absolute paths to this machine).
+- Do not commit large derived artifacts; regenerate them from scripts.
+- Fill `student_resource/Documentation_template.md` with methodology, blocking strategy, model architecture and features, and model licenses.
+
+## Working style
+- Don't create new `.md` files without asking the user first.
+- Don't claim a score or a PASS without actually running the scorer or validator and showing the output.

@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "python3 /Users/shivanshgupta/Documents/projects/AmazonMlchallenge/.agent-hooks/log_session.py codex", "timeout": 10 }] }],
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "python3 /Users/shivanshgupta/Documents/projects/AmazonMlchallenge/.agent-hooks/log_session.py codex", "timeout": 10 }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "python3 /Users/shivanshgupta/Documents/projects/AmazonMlchallenge/.agent-hooks/log_session.py codex", "timeout": 10 }] }]
+  }
+}
