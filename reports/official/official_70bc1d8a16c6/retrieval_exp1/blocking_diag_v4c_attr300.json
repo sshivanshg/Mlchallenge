@@ -1,0 +1,428 @@
+{
+  "timestamp": "2026-09-25T21:29:23Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "fold": "select_bounded_n5000 (seed 42, same IDs as Stage 4)",
+  "variant": "v4c",
+  "code_revision": "8dc66e8",
+  "index": "/workspace/artifacts/official_index/targets_index_v2.sqlite",
+  "pair_index": "artifacts/official_index/train_pair_index_v3.sqlite",
+  "n_eval_s1": 5000,
+  "n_target_universe": 10320219,
+  "route_budgets": {
+    "name": 200,
+    "sig": 200,
+    "prefix": 60,
+    "token_rare(df<=800)": "min(2000,max(80,df))",
+    "token_common": 40,
+    "num": 80,
+    "pair": 200,
+    "toknum": 100,
+    "aux_routes(limit,weight)": {
+      "numtok": [
+        50,
+        4.0
+      ],
+      "numnum": [
+        50,
+        4.0
+      ],
+      "cpre8": [
+        100,
+        3.0
+      ]
+    },
+    "aux_routes_enabled": [
+      "numnum"
+    ],
+    "source_split": true
+  },
+  "s3_rowid_boundaries": {
+    "by_name": 5034616,
+    "by_sig": 4882312,
+    "by_prefix": 5032582,
+    "by_token": 11359846,
+    "by_num": 3987049
+  },
+  "parity_vs_generate_candidates_v2": null,
+  "pool_size": {
+    "mean": 426.945,
+    "p50": 363.0,
+    "p95": 907.0,
+    "p99": 1235.0,
+    "max": 2592.0
+  },
+  "cap_sweep": {
+    "300": {
+      "micro_recall": 0.8044030971917254,
+      "macro_recall_nonsingleton": 0.8032074062888016,
+      "full_set_coverage": 0.5716701902748414,
+      "oracle_macro_F0.5": 0.9072875218866328,
+      "s2_recall": 0.7971978152457848,
+      "s3_recall": 0.8112336785231877,
+      "cand_mean": 268.5758,
+      "cand_p95": 300.0,
+      "cand_p99": 300.0,
+      "cand_max": 300.0,
+      "alloc_s2_mean": 148.0276,
+      "alloc_s3_mean": 120.5482,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 13921
+    },
+    "500": {
+      "micro_recall": 0.8252051311683809,
+      "macro_recall_nonsingleton": 0.8225040269807712,
+      "full_set_coverage": 0.6084566596194503,
+      "oracle_macro_F0.5": 0.9167284878797882,
+      "s2_recall": 0.8153645214913322,
+      "s3_recall": 0.8345339936965331,
+      "cand_mean": 356.983,
+      "cand_p95": 500.0,
+      "cand_p99": 500.0,
+      "cand_max": 500.0,
+      "alloc_s2_mean": 183.169,
+      "alloc_s3_mean": 173.814,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 14281
+    },
+    "pool": {
+      "micro_recall": 0.8319657922107939,
+      "macro_recall_nonsingleton": 0.8291105406221685,
+      "full_set_coverage": 0.6232558139534884,
+      "oracle_macro_F0.5": 0.919548328960371,
+      "s2_recall": 0.8211826169555925,
+      "s3_recall": 0.8421882035119316,
+      "cand_mean": 426.945,
+      "cand_p95": 907.0,
+      "cand_p99": 1235.0,
+      "cand_max": 2592.0,
+      "alloc_s2_mean": 207.7326,
+      "alloc_s3_mean": 219.2124,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 14398
+    }
+  },
+  "route_hits_on_retrieved_truth": {
+    "pair": 10627,
+    "toknum": 8310,
+    "token": 6857,
+    "sig": 9166,
+    "prefix": 2088,
+    "name": 4801,
+    "num": 1631,
+    "numnum": 922,
+    "tok_intersect": 823
+  },
+  "route_sole_source_of_retrieved_truth": {
+    "prefix": 142,
+    "toknum": 600,
+    "pair": 399,
+    "num": 88,
+    "token": 289,
+    "name": 85,
+    "numnum": 79,
+    "sig": 64
+  },
+  "attribution_cap": 300,
+  "baseline_oracle_at_attribution_cap": 0.9072875218866328,
+  "miss_attribution": {
+    "denominator_missed_true_links": 3385,
+    "sampling": "none (all misses)",
+    "counts": {
+      "1_target_absent_from_index": 0,
+      "2_no_shared_retrieval_key": 989,
+      "3_shared_key_not_queried": 0,
+      "4_discarded_by_route_limit": 1919,
+      "5_in_pool_below_final_cap": 477
+    },
+    "by_source": {
+      "1_target_absent_from_index": {},
+      "2_no_shared_retrieval_key": {
+        "S3": 434,
+        "S2": 555
+      },
+      "3_shared_key_not_queried": {},
+      "4_discarded_by_route_limit": {
+        "S3": 968,
+        "S2": 951
+      },
+      "5_in_pool_below_final_cap": {
+        "S3": 275,
+        "S2": 202
+      }
+    },
+    "shared_key_types": {
+      "4_discarded_by_route_limit": {
+        "num": 1007,
+        "prefix": 1049,
+        "token": 651,
+        "sig": 109,
+        "name": 4
+      }
+    },
+    "oracle_gain_if_category_recovered": {
+      "1_target_absent_from_index": 0.0,
+      "2_no_shared_retrieval_key": 0.03724588293158504,
+      "3_shared_key_not_queried": 0.0,
+      "4_discarded_by_route_limit": 0.058927854964961224,
+      "5_in_pool_below_final_cap": 0.012260807073738222
+    },
+    "examples": {
+      "4_discarded_by_route_limit": [
+        {
+          "s1": "S1-824649116",
+          "target": "S3-518786913",
+          "s1_name": "EXZ Health Private Limited",
+          "target_name_norm": "ariafluxbrix"
+        },
+        {
+          "s1": "S1-777126350",
+          "target": "S3-686682827",
+          "s1_name": "Kritavi Labs Private Limited",
+          "target_name_norm": "kritavilabscom"
+        },
+        {
+          "s1": "S1-107333355",
+          "target": "S2-30425044",
+          "s1_name": "Ss Tech Private Limited",
+          "target_name_norm": "\u090f\u0938\u090f\u0938 \u091f \u0915 \u092a\u0930 \u0907\u0935 \u091f \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-964059137",
+          "target": "S2-479912106",
+          "s1_name": "Caldify Financial LLC",
+          "target_name_norm": "caldifyfinancial"
+        },
+        {
+          "s1": "S1-943102308",
+          "target": "S3-880204697",
+          "s1_name": "Unique Software Limited",
+          "target_name_norm": "unique sofatwre limited"
+        },
+        {
+          "s1": "S1-943102308",
+          "target": "S3-666479482",
+          "s1_name": "Unique Software Limited",
+          "target_name_norm": "unique limited center"
+        }
+      ],
+      "5_in_pool_below_final_cap": [
+        {
+          "s1": "S1-107333355",
+          "target": "S3-603061698",
+          "s1_name": "Ss Tech Private Limited",
+          "target_name_norm": "ss tech private"
+        },
+        {
+          "s1": "S1-887743207",
+          "target": "S3-718787902",
+          "s1_name": "Valdez & Randolph",
+          "target_name_norm": "valdez and raodph"
+        },
+        {
+          "s1": "S1-851388499",
+          "target": "S3-652162171",
+          "s1_name": "Shree & Sons Private Limited",
+          "target_name_norm": "shree and sons ptsvte limited"
+        },
+        {
+          "s1": "S1-866252186",
+          "target": "S2-695357753",
+          "s1_name": "Gt Enterprises Pvt Ltd",
+          "target_name_norm": "gt enterpirsies private limited"
+        },
+        {
+          "s1": "S1-866252186",
+          "target": "S3-93581427",
+          "s1_name": "Gt Enterprises Pvt Ltd",
+          "target_name_norm": "kelotavo"
+        },
+        {
+          "s1": "S1-344789069",
+          "target": "S3-465837760",
+          "s1_name": "Delta Preparatory Academy",
+          "target_name_norm": "deltapreparatoryacademy"
+        }
+      ],
+      "2_no_shared_retrieval_key": [
+        {
+          "s1": "S1-121707072",
+          "target": "S3-642630643",
+          "s1_name": "Jupally Td Limited",
+          "target_name_norm": "jspually td limited"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S3-432107880",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S2-828389498",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-108330564",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-1252732",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-579913285",
+          "target": "S2-614707283",
+          "s1_name": "Blue Hospitality Pvt Ltd",
+          "target_name_norm": "\u092c\u0932 \u0939 \u0938\u092a \u091f \u0932 \u091f \u092a\u0930 \u0932"
+        }
+      ]
+    }
+  },
+  "slices_at_attribution_cap": {
+    "source": {
+      "S2": {
+        "truth_links": 8422,
+        "retrieved": 6714,
+        "4_discarded_by_route_limit": 951,
+        "2_no_shared_retrieval_key": 555,
+        "5_in_pool_below_final_cap": 202,
+        "recall": 0.7971978152457848
+      },
+      "S3": {
+        "truth_links": 8884,
+        "retrieved": 7207,
+        "4_discarded_by_route_limit": 968,
+        "5_in_pool_below_final_cap": 275,
+        "2_no_shared_retrieval_key": 434,
+        "recall": 0.8112336785231877
+      }
+    },
+    "country": {
+      "India": {
+        "truth_links": 6989,
+        "retrieved": 4901,
+        "4_discarded_by_route_limit": 1064,
+        "5_in_pool_below_final_cap": 128,
+        "2_no_shared_retrieval_key": 896,
+        "recall": 0.7012448132780082
+      },
+      "US": {
+        "truth_links": 10317,
+        "retrieved": 9020,
+        "4_discarded_by_route_limit": 855,
+        "5_in_pool_below_final_cap": 349,
+        "2_no_shared_retrieval_key": 93,
+        "recall": 0.8742851604148493
+      }
+    },
+    "target_script": {
+      "latin": {
+        "truth_links": 16043,
+        "retrieved": 13814,
+        "4_discarded_by_route_limit": 1483,
+        "5_in_pool_below_final_cap": 450,
+        "2_no_shared_retrieval_key": 296,
+        "recall": 0.8610608988343826
+      },
+      "non_latin": {
+        "truth_links": 1263,
+        "retrieved": 107,
+        "4_discarded_by_route_limit": 436,
+        "2_no_shared_retrieval_key": 693,
+        "5_in_pool_below_final_cap": 27,
+        "recall": 0.08471892319873317
+      }
+    },
+    "s1_name_ambiguity(exact-name postings)": {
+      "0": {
+        "truth_links": 2830,
+        "retrieved": 2310,
+        "4_discarded_by_route_limit": 311,
+        "5_in_pool_below_final_cap": 93,
+        "2_no_shared_retrieval_key": 116,
+        "recall": 0.8162544169611308
+      },
+      "1": {
+        "truth_links": 4122,
+        "retrieved": 3610,
+        "4_discarded_by_route_limit": 317,
+        "2_no_shared_retrieval_key": 117,
+        "5_in_pool_below_final_cap": 78,
+        "recall": 0.8757884522076662
+      },
+      "2-5": {
+        "truth_links": 5831,
+        "retrieved": 5210,
+        "4_discarded_by_route_limit": 391,
+        "2_no_shared_retrieval_key": 122,
+        "5_in_pool_below_final_cap": 108,
+        "recall": 0.8935002572457554
+      },
+      "6-50": {
+        "truth_links": 3338,
+        "retrieved": 1954,
+        "4_discarded_by_route_limit": 700,
+        "5_in_pool_below_final_cap": 69,
+        "2_no_shared_retrieval_key": 615,
+        "recall": 0.585380467345716
+      },
+      ">50": {
+        "truth_links": 1185,
+        "retrieved": 837,
+        "5_in_pool_below_final_cap": 129,
+        "4_discarded_by_route_limit": 200,
+        "2_no_shared_retrieval_key": 19,
+        "recall": 0.7063291139240506
+      }
+    },
+    "s1_match_multiplicity": {
+      "1": {
+        "truth_links": 273,
+        "retrieved": 221,
+        "4_discarded_by_route_limit": 33,
+        "2_no_shared_retrieval_key": 16,
+        "5_in_pool_below_final_cap": 3,
+        "recall": 0.8095238095238095
+      },
+      "2-3": {
+        "truth_links": 5309,
+        "retrieved": 4221,
+        "4_discarded_by_route_limit": 640,
+        "5_in_pool_below_final_cap": 131,
+        "2_no_shared_retrieval_key": 317,
+        "recall": 0.7950649839894519
+      },
+      "4-5": {
+        "truth_links": 8219,
+        "retrieved": 6663,
+        "4_discarded_by_route_limit": 857,
+        "2_no_shared_retrieval_key": 478,
+        "5_in_pool_below_final_cap": 221,
+        "recall": 0.8106825647889038
+      },
+      "6+": {
+        "truth_links": 3505,
+        "retrieved": 2816,
+        "4_discarded_by_route_limit": 389,
+        "5_in_pool_below_final_cap": 122,
+        "2_no_shared_retrieval_key": 178,
+        "recall": 0.8034236804564907
+      }
+    }
+  },
+  "runtime_sec": {
+    "retrieval": 30.62353253364563,
+    "total": 38.09638595581055
+  },
+  "retrieval_ms_per_s1": 6.124706506729126,
+  "peak_rss_mb": 827.65625
+}

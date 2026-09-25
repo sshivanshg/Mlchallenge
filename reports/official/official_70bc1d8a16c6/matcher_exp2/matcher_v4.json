@@ -1,0 +1,158 @@
+{
+  "timestamp": "2026-09-25T21:33:22Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "role": "development (fit + select); not a held-out claim",
+  "candidate_policy": "frozen v3b cap 300",
+  "n_select": 5000,
+  "results": {
+    "M0_repro_sampled_9f_fit8k": {
+      "threshold": 0.98,
+      "select": {
+        "macro_F0.5": 0.7962883573812002,
+        "precision": 0.9434555840715291,
+        "recall": 0.6584999422165723,
+        "singleton_accuracy": 0.8888888888888888,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 11396,
+        "fp": 683,
+        "fn": 5910
+      },
+      "fit_pairs": 103884,
+      "fit_pos": 22165,
+      "n_fit_s1": 8000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard"
+      ],
+      "neg_policy": "sampled",
+      "sec": 108.11254358291626
+    },
+    "M1_allneg_9f_fit8k": {
+      "threshold": 0.6,
+      "select": {
+        "macro_F0.5": 0.8050491805592354,
+        "precision": 0.9398867313915857,
+        "recall": 0.6712700797411303,
+        "singleton_accuracy": 0.8925925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 11617,
+        "fp": 743,
+        "fn": 5689
+      },
+      "fit_pairs": 2148390,
+      "fit_pos": 22165,
+      "n_fit_s1": 8000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard"
+      ],
+      "neg_policy": "all",
+      "sec": 163.94873046875
+    },
+    "M1b_allneg_9f_fit15k": {
+      "threshold": 0.6,
+      "select": {
+        "macro_F0.5": 0.8064004589386269,
+        "precision": 0.9438796258641724,
+        "recall": 0.6705766786085751,
+        "singleton_accuracy": 0.8592592592592593,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 11605,
+        "fp": 690,
+        "fn": 5701
+      },
+      "fit_pairs": 4026686,
+      "fit_pos": 41508,
+      "n_fit_s1": 15000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard"
+      ],
+      "neg_policy": "all",
+      "sec": 21.344061613082886
+    },
+    "M2_allneg_extra_fit15k": {
+      "threshold": 0.7,
+      "select": {
+        "macro_F0.5": 0.81724190146879,
+        "precision": 0.9474014266677119,
+        "recall": 0.6983705073384954,
+        "singleton_accuracy": 0.8518518518518519,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 12086,
+        "fp": 671,
+        "fn": 5220
+      },
+      "fit_pairs": 4026686,
+      "fit_pos": 41508,
+      "n_fit_s1": 15000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard",
+        "rank_frac",
+        "log_score",
+        "score_ratio_to_top",
+        "n_cands",
+        "name_s_rank",
+        "name_s_gap_to_best_other",
+        "n_cands_name_ge_0.9",
+        "addr_s_rank",
+        "s1_addr_missing",
+        "t_addr_missing",
+        "num_conflict",
+        "same_source_count_name_ge_0.9",
+        "route_name",
+        "route_sig",
+        "route_prefix",
+        "route_token",
+        "route_tok_intersect",
+        "route_pair",
+        "route_toknum",
+        "route_num"
+      ],
+      "neg_policy": "all",
+      "sec": 26.21086072921753
+    }
+  },
+  "leader_on_select": "M2_allneg_extra_fit15k",
+  "baseline_selected_model_select_F0.5": 0.796288,
+  "runtime_sec": {
+    "fit_build": 210.12132382392883,
+    "select_build": 61.87234282493591,
+    "total": 600.8642373085022
+  },
+  "peak_rss_mb": 2955.4296875
+}

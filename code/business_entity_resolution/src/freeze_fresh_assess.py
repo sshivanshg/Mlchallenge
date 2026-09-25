@@ -33,11 +33,13 @@ def main():
     p.add_argument("--work-dir", type=Path, default=REPO / "artifacts" / "official_index")
     p.add_argument("--n", type=int, default=5000)
     p.add_argument("--seed", type=int, default=20260925)
+    p.add_argument("--name", default="assess_fresh_v1")
+    p.add_argument("--exclude", nargs="*", type=Path, default=[], help="frozen ID JSON files to exclude (with components)")
     args = p.parse_args()
     prov = require_official_dataset(args.dataset_root, require=("train",), check_hashes=True)
     gt_hash = load_manifest()["files"]["train/train_ground_truth.tsv"]["sha256"]
     split_version = f"official_{gt_hash[:12]}"
-    out = REPO / "experiments" / "splits" / f"{split_version}_assess_fresh_v1.json"
+    out = REPO / "experiments" / "splits" / f"{split_version}_{args.name}.json"
     if out.exists():
         raise SystemExit(f"already frozen: {out}")
 
@@ -52,6 +54,8 @@ def main():
     sample("select", 5000)
     sample("fit", 8000)
     used = set(sample("assess", 3000))
+    for f in args.exclude:
+        used |= set(json.loads(f.read_text())["ids"])
     assess_all = sorted(r[0] for r in fold_db.execute("SELECT id FROM fold WHERE fold='assess'"))
     fold_db.close()
     assess_set = set(assess_all)
@@ -86,8 +90,9 @@ def main():
     out.write_text(json.dumps({
         "split_version": split_version,
         "provenance": f"official_challenge_dataset:{prov.manifest_version}",
-        "role": "assess_fresh_v1: untouched final assessment; evaluate each frozen config once",
-        "excluded": "3,000 assess IDs used in Stage 4/4e (relabelled assess_dev_used) and their positive components",
+        "role": f"{args.name}: untouched final assessment; evaluate each frozen config once",
+        "excluded": "3,000 assess IDs used in Stage 4/4e (relabelled assess_dev_used) and their positive components"
+        + "".join(f"; {f.name} and its positive components" for f in args.exclude),
         "seed": args.seed,
         "n": len(fresh),
         "sha256_of_sorted_ids": digest,

@@ -76,14 +76,22 @@ def s3_boundaries(db: sqlite3.Connection, tables) -> dict[str, int]:
     return out
 
 
+V4_ROUTES = {"v4a": {"numtok"}, "v4b": {"cpre8"}, "v4c": {"numnum"}, "v4all": {"numtok", "cpre8", "numnum"}}
+PAIR_VARIANTS = {"v3b", *V4_ROUTES}
+
+
 class Retriever:
-    def __init__(self, db, n_targets, variant, bounds=None, pair_db=None, pair_bounds=None):
+    def __init__(self, db, n_targets, variant, bounds=None, pair_db=None, pair_bounds=None,
+                 aux_db=None, aux_bounds=None):
         self.db = db
         self.n_targets = n_targets
         self.variant = variant
         self.bounds = bounds or {}
         self.pair_db = pair_db
         self.pair_bounds = pair_bounds or {}
+        self.aux_db = aux_db
+        self.aux_bounds = aux_bounds or {}
+        self.aux_routes = V4_ROUTES.get(variant, set())
         self.df_cache: dict[str, int] = {}
         self.n_log = math.log(max(n_targets, 2))
 
@@ -155,7 +163,7 @@ class Retriever:
                 if len(sets) >= 2:
                     add(sets[0].intersection(*sets[1:]), 4.0, "tok_intersect")
 
-            if self.variant == "v3b":
+            if self.variant in PAIR_VARIANTS:
                 uniq = []
                 for t in sorted(set(toks), key=lambda t: self.token_df(t) or self.n_targets):
                     uniq.append(t)
@@ -175,6 +183,28 @@ class Retriever:
         for num in nums(aa):
             queried["num"].add(num)
             add(self.lookup("by_num", num, 80), 2.2, "num")
+
+        if self.aux_routes:
+            from build_aux_index_v4 import MAX_NUMS, addr_tokens, compact_prefix
+
+            alk = lambda table, key, limit: self._split(self.aux_db, self.aux_bounds, table, key, limit)
+            anums = list(dict.fromkeys(nums(aa)))[:MAX_NUMS]
+            if "numtok" in self.aux_routes:
+                for n in anums:
+                    for t in addr_tokens(aa):
+                        queried["numtok"].add(f"{n}#{t}")
+                        add(alk("by_numtok", f"{n}#{t}", 50), 4.0, "numtok")
+            if "numnum" in self.aux_routes:
+                srt = sorted(anums)
+                for i in range(len(srt)):
+                    for j in range(i + 1, len(srt)):
+                        queried["numnum"].add(f"{srt[i]}#{srt[j]}")
+                        add(alk("by_numnum", f"{srt[i]}#{srt[j]}", 50), 4.0, "numnum")
+            if "cpre8" in self.aux_routes and nn:
+                cp = compact_prefix(nn)
+                if cp:
+                    queried["cpre8"].add(cp)
+                    add(alk("by_cpre8", cp, 100), 3.0, "cpre8")
 
         if not scores:
             return [], scores, routes, queried
@@ -281,7 +311,8 @@ def main():
     p.add_argument("--work-dir", type=Path, default=REPO / "artifacts" / "official_index")
     p.add_argument("--index", type=Path, default=None)
     p.add_argument("--pair-index", type=Path, default=None)
-    p.add_argument("--variant", choices=["v2", "v3a", "v3b"], default="v2")
+    p.add_argument("--variant", choices=["v2", "v3a", "v3b", *sorted(V4_ROUTES)], default="v2")
+    p.add_argument("--aux-index", type=Path, default=None)
     p.add_argument("--caps", default="120,300,500,1000")
     p.add_argument("--eval-s1", type=int, default=5000)
     p.add_argument("--seed", type=int, default=42)
@@ -314,13 +345,18 @@ def main():
     db = sqlite3.connect(f"file:{index_path}?mode=ro", uri=True)
     n_targets = db.execute("SELECT COUNT(*) FROM targets").fetchone()[0]
     bounds = s3_boundaries(db, ROUTE_TABLES) if args.variant != "v2" else {}
-    pair_db = pair_bounds = None
-    if args.variant == "v3b":
+    pair_db = pair_bounds = aux_db = aux_bounds = None
+    if args.variant in V4_ROUTES:
+        if not args.aux_index or not args.aux_index.exists():
+            raise SystemExit("--aux-index required for v4 variants")
+        aux_db = sqlite3.connect(f"file:{args.aux_index}?mode=ro", uri=True)
+        aux_bounds = s3_boundaries(aux_db, ("by_numtok", "by_numnum", "by_cpre8"))
+    if args.variant in PAIR_VARIANTS:
         if not args.pair_index or not args.pair_index.exists():
             raise SystemExit("--pair-index required for v3b")
         pair_db = sqlite3.connect(f"file:{args.pair_index}?mode=ro", uri=True)
         pair_bounds = s3_boundaries(pair_db, ("by_pair", "by_toknum"))
-    ret = Retriever(db, n_targets, args.variant, bounds, pair_db, pair_bounds)
+    ret = Retriever(db, n_targets, args.variant, bounds, pair_db, pair_bounds, aux_db, aux_bounds)
 
     # ---- candidate generation (labels not loaded yet) ----
     t0 = time.time()
@@ -488,8 +524,11 @@ def main():
         "n_eval_s1": len(eval_ids),
         "n_target_universe": n_targets,
         "route_budgets": {"name": 200, "sig": 200, "prefix": 60, "token_rare(df<=800)": "min(2000,max(80,df))",
-                          "token_common": 40, "num": 80, "pair": 200 if args.variant == "v3b" else None,
-                          "toknum": 100 if args.variant == "v3b" else None,
+                          "token_common": 40, "num": 80, "pair": 200 if args.variant in PAIR_VARIANTS else None,
+                          "toknum": 100 if args.variant in PAIR_VARIANTS else None,
+                          "aux_routes(limit,weight)": {"numtok": [50, 4.0], "numnum": [50, 4.0], "cpre8": [100, 3.0]}
+                          if args.variant in V4_ROUTES else None,
+                          "aux_routes_enabled": sorted(V4_ROUTES.get(args.variant, ())),
                           "source_split": args.variant != "v2"},
         "s3_rowid_boundaries": bounds,
         "parity_vs_generate_candidates_v2": {"checked": parity_checked, "identical_top120": parity_ok} if args.variant == "v2" else None,

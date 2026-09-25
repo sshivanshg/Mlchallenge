@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-09-25T21:40:20Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "role": "development (fit + select); not a held-out claim",
+  "candidate_policy": "v4all cap 300",
+  "n_select": 5000,
+  "results": {
+    "M1b_allneg_9f_fit15k": {
+      "threshold": 0.65,
+      "select": {
+        "macro_F0.5": 0.831186154998176,
+        "precision": 0.9441131498470948,
+        "recall": 0.7135675488269965,
+        "singleton_accuracy": 0.8925925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 12349,
+        "fp": 731,
+        "fn": 4957
+      },
+      "fit_pairs": 4164594,
+      "fit_pos": 45694,
+      "n_fit_s1": 15000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard"
+      ],
+      "neg_policy": "all",
+      "sec": 20.87122368812561
+    },
+    "M2_allneg_extra_fit15k": {
+      "threshold": 0.7,
+      "select": {
+        "macro_F0.5": 0.8418605268893232,
+        "precision": 0.9380073270598377,
+        "recall": 0.7545359990754652,
+        "singleton_accuracy": 0.825925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13058,
+        "fp": 863,
+        "fn": 4248
+      },
+      "fit_pairs": 4164594,
+      "fit_pos": 45694,
+      "n_fit_s1": 15000,
+      "features": [
+        "name_token_sort",
+        "name_jaccard",
+        "name_exact",
+        "addr_token_sort",
+        "num_overlap",
+        "country_equal",
+        "name_addr_conflict",
+        "name_partial",
+        "addr_jaccard",
+        "rank_frac",
+        "log_score",
+        "score_ratio_to_top",
+        "n_cands",
+        "name_s_rank",
+        "name_s_gap_to_best_other",
+        "n_cands_name_ge_0.9",
+        "addr_s_rank",
+        "s1_addr_missing",
+        "t_addr_missing",
+        "num_conflict",
+        "same_source_count_name_ge_0.9",
+        "route_name",
+        "route_sig",
+        "route_prefix",
+        "route_token",
+        "route_tok_intersect",
+        "route_pair",
+        "route_toknum",
+        "route_num",
+        "route_numtok",
+        "route_numnum",
+        "route_cpre8"
+      ],
+      "neg_policy": "all",
+      "sec": 26.382641315460205
+    }
+  },
+  "leader_on_select": "M2_allneg_extra_fit15k",
+  "baseline_selected_model_select_F0.5": 0.796288,
+  "runtime_sec": {
+    "fit_build": 250.52684712409973,
+    "select_build": 73.89790773391724,
+    "total": 383.9748558998108
+  },
+  "peak_rss_mb": 3206.0
+}

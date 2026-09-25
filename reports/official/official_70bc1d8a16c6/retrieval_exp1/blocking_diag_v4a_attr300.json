@@ -1,0 +1,428 @@
+{
+  "timestamp": "2026-09-25T21:27:55Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "fold": "select_bounded_n5000 (seed 42, same IDs as Stage 4)",
+  "variant": "v4a",
+  "code_revision": "8dc66e8",
+  "index": "/workspace/artifacts/official_index/targets_index_v2.sqlite",
+  "pair_index": "artifacts/official_index/train_pair_index_v3.sqlite",
+  "n_eval_s1": 5000,
+  "n_target_universe": 10320219,
+  "route_budgets": {
+    "name": 200,
+    "sig": 200,
+    "prefix": 60,
+    "token_rare(df<=800)": "min(2000,max(80,df))",
+    "token_common": 40,
+    "num": 80,
+    "pair": 200,
+    "toknum": 100,
+    "aux_routes(limit,weight)": {
+      "numtok": [
+        50,
+        4.0
+      ],
+      "numnum": [
+        50,
+        4.0
+      ],
+      "cpre8": [
+        100,
+        3.0
+      ]
+    },
+    "aux_routes_enabled": [
+      "numtok"
+    ],
+    "source_split": true
+  },
+  "s3_rowid_boundaries": {
+    "by_name": 5034616,
+    "by_sig": 4882312,
+    "by_prefix": 5032582,
+    "by_token": 11359846,
+    "by_num": 3987049
+  },
+  "parity_vs_generate_candidates_v2": null,
+  "pool_size": {
+    "mean": 453.1986,
+    "p50": 391.0,
+    "p95": 951.0,
+    "p99": 1304.0,
+    "max": 2592.0
+  },
+  "cap_sweep": {
+    "300": {
+      "micro_recall": 0.8662313648445625,
+      "macro_recall_nonsingleton": 0.8660581730930568,
+      "full_set_coverage": 0.7048625792811839,
+      "oracle_macro_F0.5": 0.9370865910477032,
+      "s2_recall": 0.8651151745428639,
+      "s3_recall": 0.8672895092300765,
+      "cand_mean": 272.1554,
+      "cand_p95": 300.0,
+      "cand_p99": 300.0,
+      "cand_max": 300.0,
+      "alloc_s2_mean": 151.1964,
+      "alloc_s3_mean": 120.959,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 14991
+    },
+    "500": {
+      "micro_recall": 0.8792326360799723,
+      "macro_recall_nonsingleton": 0.878697439511393,
+      "full_set_coverage": 0.7329809725158563,
+      "oracle_macro_F0.5": 0.9427469946074476,
+      "s2_recall": 0.876038945618618,
+      "s3_recall": 0.8822602431337235,
+      "cand_mean": 370.2502,
+      "cand_p95": 500.0,
+      "cand_p99": 500.0,
+      "cand_max": 500.0,
+      "alloc_s2_mean": 191.158,
+      "alloc_s3_mean": 179.0922,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 15216
+    },
+    "pool": {
+      "micro_recall": 0.8847220617127008,
+      "macro_recall_nonsingleton": 0.8834500318802644,
+      "full_set_coverage": 0.7471458773784355,
+      "oracle_macro_F0.5": 0.944408356548574,
+      "s2_recall": 0.8801947280930895,
+      "s3_recall": 0.8890139576767222,
+      "cand_mean": 453.1986,
+      "cand_p95": 951.0,
+      "cand_p99": 1304.0,
+      "cand_max": 2592.0,
+      "alloc_s2_mean": 221.5416,
+      "alloc_s3_mean": 231.657,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 15311
+    }
+  },
+  "route_hits_on_retrieved_truth": {
+    "numtok": 9326,
+    "sig": 9166,
+    "pair": 10626,
+    "token": 6857,
+    "toknum": 8477,
+    "prefix": 2109,
+    "num": 1695,
+    "name": 4801,
+    "tok_intersect": 823
+  },
+  "route_sole_source_of_retrieved_truth": {
+    "numtok": 905,
+    "prefix": 92,
+    "pair": 398,
+    "token": 289,
+    "name": 84,
+    "sig": 64,
+    "toknum": 21,
+    "num": 5
+  },
+  "attribution_cap": 300,
+  "baseline_oracle_at_attribution_cap": 0.9370865910477032,
+  "miss_attribution": {
+    "denominator_missed_true_links": 2315,
+    "sampling": "none (all misses)",
+    "counts": {
+      "1_target_absent_from_index": 0,
+      "2_no_shared_retrieval_key": 989,
+      "3_shared_key_not_queried": 0,
+      "4_discarded_by_route_limit": 1006,
+      "5_in_pool_below_final_cap": 320
+    },
+    "by_source": {
+      "1_target_absent_from_index": {},
+      "2_no_shared_retrieval_key": {
+        "S3": 434,
+        "S2": 555
+      },
+      "3_shared_key_not_queried": {},
+      "4_discarded_by_route_limit": {
+        "S3": 552,
+        "S2": 454
+      },
+      "5_in_pool_below_final_cap": {
+        "S3": 193,
+        "S2": 127
+      }
+    },
+    "shared_key_types": {
+      "4_discarded_by_route_limit": {
+        "prefix": 748,
+        "token": 645,
+        "sig": 106,
+        "num": 94,
+        "name": 4
+      }
+    },
+    "oracle_gain_if_category_recovered": {
+      "1_target_absent_from_index": 0.0,
+      "2_no_shared_retrieval_key": 0.0349450844257887,
+      "3_shared_key_not_queried": 0.0,
+      "4_discarded_by_route_limit": 0.03210672777808421,
+      "5_in_pool_below_final_cap": 0.007321765500870825
+    },
+    "examples": {
+      "2_no_shared_retrieval_key": [
+        {
+          "s1": "S1-121707072",
+          "target": "S3-642630643",
+          "s1_name": "Jupally Td Limited",
+          "target_name_norm": "jspually td limited"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S2-828389498",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S3-432107880",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-1252732",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-108330564",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-579913285",
+          "target": "S2-614707283",
+          "s1_name": "Blue Hospitality Pvt Ltd",
+          "target_name_norm": "\u092c\u0932 \u0939 \u0938\u092a \u091f \u0932 \u091f \u092a\u0930 \u0932"
+        }
+      ],
+      "5_in_pool_below_final_cap": [
+        {
+          "s1": "S1-887743207",
+          "target": "S3-718787902",
+          "s1_name": "Valdez & Randolph",
+          "target_name_norm": "valdez and raodph"
+        },
+        {
+          "s1": "S1-363412000",
+          "target": "S2-197704836",
+          "s1_name": "GE Advancement Private Limited",
+          "target_name_norm": "ge adadnrcmeeent private limited"
+        },
+        {
+          "s1": "S1-851388499",
+          "target": "S3-652162171",
+          "s1_name": "Shree & Sons Private Limited",
+          "target_name_norm": "shree and sons ptsvte limited"
+        },
+        {
+          "s1": "S1-396202606",
+          "target": "S3-152475129",
+          "s1_name": "Malad West Cold Pvt Ltd",
+          "target_name_norm": "private malad west cdtd limited"
+        },
+        {
+          "s1": "S1-57193031",
+          "target": "S3-147174109",
+          "s1_name": "Codee's Highland Home Care P.C.",
+          "target_name_norm": "codeeshighlandhome"
+        },
+        {
+          "s1": "S1-448457194",
+          "target": "S2-601837658",
+          "s1_name": "Rangel Analytics",
+          "target_name_norm": "rangelanalytics"
+        }
+      ],
+      "4_discarded_by_route_limit": [
+        {
+          "s1": "S1-943102308",
+          "target": "S3-880204697",
+          "s1_name": "Unique Software Limited",
+          "target_name_norm": "unique sofatwre limited"
+        },
+        {
+          "s1": "S1-943102308",
+          "target": "S3-666479482",
+          "s1_name": "Unique Software Limited",
+          "target_name_norm": "unique limited center"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-100908129",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "shaktisystems"
+        },
+        {
+          "s1": "S1-248759055",
+          "target": "S3-859548082",
+          "s1_name": "A Diamond Associated LLC",
+          "target_name_norm": "limited a deiamnd associated"
+        },
+        {
+          "s1": "S1-251529292",
+          "target": "S3-106653073",
+          "s1_name": "Metro Coalition",
+          "target_name_norm": "metro center"
+        },
+        {
+          "s1": "S1-332027986",
+          "target": "S3-256658809",
+          "s1_name": "Hitech Foundation",
+          "target_name_norm": "hitech center"
+        }
+      ]
+    }
+  },
+  "slices_at_attribution_cap": {
+    "source": {
+      "S2": {
+        "truth_links": 8422,
+        "retrieved": 7286,
+        "5_in_pool_below_final_cap": 127,
+        "2_no_shared_retrieval_key": 555,
+        "4_discarded_by_route_limit": 454,
+        "recall": 0.8651151745428639
+      },
+      "S3": {
+        "truth_links": 8884,
+        "retrieved": 7705,
+        "2_no_shared_retrieval_key": 434,
+        "5_in_pool_below_final_cap": 193,
+        "4_discarded_by_route_limit": 552,
+        "recall": 0.8672895092300765
+      }
+    },
+    "country": {
+      "India": {
+        "truth_links": 6989,
+        "retrieved": 5439,
+        "2_no_shared_retrieval_key": 896,
+        "5_in_pool_below_final_cap": 125,
+        "4_discarded_by_route_limit": 529,
+        "recall": 0.7782229217341536
+      },
+      "US": {
+        "truth_links": 10317,
+        "retrieved": 9552,
+        "5_in_pool_below_final_cap": 195,
+        "2_no_shared_retrieval_key": 93,
+        "4_discarded_by_route_limit": 477,
+        "recall": 0.9258505379470776
+      }
+    },
+    "target_script": {
+      "latin": {
+        "truth_links": 16043,
+        "retrieved": 14560,
+        "2_no_shared_retrieval_key": 296,
+        "5_in_pool_below_final_cap": 279,
+        "4_discarded_by_route_limit": 908,
+        "recall": 0.9075609300006233
+      },
+      "non_latin": {
+        "truth_links": 1263,
+        "retrieved": 431,
+        "2_no_shared_retrieval_key": 693,
+        "4_discarded_by_route_limit": 98,
+        "5_in_pool_below_final_cap": 41,
+        "recall": 0.3412509897070467
+      }
+    },
+    "s1_name_ambiguity(exact-name postings)": {
+      "0": {
+        "truth_links": 2830,
+        "retrieved": 2521,
+        "5_in_pool_below_final_cap": 65,
+        "2_no_shared_retrieval_key": 116,
+        "4_discarded_by_route_limit": 128,
+        "recall": 0.8908127208480565
+      },
+      "1": {
+        "truth_links": 4122,
+        "retrieved": 3761,
+        "2_no_shared_retrieval_key": 117,
+        "4_discarded_by_route_limit": 158,
+        "5_in_pool_below_final_cap": 86,
+        "recall": 0.9124211547792334
+      },
+      "2-5": {
+        "truth_links": 5831,
+        "retrieved": 5415,
+        "5_in_pool_below_final_cap": 83,
+        "4_discarded_by_route_limit": 211,
+        "2_no_shared_retrieval_key": 122,
+        "recall": 0.9286571771565769
+      },
+      "6-50": {
+        "truth_links": 3338,
+        "retrieved": 2305,
+        "2_no_shared_retrieval_key": 615,
+        "4_discarded_by_route_limit": 353,
+        "5_in_pool_below_final_cap": 65,
+        "recall": 0.6905332534451768
+      },
+      ">50": {
+        "truth_links": 1185,
+        "retrieved": 989,
+        "5_in_pool_below_final_cap": 21,
+        "4_discarded_by_route_limit": 156,
+        "2_no_shared_retrieval_key": 19,
+        "recall": 0.8345991561181435
+      }
+    },
+    "s1_match_multiplicity": {
+      "1": {
+        "truth_links": 273,
+        "retrieved": 236,
+        "2_no_shared_retrieval_key": 16,
+        "4_discarded_by_route_limit": 18,
+        "5_in_pool_below_final_cap": 3,
+        "recall": 0.8644688644688645
+      },
+      "2-3": {
+        "truth_links": 5309,
+        "retrieved": 4591,
+        "5_in_pool_below_final_cap": 85,
+        "2_no_shared_retrieval_key": 317,
+        "4_discarded_by_route_limit": 316,
+        "recall": 0.8647579581842155
+      },
+      "4-5": {
+        "truth_links": 8219,
+        "retrieved": 7142,
+        "2_no_shared_retrieval_key": 478,
+        "5_in_pool_below_final_cap": 143,
+        "4_discarded_by_route_limit": 456,
+        "recall": 0.8689621608468183
+      },
+      "6+": {
+        "truth_links": 3505,
+        "retrieved": 3022,
+        "4_discarded_by_route_limit": 216,
+        "5_in_pool_below_final_cap": 89,
+        "2_no_shared_retrieval_key": 178,
+        "recall": 0.8621968616262482
+      }
+    }
+  },
+  "runtime_sec": {
+    "retrieval": 33.73409724235535,
+    "total": 41.43600296974182
+  },
+  "retrieval_ms_per_s1": 6.7468194484710695,
+  "peak_rss_mb": 870.703125
+}

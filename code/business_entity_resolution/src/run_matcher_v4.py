@@ -38,7 +38,7 @@ from run_official_bounded import GT_H
 
 REPO = SRC.parents[2]
 WD = REPO / "artifacts" / "official_index"
-ROUTES = ["name", "sig", "prefix", "token", "tok_intersect", "pair", "toknum", "num"]
+ROUTES = ["name", "sig", "prefix", "token", "tok_intersect", "pair", "toknum", "num", "numtok", "numnum", "cpre8"]
 EXTRA_NAMES = (
     ["rank_frac", "log_score", "score_ratio_to_top", "n_cands", "name_s_rank", "name_s_gap_to_best_other",
      "n_cands_name_ge_0.9", "addr_s_rank", "s1_addr_missing", "t_addr_missing", "num_conflict", "same_source_count_name_ge_0.9"]
@@ -95,6 +95,9 @@ def main():
     p.add_argument("--eval-s1", type=int, default=5000)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--tag", default="v4")
+    p.add_argument("--variant", default="v3b", choices=["v3b", "v4a", "v4b", "v4c", "v4all"])
+    p.add_argument("--aux-index", type=Path, default=WD / "train_aux_index_v4.sqlite")
+    p.add_argument("--experiments", default="M0,M1,M1b,M2", help="subset of M0,M1,M1b,M2")
     args = p.parse_args()
     t_all = time.time()
     ds = REPO / "student_resource" / "dataset"
@@ -121,7 +124,12 @@ def main():
     db = sqlite3.connect(f"file:{WD / 'targets_index_v2.sqlite'}?mode=ro", uri=True)
     pdb = sqlite3.connect(f"file:{WD / 'train_pair_index_v3.sqlite'}?mode=ro", uri=True)
     n_targets = db.execute("SELECT COUNT(*) FROM targets").fetchone()[0]
-    ret = Retriever(db, n_targets, "v3b", s3_boundaries(db, ROUTE_TABLES), pdb, s3_boundaries(pdb, ("by_pair", "by_toknum")))
+    aux_db = aux_bounds = None
+    if args.variant != "v3b":
+        aux_db = sqlite3.connect(f"file:{args.aux_index}?mode=ro", uri=True)
+        aux_bounds = s3_boundaries(aux_db, ("by_numtok", "by_numnum", "by_cpre8"))
+    ret = Retriever(db, n_targets, args.variant, s3_boundaries(db, ROUTE_TABLES), pdb,
+                    s3_boundaries(pdb, ("by_pair", "by_toknum")), aux_db, aux_bounds)
 
     def build(ids):
         t0 = time.time()
@@ -191,12 +199,14 @@ def main():
 
     import lightgbm as lgb
 
-    experiments = [
-        ("M0_repro_sampled_9f_fit8k", False, "sampled", [s for s in fit_ids if s in fit8k]),
-        ("M1_allneg_9f_fit8k", False, "all", [s for s in fit_ids if s in fit8k]),
-        ("M1b_allneg_9f_fit15k", False, "all", fit_ids),
-        ("M2_allneg_extra_fit15k", True, "all", fit_ids),
+    all_experiments = [
+        ("M0", "M0_repro_sampled_9f_fit8k", False, "sampled", [s for s in fit_ids if s in fit8k]),
+        ("M1", "M1_allneg_9f_fit8k", False, "all", [s for s in fit_ids if s in fit8k]),
+        ("M1b", f"M1b_allneg_9f_fit{len(fit_ids)//1000}k", False, "all", fit_ids),
+        ("M2", f"M2_allneg_extra_fit{len(fit_ids)//1000}k", True, "all", fit_ids),
     ]
+    wanted = set(args.experiments.split(","))
+    experiments = [e[1:] for e in all_experiments if e[0] in wanted]
     mats = {False: sel_matrix(False), True: sel_matrix(True)}
     results = {}
     models = {}
@@ -220,13 +230,13 @@ def main():
     best = max(results, key=lambda k: results[k]["select"]["macro_F0.5"])
     with (WD / f"matcher_{args.tag}.pkl").open("wb") as f:
         pickle.dump({"models": models, "results": results, "leader": best, "extra_names": EXTRA_NAMES,
-                     "base_names": P.FEATURE_NAMES, "routes": ROUTES, "cap": P.CAP, "variant": "v3b"}, f)
+                                 "base_names": P.FEATURE_NAMES, "routes": ROUTES, "cap": P.CAP, "variant": args.variant}, f)
     report = {
         "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "provenance": f"official_challenge_dataset:{prov.manifest_version}",
         "split_version": split_version,
         "role": "development (fit + select); not a held-out claim",
-        "candidate_policy": "frozen v3b cap 300",
+        "candidate_policy": f"{args.variant} cap 300",
         "n_select": len(select_ids),
         "results": results,
         "leader_on_select": best,
