@@ -1,0 +1,14 @@
+{
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "n_s1": 1732544,
+  "n_links": 4827428,
+  "avg_candidates": 118.67739693768239,
+  "threshold": 0.97,
+  "max_candidates": 120,
+  "runtime_sec": 11200.482367038727,
+  "matching_path": "/workspace/student_resource/output/matching_results.tsv",
+  "candidate_path": "/workspace/student_resource/output/candidate_pairs.tsv",
+  "model_path": "/workspace/artifacts/official_index/logistic_corroboration_v1.pkl",
+  "limited": false
+}

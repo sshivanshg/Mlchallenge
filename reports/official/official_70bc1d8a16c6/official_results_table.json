@@ -106,5 +106,15 @@
     "threshold": 0.97,
     "infer_command": "python3 -u code/business_entity_resolution/src/run_official_infer_test.py --skip-test-index",
     "validate_command": "cd student_resource && python3 utils/validate_submission.py --matching output/matching_results.tsv --candidate output/candidate_pairs.tsv --test-dir dataset/test"
+  },
+  "submission": {
+    "status": "validated_PASS",
+    "n_s1": 1732544,
+    "n_links": 4827428,
+    "avg_candidates": 118.67739693768239,
+    "threshold": 0.97,
+    "runtime_sec": 11200.482367038727,
+    "validate_command": "cd student_resource && python3 utils/validate_submission.py --matching output/matching_results.tsv --candidate output/candidate_pairs.tsv --test-dir dataset/test",
+    "note": "Full official test inference; validator streams candidates to fit ~15GB RAM"
   }
 }

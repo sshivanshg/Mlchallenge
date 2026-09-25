@@ -37,6 +37,10 @@ skipped. Pass ``--check-ids`` to turn it on (it reads ``test_source2.tsv`` /
 your score rather than being rejected by the scorer, so this check is a diagnostic,
 not a gate. If ``--check-ids`` runs out of memory, drop ``--candidate`` (the candidate
 cross-check is the biggest memory user, and the matching file is the only one scored).
+
+Candidate streaming: ``candidate_pairs.tsv`` is validated without retaining the full
+per-S1 candidate ID mapping (which can exceed tens of GB at full test scale). The
+matches⊆candidates soft-check is performed on the fly while streaming.
 """
 
 import argparse
@@ -91,19 +95,34 @@ def load_match_targets(test_dir, warnings):
     return targets
 
 
-def validate_id_list_file(path, expected_header, col_label, required, valid_ids, errors):
+def validate_id_list_file(
+    path,
+    expected_header,
+    col_label,
+    required,
+    valid_ids,
+    errors,
+    retain_mapping=True,
+    matched_for_subset=None,
+    subset_offenders=None,
+):
     """Validate one results-style TSV (matching or candidate).
 
     Applies the shared formatting rules and appends any problems to ``errors``.
     Returns a ``{source1_id: set(matched/candidate ids)}`` mapping, or ``None`` on a
     fatal problem (missing file, empty file, or a broken header) that stops parsing.
+
+    When ``retain_mapping`` is False (used for large candidate_pairs.tsv), only
+    formatting / coverage checks are retained in memory. If ``matched_for_subset``
+    and ``subset_offenders`` are provided, the matches⊆candidates check is done
+    on the fly without storing the full candidate mapping.
     """
     if not os.path.isfile(path):
         errors.append(f"File not found: {path}")
         return None
 
     name = os.path.basename(path)
-    mapping = {}
+    mapping = {} if retain_mapping else None
     seen, dup_rows, intra_dupes = set(), set(), set()
     self_matches, wrong_prefix, unknown = set(), set(), set()
     n_rows = empties = 0
@@ -146,19 +165,26 @@ def validate_id_list_file(path, expected_header, col_label, required, valid_ids,
             ids = rest.rstrip("\n").split(",") if rest.strip() else []
             if not ids:
                 empties += 1
-                mapping[s1] = set()
-                continue
-            if len(ids) != len(set(ids)):
-                intra_dupes.add(s1)
-            id_set = set(ids)
-            mapping[s1] = id_set
-            for mid in id_set:
-                if mid.startswith("S1-"):
-                    self_matches.add(mid)
-                elif not mid.startswith(("S2-", "S3-")):
-                    wrong_prefix.add(mid)
-                elif valid_ids is not None and mid not in valid_ids:
-                    unknown.add(mid)
+                id_set = set()
+            else:
+                if len(ids) != len(set(ids)):
+                    intra_dupes.add(s1)
+                id_set = set(ids)
+                for mid in id_set:
+                    if mid.startswith("S1-"):
+                        self_matches.add(mid)
+                    elif not mid.startswith(("S2-", "S3-")):
+                        wrong_prefix.add(mid)
+                    elif valid_ids is not None and mid not in valid_ids:
+                        unknown.add(mid)
+
+            if retain_mapping:
+                mapping[s1] = id_set
+
+            if matched_for_subset is not None and subset_offenders is not None:
+                mids = matched_for_subset.get(s1)
+                if mids and (mids - id_set):
+                    subset_offenders.add(s1)
 
     # Aggregate the per-category findings. Each entry is (offenders, message);
     # only non-empty categories become errors.
@@ -202,7 +228,7 @@ def validate_id_list_file(path, expected_header, col_label, required, valid_ids,
             errors.append(message.format(name=name, ex=examples(offenders), col=col_label))
 
     print(f"  {name}: {n_rows} rows ({empties} empty, {n_rows - empties} non-empty).")
-    return mapping
+    return mapping if retain_mapping else True
 
 
 def validate(matching_path, candidate_path, test_dir, check_ids=False):
@@ -242,11 +268,23 @@ def validate(matching_path, candidate_path, test_dir, check_ids=False):
     # candidate_pairs.tsv is optional: if it's absent we skip its checks with a
     # warning (it's still expected in your final submission zip). A missing
     # candidate file never fails this run on its own.
-    candidate = None
+    # Stream candidates without retaining the full ID mapping (~200M IDs / multi-GB)
+    # so full-test validation fits in ~15GB RAM; subset check runs on the fly.
+    candidate_ok = False
+    subset_offenders = set()
     if candidate_path and os.path.isfile(candidate_path):
-        candidate = validate_id_list_file(
-            candidate_path, CANDIDATE_HEADER, "candidate_entity_ids",
-            required, valid_ids, errors,
+        candidate_ok = bool(
+            validate_id_list_file(
+                candidate_path,
+                CANDIDATE_HEADER,
+                "candidate_entity_ids",
+                required,
+                valid_ids,
+                errors,
+                retain_mapping=False,
+                matched_for_subset=matched if matched is not None else None,
+                subset_offenders=subset_offenders if matched is not None else None,
+            )
         )
     elif candidate_path:
         warnings.append(
@@ -258,16 +296,12 @@ def validate(matching_path, candidate_path, test_dir, check_ids=False):
     # Soft check: your final matches should come from your blocking candidates.
     # A matched ID absent from candidate_pairs.tsv usually means a pipeline bug,
     # so we warn but never fail on it.
-    if matched is not None and candidate is not None:
-        offenders = {
-            s1 for s1, mids in matched.items() if mids - candidate.get(s1, set())
-        }
-        if offenders:
-            warnings.append(
-                f"{len(offenders)} S1 entity(ies) have matched IDs not present in "
-                f"candidate_pairs.tsv, e.g. {examples(offenders)}. Final matches "
-                "normally come from your blocking candidates — double-check these."
-            )
+    if matched is not None and candidate_ok and subset_offenders:
+        warnings.append(
+            f"{len(subset_offenders)} S1 entity(ies) have matched IDs not present in "
+            f"candidate_pairs.tsv, e.g. {examples(subset_offenders)}. Final matches "
+            "normally come from your blocking candidates — double-check these."
+        )
 
     return errors, warnings
 
