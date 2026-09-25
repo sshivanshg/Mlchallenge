@@ -10,7 +10,6 @@ Uses logistic+corroboration model trained on train fit fold.
 from __future__ import annotations
 
 import argparse
-import csv
 import pickle
 import random
 import sqlite3

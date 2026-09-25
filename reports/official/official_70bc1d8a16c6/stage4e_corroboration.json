@@ -1,0 +1,41 @@
+{
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "stage": "4e",
+  "E4_base_select": {
+    "macro_F0.5": 0.65621435693906,
+    "precision": 0.8395967813246087,
+    "recall": 0.5486536461342887,
+    "singleton_accuracy": 0.5592592592592592,
+    "n_s1": 5000,
+    "n_singletons": 270,
+    "tp": 9495,
+    "fp": 1814,
+    "fn": 7811
+  },
+  "E4_corroboration_select": {
+    "macro_F0.5": 0.6639707807663221,
+    "precision": 0.8720840562945826,
+    "recall": 0.5227666705188951,
+    "singleton_accuracy": 0.6518518518518519,
+    "n_s1": 5000,
+    "n_singletons": 270,
+    "tp": 9047,
+    "fp": 1327,
+    "fn": 8259,
+    "threshold": 0.97
+  },
+  "E4_corroboration_assess": {
+    "macro_F0.5": 0.6633430373614795,
+    "precision": 0.8686599874765185,
+    "recall": 0.5304971319311663,
+    "singleton_accuracy": 0.5705521472392638,
+    "n_s1": 3000,
+    "n_singletons": 163,
+    "tp": 5549,
+    "fp": 839,
+    "fn": 4911,
+    "threshold": 0.97
+  },
+  "runtime_total_sec": 391.073041677475
+}
