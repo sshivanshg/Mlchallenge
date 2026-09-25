@@ -35,10 +35,16 @@ def main():
     args = p.parse_args()
     require_official_dataset(args.dataset_root, require=(args.split,), check_hashes=True)
     out = args.out or (REPO / "artifacts" / "official_index" / f"{args.split}_pair_index_v3.sqlite")
+    stats_path = out.with_suffix(".stats.json")
     if out.exists():
         raise SystemExit(f"refusing to overwrite {out}")
+    # A build is complete only after the rename below; leftovers are partial.
+    building = out.with_name(out.name + ".building")
+    if building.exists():
+        print(f"removing partial build {building}", flush=True)
+        building.unlink()
     t0 = time.time()
-    db = sqlite3.connect(out)
+    db = sqlite3.connect(building)
     db.execute("PRAGMA journal_mode=OFF")
     db.execute("PRAGMA synchronous=OFF")
     db.execute("CREATE TABLE by_pair (key TEXT, id TEXT)")
@@ -74,11 +80,16 @@ def main():
     db.execute("CREATE INDEX idx_pair ON by_pair(key)")
     db.execute("CREATE INDEX idx_toknum ON by_toknum(key)")
     db.commit()
+    for t, expected in (("by_pair", n_pair), ("by_toknum", n_tn)):
+        got = db.execute(f"SELECT MAX(rowid) FROM {t}").fetchone()[0] or 0
+        if got != expected:
+            raise RuntimeError(f"{t}: {got} rows, expected {expected}")
     db.close()
+    building.replace(out)
     stats = {"split": args.split, "targets": n, "pair_rows": n_pair, "toknum_rows": n_tn,
              "max_tokens": MAX_TOKENS, "max_nums": MAX_NUMS, "runtime_sec": time.time() - t0,
-             "bytes": out.stat().st_size}
-    (out.with_suffix(".stats.json")).write_text(json.dumps(stats, indent=2) + "\n")
+             "bytes": out.stat().st_size, "complete": True}
+    stats_path.write_text(json.dumps(stats, indent=2) + "\n")
     print(json.dumps(stats, indent=2))
 
 
