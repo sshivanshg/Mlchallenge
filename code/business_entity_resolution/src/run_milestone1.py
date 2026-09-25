@@ -174,11 +174,11 @@ def _error_analysis(
 
 
 def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
-    from data.provenance import require_official_dataset
+    from data.provenance import load_manifest, require_official_dataset
 
     prov = require_official_dataset(dataset_root, require=("train", "test"), check_hashes=True)
     provenance = f"official_challenge_dataset:{prov.manifest_version}"
-    manifest = __import__("data.provenance", fromlist=["load_manifest"]).load_manifest()
+    manifest = load_manifest()
     gt_hash = manifest["files"]["train/train_ground_truth.tsv"]["sha256"]
     split_version = f"official_{gt_hash[:12]}"
     reports_root = reports_root / split_version
