@@ -1,0 +1,83 @@
+{
+  "name": "official_challenge_dataset",
+  "version": "dataset-v1",
+  "files": {
+    "train/train_source1.tsv": {
+      "sha256": "591af0e1dfeb65cab71ea6ee8cb69df00f92d6ba6fa79e05746c938775d14973",
+      "nbytes": 210069713,
+      "newline_count": 2206822
+    },
+    "train/train_source2.tsv": {
+      "sha256": "6336c1a055eec79cf8a6d99fdc8d32a2e4d9dc2662e00963cb35d66b89ed09ed",
+      "nbytes": 489301488,
+      "newline_count": 5034617
+    },
+    "train/train_source3.tsv": {
+      "sha256": "67da22f5151898ff3006febd836c1a159e97ae95efa7257a5aff4fda685e58e9",
+      "nbytes": 503705637,
+      "newline_count": 5285604
+    },
+    "train/train_ground_truth.tsv": {
+      "sha256": "70bc1d8a16c667e0155c2105d0ab2ebe41d7e7a85d8a529e3ca81c6c3a5af037",
+      "nbytes": 127015583,
+      "newline_count": 2206822
+    },
+    "test/test_source1.tsv": {
+      "sha256": "3d4a32c54c2ca9c53fd7c2be105bf26f708f94c4d2f88eb370972a195665c2f5",
+      "nbytes": 175022086,
+      "newline_count": 1732545
+    },
+    "test/test_source2.tsv": {
+      "sha256": "79d906c7497af2ace70aa277f6e334a652094909de99bd6c57b53420b6a7b2dd",
+      "nbytes": 509456422,
+      "newline_count": 4887274
+    },
+    "test/test_source3.tsv": {
+      "sha256": "850942b11d2a4343486ed0834e28bce9f3b385f3fd497fd60ccf4ea3b8bda035",
+      "nbytes": 506002772,
+      "newline_count": 5082317
+    }
+  },
+  "expected_headers": {
+    "train/train_source1.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ],
+    "train/train_source2.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ],
+    "train/train_source3.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ],
+    "train/train_ground_truth.tsv": [
+      "source1_entity_id",
+      "matched_entity_ids"
+    ],
+    "test/test_source1.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ],
+    "test/test_source2.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ],
+    "test/test_source3.tsv": [
+      "entity_id",
+      "business_name",
+      "business_address",
+      "country"
+    ]
+  }
+}

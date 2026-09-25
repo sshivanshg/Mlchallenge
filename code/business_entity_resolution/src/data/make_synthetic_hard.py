@@ -1,4 +1,4 @@
-"""Harder synthetic fixture for research-engine development (NOT official data)."""
+"""Harder synthetic fixture for isolated unit tests only (NOT competition data)."""
 
 from __future__ import annotations
 
@@ -90,20 +90,16 @@ def addr_for(i: int, country: str, rng: random.Random) -> str:
 
 
 def generate(out_dir: Path, n_train: int = 400, n_test: int = 200, seed: int = 7) -> None:
-    """DEV-ONLY stub generator. Never use for competition scoring.
+    """Unit-test-only stub writer. Forbidden from competition dataset paths."""
+    from data.provenance import ProvenanceError, assert_not_synthetic_output_target
 
-    Refuses to overwrite an official challenge dump if one is already present.
-    """
     out_dir = Path(out_dir)
-    existing = out_dir / "train" / "train_source1.tsv"
-    if existing.is_file():
-        with existing.open(encoding="utf-8") as f:
-            n_lines = sum(1 for _ in f)
-        if n_lines >= 100_000:
-            raise RuntimeError(
-                f"Refusing to overwrite official dataset at {existing} "
-                f"({n_lines} lines). Remove it explicitly if you truly want a stub."
-            )
+    assert_not_synthetic_output_target(out_dir)
+    # Extra: only allow under a tests/ tree
+    if "tests" not in out_dir.resolve().parts:
+        raise ProvenanceError(
+            f"Synthetic generator may only write under a tests/ directory, got {out_dir}"
+        )
 
     rng = random.Random(seed)
     train_dir, test_dir = out_dir / "train", out_dir / "test"
@@ -215,11 +211,11 @@ def generate(out_dir: Path, n_train: int = 400, n_test: int = 200, seed: int = 7
     write_tsv(pd.DataFrame(s3), test_dir / "test_source3.tsv")
 
     (out_dir / "PROVENANCE.txt").write_text(
-        "synthetic_dev_fixture_v2\n"
+        "unit_test_synthetic_stub\n"
         "NOT official AWS challenge data.\n"
-        "Generated locally for research-engine development until official dumps are provided.\n"
+        "Allowed only under tests/ for isolated unit tests.\n"
     )
-    print(f"Wrote synthetic_dev_fixture_v2 to {out_dir}")
+    print(f"Wrote unit-test synthetic stub to {out_dir}")
 
 
 if __name__ == "__main__":

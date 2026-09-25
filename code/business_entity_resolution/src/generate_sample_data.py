@@ -148,16 +148,18 @@ def generate_split(
 
 
 def generate(out_dir: Path, n_train: int = 120, n_test: int = 80, seed: int = 42) -> None:
+    """Unit-test-only stub writer. Forbidden from competition dataset paths."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from data.provenance import ProvenanceError, assert_not_synthetic_output_target
+
     out_dir = Path(out_dir)
-    existing = out_dir / "train" / "train_source1.tsv"
-    if existing.is_file():
-        with existing.open(encoding="utf-8") as f:
-            n_lines = sum(1 for _ in f)
-        if n_lines >= 100_000:
-            raise RuntimeError(
-                f"Refusing to overwrite official dataset at {existing} ({n_lines} lines). "
-                "Use bash scripts/download_dataset.sh for real data."
-            )
+    assert_not_synthetic_output_target(out_dir)
+    if "tests" not in out_dir.resolve().parts:
+        raise ProvenanceError(
+            f"Synthetic generator may only write under a tests/ directory, got {out_dir}"
+        )
     train_dir = out_dir / "train"
     test_dir = out_dir / "test"
     train_dir.mkdir(parents=True, exist_ok=True)
@@ -174,12 +176,18 @@ def generate(out_dir: Path, n_train: int = 120, n_test: int = 80, seed: int = 42
     write_tsv(pd.DataFrame(s1), test_dir / "test_source1.tsv")
     write_tsv(pd.DataFrame(s2), test_dir / "test_source2.tsv")
     write_tsv(pd.DataFrame(s3), test_dir / "test_source3.tsv")
-    print(f"Wrote synthetic dataset to {out_dir}")
+    print(f"Wrote unit-test synthetic stub to {out_dir}")
 
 
 def main() -> None:
-    p = argparse.ArgumentParser()
-    p.add_argument("--out-dir", default="dataset")
+    p = argparse.ArgumentParser(
+        description="Unit-test-only synthetic stub writer (forbidden for competition paths)"
+    )
+    p.add_argument(
+        "--out-dir",
+        required=True,
+        help="Must be under a tests/ directory; cannot be student_resource/dataset",
+    )
     p.add_argument("--n-train", type=int, default=120)
     p.add_argument("--n-test", type=int, default=80)
     p.add_argument("--seed", type=int, default=42)

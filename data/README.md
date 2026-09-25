@@ -34,3 +34,9 @@ unzip -o /tmp/mlc-data/dataset_test.zip -d student_resource
 
 Original Drive folder (backup source):  
 https://drive.google.com/drive/folders/12U2iIr3vfUHLNrs_Gsvlmi-_Nurgpt2R
+
+## Provenance
+
+Competition code verifies this dump via  
+`code/business_entity_resolution/configs/official_dataset_manifest.json`
+(schema headers + SHA-256 + byte size). See `src/data/provenance.py`.

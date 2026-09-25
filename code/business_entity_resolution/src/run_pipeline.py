@@ -20,6 +20,23 @@ from model import params_from_numpy, params_to_numpy, score_pairs, train_logisti
 ROOT = Path(__file__).resolve().parent
 
 
+def _resolve_dataset_root(path: Path) -> Path:
+    path = path.resolve()
+    if (path / "train").is_dir() and (path / "test").is_dir():
+        return path
+    if path.name in {"train", "test"} and (path.parent / "train").is_dir():
+        return path.parent
+    return path
+
+
+def _require_official(path: Path, require) -> None:
+    # Late import so unit tests of unrelated modules stay light.
+    sys.path.insert(0, str(ROOT))
+    from data.provenance import require_official_dataset
+
+    require_official_dataset(_resolve_dataset_root(path), require=require, check_hashes=True)
+
+
 def _records_by_id(df: pd.DataFrame) -> dict[str, dict]:
     return {r["entity_id"]: r for r in df.to_dict(orient="records")}
 
@@ -76,6 +93,7 @@ def train_and_tune(
     seed: int = 42,
     max_candidates: int = 80,
 ) -> dict:
+    _require_official(train_dir, require=("train", "test"))
     s1, s2, s3 = read_sources(train_dir, "train")
     gt = read_ground_truth(train_dir / "train_ground_truth.tsv")
     # Ensure every S1 appears in GT map (singletons)
@@ -140,6 +158,8 @@ def predict_split(
     output_dir: Path,
     max_candidates: int | None = None,
 ) -> None:
+    # Competition inference always requires the official train+test dump.
+    _require_official(_resolve_dataset_root(data_dir), require=("train", "test"))
     s1, s2, s3 = read_sources(data_dir, split)
     meta = json.loads((model_dir / "meta.json").read_text())
     threshold = float(meta["threshold"])
@@ -212,6 +232,7 @@ def main(argv: list[str] | None = None) -> int:
     elif args.cmd == "predict":
         predict_split(args.data_dir, args.split, args.model_dir, args.output_dir, args.max_candidates)
     elif args.cmd == "run":
+        _require_official(args.dataset_root, require=("train", "test"))
         train_and_tune(
             args.dataset_root / "train",
             args.model_dir,

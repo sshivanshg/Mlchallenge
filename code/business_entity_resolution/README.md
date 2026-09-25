@@ -62,4 +62,6 @@ python3 src/run_milestone1.py \
   --seed 42
 ```
 
-Do **not** pass `--make-hard-synthetic` when working on the competition. That flag is a last-resort local stub only and refuses to overwrite official dumps.
+Do **not** pass any synthetic generator flags. Competition entrypoints call
+`data.provenance.require_official_dataset` (schema + SHA-256 manifest) and will
+fail closed on fixtures/stubs/non-official paths.

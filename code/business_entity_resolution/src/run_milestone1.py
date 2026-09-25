@@ -20,7 +20,7 @@ if str(SRC) not in sys.path:
 
 from blocking.candidates import generate_candidates
 from data.eda import run_eda
-from data.load import dataset_hashes, read_ground_truth, read_sources, write_json
+from data.load import read_ground_truth, read_sources, write_json
 from evaluation.metric_ext import candidate_diagnostics, score_predictions
 from evaluation.splits import freeze_split
 from features.pairwise import FEATURE_NAMES, build_matrix
@@ -174,32 +174,25 @@ def _error_analysis(
 
 
 def run(dataset_root: Path, reports_root: Path, seed: int = 42) -> None:
-    train_dir = dataset_root / "train"
-    s1_path = train_dir / "train_source1.tsv"
-    if not s1_path.is_file():
-        raise FileNotFoundError(
-            f"Missing {s1_path}. Install the official dataset with: "
-            "bash scripts/download_dataset.sh"
-        )
-    # Heuristic: official dump is ~2M+ S1 rows; synthetic stubs are tiny.
-    with s1_path.open(encoding="utf-8") as f:
-        n_lines = sum(1 for _ in f)
-    provenance_file = dataset_root / "PROVENANCE.txt"
-    if n_lines >= 100_000:
-        provenance = "official_challenge_dataset"
-    elif provenance_file.is_file():
-        provenance = provenance_file.read_text().splitlines()[0].strip()
-    else:
-        provenance = "unspecified_local_dataset_SMALL"
-        raise RuntimeError(
-            f"train_source1.tsv has only {n_lines} lines — refusing to run research "
-            "on a synthetic/stub dump. Install the official data: "
-            "bash scripts/download_dataset.sh"
-        )
+    from data.provenance import require_official_dataset
 
-    print(f"DATA PROVENANCE: {provenance} (train_source1 lines={n_lines})")
-    hashes = dataset_hashes(train_dir, dataset_root / "test")
-    write_json({"provenance": provenance, "hashes": hashes}, reports_root / "eda" / "data_hashes.json")
+    prov = require_official_dataset(dataset_root, require=("train", "test"), check_hashes=True)
+    provenance = f"official_challenge_dataset:{prov.manifest_version}"
+    print(
+        f"DATA PROVENANCE: {provenance} "
+        f"(verified {len(prov.checked_files)} files via schema+sha256 manifest)"
+    )
+    train_dir = dataset_root / "train"
+    from data.provenance import sha256_file
+
+    live = {}
+    for rel in prov.checked_files:
+        digest, nbytes = sha256_file(dataset_root / rel)
+        live[rel] = {"sha256": digest, "nbytes": nbytes}
+    write_json(
+        {"provenance": provenance, "verified_files": live},
+        reports_root / "eda" / "data_hashes.json",
+    )
 
     # --- EDA ---
     eda = run_eda(train_dir, reports_root / "eda", provenance)
@@ -455,16 +448,8 @@ def main():
     p.add_argument("--dataset-root", type=Path, default=REPO / "student_resource" / "dataset")
     p.add_argument("--reports-root", type=Path, default=REPO / "reports")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument(
-        "--make-hard-synthetic",
-        action="store_true",
-        help="DEV ONLY: write a tiny synthetic stub. Refuses if official dumps exist.",
-    )
     args = p.parse_args()
-    if args.make_hard_synthetic:
-        from data.make_synthetic_hard import generate
-
-        generate(args.dataset_root, n_train=400, n_test=200, seed=7)
+    # Competition entrypoint: never generate synthetic data here.
     run(args.dataset_root, args.reports_root, seed=args.seed)
 
 

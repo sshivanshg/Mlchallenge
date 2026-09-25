@@ -26,4 +26,13 @@ Pipeline code that must stay aligned with the skill lives in `code/business_enti
 
 ## Official data only
 
-Use the real challenge TSVs under `student_resource/dataset/` (install via `bash scripts/download_dataset.sh` / release `dataset-v1`). Do **not** generate or score synthetic stubs for research or submissions. Ignore outdated reports that mention `synthetic_dev_fixture_*`.
+Use the real challenge TSVs under `student_resource/dataset/` (install via `bash scripts/download_dataset.sh` / release `dataset-v1`).
+
+Competition entrypoints (`run_milestone1.py`, `run_pipeline.py`) call
+`data.provenance.require_official_dataset`, which verifies:
+
+1. path is `.../student_resource/dataset` (not synthetic/fixture/sample/stub trees)
+2. required TSV schemas/headers
+3. SHA-256 + byte-size against `configs/official_dataset_manifest.json`
+
+Synthetic generators may exist only for isolated unit tests and cannot write into the competition dataset root. Ignore outdated reports that mention `synthetic_dev_fixture_*`.

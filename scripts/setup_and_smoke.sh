@@ -37,15 +37,12 @@ if [[ "$missing" -ne 0 ]]; then
   bash "$ROOT/scripts/download_dataset.sh"
 fi
 
-# Guard: refuse tiny synthetic stand-ins
-lines=$(wc -l < "$DATA/train/train_source1.tsv")
-if [[ "$lines" -lt 100000 ]]; then
-  echo "ERROR: train_source1.tsv has only $lines lines — expected the official dump (~2M+)."
-  echo "Remove any synthetic fixture and run: bash scripts/download_dataset.sh"
-  exit 1
-fi
+echo "== official dataset provenance (schema + sha256 manifest) =="
+python3 "$ROOT/code/business_entity_resolution/src/data/provenance.py" \
+  --dataset-root "$DATA" \
+  --require train test
 
-echo "== official dataset present ($lines S1 train rows incl. header) =="
+echo "== official dataset present =="
 du -sh "$DATA" "$DATA/train" "$DATA/test"
 
 echo "== submission validator (format only; needs existing output/ or skip) =="
