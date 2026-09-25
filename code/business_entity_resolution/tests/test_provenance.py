@@ -83,6 +83,18 @@ class ProvenanceGuardTests(unittest.TestCase):
         with self.assertRaises(ProvenanceError):
             assert_not_synthetic_output_target(target)
 
+    def test_synthetic_writer_requires_empty_tests_directory(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            with self.assertRaisesRegex(ProvenanceError, "tests/ directory"):
+                assert_not_synthetic_output_target(root / "data")
+            allowed = root / "tests" / "fixture"
+            assert_not_synthetic_output_target(allowed)
+            (allowed / "train").mkdir(parents=True)
+            (allowed / "train" / "train_source1.tsv").write_text("existing")
+            with self.assertRaisesRegex(ProvenanceError, "overwrite"):
+                assert_not_synthetic_output_target(allowed)
+
     def test_official_dataset_passes_when_present(self):
         root = REPO / "student_resource" / "dataset"
         if not (root / "train" / "train_source1.tsv").is_file():
