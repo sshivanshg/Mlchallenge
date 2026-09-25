@@ -3,6 +3,7 @@ sessions/
 # Dataset and archives
 student_resource/dataset/
 **/dataset/
+data/*.zip
 *.zip
 *.tsv
 *.csv
@@ -12,6 +13,11 @@ student_resource/dataset/
 *.pickle
 *.npy
 *.npz
+
+# Keep dataset packaging docs
+!data/README.md
+!reports/**/*.csv
+!reports/experiments/experiments.csv
 
 # Pipeline outputs, models, caches
 output/
