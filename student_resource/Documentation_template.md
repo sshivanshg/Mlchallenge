@@ -53,8 +53,8 @@ earlier-inspected assessment IDs (`experiments/splits/official_70bc1d8a16c6_asse
   is starved.
 - **Ranking:** additive route scores with an IDF weight on tokens and a soft ×0.55 country mismatch
   down-weight (never a hard filter, so unseen countries such as France keep candidates).
-- **Candidate pairs generated:** top 300 per S1 (select mean 278 candidates; 461,967,550 test
-  candidate pairs for the v3b run).
+- **Candidate pairs generated:** top 300 per S1 (select mean 278 candidates; 476,889,176 test
+  candidate pairs, mean 275 per test S1).
 - **How you ensured true matches were not lost:** measured candidate recall and candidate-oracle
   macro F0.5 on held-out S1s, attributed every miss to a stage (missing key, per-key truncation, final
   cap), and changed one variable at a time.
