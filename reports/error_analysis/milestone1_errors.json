@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "singleton_fp": 0,
+    "false_positive": 0,
+    "false_negative_blocking": 0,
+    "false_negative_threshold": 1,
+    "partial_miss": 1
+  },
+  "examples": [
+    {
+      "category": "false_negative_threshold",
+      "s1": "S1-00250",
+      "s1_name": "Global Trading LLC",
+      "s1_addr": "180 Main Street, City 10, 73979",
+      "detail": {
+        "s1": "S1-00250",
+        "miss": "S3-00346"
+      }
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "ground_truth": {
+    "entities_matched_both_s2_s3": 129,
+    "exactly_one_match": 136,
+    "match_count_histogram": {
+      "0": 135,
+      "1": 136,
+      "2": 129
+    },
+    "max_matches_per_s1": 2,
+    "mean_matches_per_s1": 0.985,
+    "multi_match": 129,
+    "n_s2_matches": 241,
+    "n_s3_matches": 153,
+    "singleton_rate": 0.3375,
+    "singletons": 135,
+    "total_s1": 400
+  },
+  "noise_examples": [
+    {
+      "country": "India",
+      "match_address": "44, Nehru St, Area 2, 110182",
+      "match_id": "S3-00001",
+      "match_name": "Consultants Metro Ltd",
+      "s1_address": "44, Nehru Street, Area 2, 110182",
+      "s1_id": "S1-00002",
+      "s1_name": "Metro Consultants Ltd"
+    },
+    {
+      "country": "US",
+      "match_address": "61 Main St, City 3, 10291",
+      "match_id": "S2-00003",
+      "match_name": "Velvet Orchid 3 Services Pvt Ltd",
+      "s1_address": "61 Main Street, City 3, 10291",
+      "s1_id": "S1-00003",
+      "s1_name": "Velvet Orchid 3 Services Pvt Ltd"
+    },
+    {
+      "country": "India",
+      "match_address": "78, Ring Rd, Area 4",
+      "match_id": "S2-00004",
+      "match_name": "Marbe Badger 4 Holdings LLC",
+      "s1_address": "78, Ring Road, Area 4, 110364",
+      "s1_id": "S1-00004",
+      "s1_name": "Marble Badger 4 Holdings LLC"
+    },
+    {
+      "country": "US",
+      "match_address": "95 Oak Rd, City 5, 10485",
+      "match_id": "S2-00006",
+      "match_name": "Premier Services LLC",
+      "s1_address": "95 Oak Road, City 5, 10485",
+      "s1_id": "S1-00005",
+      "s1_name": "Premier Services LLC"
+    },
+    {
+      "country": "US",
+      "match_address": "129 Oak Rd, City 7, 10679",
+      "match_id": "S2-00012",
+      "match_name": "National Solutions Inc",
+      "s1_address": "129 Oak Road, City 7, 10679",
+      "s1_id": "S1-00007",
+      "s1_name": "National Solutions Inc"
+    }
+  ],
+  "provenance": "synthetic_dev_fixture_v2",
+  "sources": {
+    "s1": {
+      "business_address": {
+        "char_len_mean": 30.055,
+        "char_len_p50": 30.0,
+        "char_len_p95": 34.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 1.0,
+        "has_punct_rate": 1.0,
+        "n": 400,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 3.0,
+        "token_len_mean": 5.8875
+      },
+      "business_name": {
+        "char_len_mean": 27.95,
+        "char_len_p50": 29.0,
+        "char_len_p95": 34.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.745,
+        "has_punct_rate": 0.0,
+        "n": 400,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.745,
+        "token_len_mean": 4.6575
+      },
+      "country": {
+        "char_len_mean": 3.5,
+        "char_len_p50": 3.5,
+        "char_len_p95": 5.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.0,
+        "has_punct_rate": 0.0,
+        "n": 400,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.0,
+        "token_len_mean": 1.0
+      },
+      "country_counts": {
+        "India": 200,
+        "US": 200
+      },
+      "n_duplicate_ids": 0,
+      "n_records": 400,
+      "n_unique_ids": 400,
+      "source": "S1"
+    },
+    "s2": {
+      "business_address": {
+        "char_len_mean": 29.183890577507597,
+        "char_len_p50": 29.0,
+        "char_len_p95": 35.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 1.0,
+        "has_punct_rate": 1.0,
+        "n": 658,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 2.9361702127659575,
+        "token_len_mean": 5.937689969604863
+      },
+      "business_name": {
+        "char_len_mean": 24.083586626139816,
+        "char_len_p50": 25.0,
+        "char_len_p95": 33.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.6322188449848024,
+        "has_punct_rate": 0.0,
+        "n": 658,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.6322188449848024,
+        "token_len_mean": 4.212765957446808
+      },
+      "country": {
+        "char_len_mean": 3.5045592705167175,
+        "char_len_p50": 5.0,
+        "char_len_p95": 5.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.0,
+        "has_punct_rate": 0.0,
+        "n": 658,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.0,
+        "token_len_mean": 1.0
+      },
+      "country_counts": {
+        "India": 330,
+        "US": 328
+      },
+      "n_duplicate_ids": 0,
+      "n_records": 658,
+      "n_unique_ids": 658,
+      "source": "S2"
+    },
+    "s3": {
+      "business_address": {
+        "char_len_mean": 29.665461121157325,
+        "char_len_p50": 29.0,
+        "char_len_p95": 36.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 1.0,
+        "has_punct_rate": 1.0,
+        "n": 553,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 2.9547920433996384,
+        "token_len_mean": 5.956600361663653
+      },
+      "business_name": {
+        "char_len_mean": 23.21518987341772,
+        "char_len_p50": 22.0,
+        "char_len_p95": 32.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.6220614828209765,
+        "has_punct_rate": 0.0,
+        "n": 553,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.6220614828209765,
+        "token_len_mean": 4.122965641952984
+      },
+      "country": {
+        "char_len_mean": 3.4701627486437614,
+        "char_len_p50": 2.0,
+        "char_len_p95": 5.0,
+        "empty": 0,
+        "empty_rate": 0.0,
+        "has_digit_rate": 0.0,
+        "has_punct_rate": 0.0,
+        "n": 553,
+        "non_ascii_rate": 0.0,
+        "numeric_token_mean": 0.0,
+        "token_len_mean": 1.0
+      },
+      "country_counts": {
+        "India": 271,
+        "US": 282
+      },
+      "n_duplicate_ids": 0,
+      "n_records": 553,
+      "n_unique_ids": 553,
+      "source": "S3"
+    }
+  },
+  "train_dir": "student_resource/dataset/train"
+}

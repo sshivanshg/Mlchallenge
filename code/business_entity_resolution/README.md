@@ -1,74 +1,54 @@
-# Business Entity Resolution — JAX Pipeline
+# Business Entity Resolution — research engine
 
-MIT/Apache-2.0 stack. Matcher is a **from-scratch JAX logistic regression** (no >8B pretrained model).
+Primary methodology: vendored Agent Skill  
+[`.agents/skills/aws-entity-resolution/SKILL.md`](../../.agents/skills/aws-entity-resolution/SKILL.md)
 
-Research process is governed by the vendored
-[`aws-entity-resolution`](../../.agents/skills/aws-entity-resolution/SKILL.md)
-Agent Skill (from [sshivanshg/aws-entity-resolution-skill](https://github.com/sshivanshg/aws-entity-resolution-skill)).
-`src/metrics.py` delegates to the skill's set-level F0.5 reference.
+Optimize **macro F0.5** (set-level, singletons included). Fair play: competition data only.
 
 ## Layout
 
 ```
 src/
-  normalize.py              # NFKC/casefold, legal+address expansions (open-set country)
-  blocking.py               # token / prefix / numeric inverted-index candidates
-  features.py               # pairwise name/address similarities
-  model.py                  # pure functional JAX train (jit + grad + PRNG splits)
-  metrics.py                # macro F0.5 (singletons included)
-  io_utils.py               # TSV read/write (sep=\\t, dtype=str, keep_default_na=False)
-  generate_sample_data.py   # synthetic mini data when challenge dump is absent
-  run_pipeline.py           # train / predict / run entrypoint
+  data/            # load, EDA, synthetic fixtures (dev only)
+  normalization/   # multi-view text normalization
+  blocking/        # multi-route candidate generation
+  features/        # interpretable pairwise features
+  models/          # empty / exact / weighted / logistic / LightGBM
+  evaluation/      # metric wrappers, splits, diagnostics
+  inference/       # (reserved) frozen export
+  run_milestone1.py
+configs/
+tests/
+experiments/       # local run artifacts (optional)
 ```
+
+Reports land in repo-root `reports/`.
 
 ## Setup
 
 ```bash
-cd code/business_entity_resolution
 python3 -m pip install -r requirements.txt
 ```
 
-## Data
-
-Place official challenge files under `student_resource/dataset/`:
-
-```
-dataset/train/train_source{1,2,3}.tsv
-dataset/train/train_ground_truth.tsv
-dataset/test/test_source{1,2,3}.tsv
-```
-
-If those are missing, generate a schema-compatible synthetic set (includes France on test):
+## First research milestone
 
 ```bash
-cd src
-python3 generate_sample_data.py --out-dir ../../../student_resource/dataset
-```
+# Metric safeguards
+python3 -m unittest discover -s ../../.agents/skills/aws-entity-resolution/scripts -p 'test_*.py'
+python3 -m unittest discover -s ../tests -p 'test_*.py'
 
-## End-to-end
-
-From `code/business_entity_resolution/src`:
-
-```bash
-python3 run_pipeline.py run \
-  --dataset-root ../../../student_resource/dataset \
-  --model-dir ../artifacts/model \
-  --output-dir ../../../student_resource/output \
+# If official dumps are absent, this builds synthetic_dev_fixture_v2 (NOT official):
+python3 src/run_milestone1.py \
+  --dataset-root ../../student_resource/dataset \
+  --reports-root ../../reports \
+  --make-hard-synthetic \
   --seed 42
 ```
 
-Validate:
+When official TSVs are placed under `student_resource/dataset/{train,test}/`, omit `--make-hard-synthetic` and re-run.
 
-```bash
-cd ../../../student_resource
-python3 utils/validate_submission.py \
-  --matching output/matching_results.tsv \
-  --candidate output/candidate_pairs.tsv \
-  --test-dir dataset/test --check-ids
-```
+## Notes
 
-## Design notes
-
-- Country is an open string label (never one-hot to {US, India}).
-- `candidate_pairs.tsv` is the **final** candidate set scored by the JAX model.
-- Threshold is tuned for **macro F0.5** on an S1-grouped validation split.
+- Country is open-set (never hard-filter to US/India).
+- Validation splits are component-disjoint S1 manifests under `experiments/splits/`.
+- Experiment ledger: `reports/experiments/experiments.csv` (append-only).

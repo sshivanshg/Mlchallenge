@@ -1,0 +1,12 @@
+{
+  "hashes": {
+    "test_source1": "f75af43fbc14c9ddac2e2464280a3219a2b25f3ea159897f941cc14e0a2c303d",
+    "test_source2": "019b50f07f9909acdfa607b02a6cccf583982b53871ce14fdb14987091b444d2",
+    "test_source3": "87c56ef55d165437837a43ec621cb948f23c0e9e519d9b4258e337b5da1e3141",
+    "train_ground_truth": "5bb3808024dbb0eeab141d6c56856fc45364b09563fd907a66f286e2692a11c7",
+    "train_source1": "055597329ddcad916f40e8b2825c262da64c71cf0ca78d77eabe2984c4b30f5a",
+    "train_source2": "48e4d7b6108f8a9134ae0433ecce40d321023c7308e3cda7712670636ce341d6",
+    "train_source3": "e06e7d4ebf79584e29108ee2c48eaa909f88e4cb5510690a582ab7c59cf03893"
+  },
+  "provenance": "synthetic_dev_fixture_v2"
+}
