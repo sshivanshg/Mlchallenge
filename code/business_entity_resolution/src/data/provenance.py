@@ -128,12 +128,16 @@ def assert_not_synthetic_output_target(path: Path) -> None:
         raise ProvenanceError(
             f"Synthetic/fixture generators must not write to competition dataset: {resolved}"
         )
-    # Also ban writing where an official manifest file already lives with matching name
-    # when the parent tree looks like a challenge dump.
-    train1 = resolved / "train" / "train_source1.tsv"
-    if train1.is_file():
-        # If it matches official hash, refuse overwrite (checked by generators too)
-        pass
+    # Synthetic generators are permitted only in isolated tests directories.
+    # This also prevents accidentally overwriting unrelated input copies.
+    if "tests" not in resolved.parts:
+        raise ProvenanceError(
+            f"Synthetic/fixture generators require a tests/ directory: {resolved}"
+        )
+    if (resolved / "train" / "train_source1.tsv").exists():
+        raise ProvenanceError(
+            f"Refusing to overwrite existing test records: {resolved}"
+        )
 
 
 def verify_official_dataset(
