@@ -1,0 +1,304 @@
+{
+  "timestamp": "2026-09-25T18:05:25Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "split_version": "official_70bc1d8a16c6",
+  "fold": "select_bounded_n5000 (seed 42, same IDs as Stage 4)",
+  "variant": "v2",
+  "code_revision": "94ffcca",
+  "index": "/workspace/artifacts/official_index/targets_index_v2.sqlite",
+  "pair_index": null,
+  "n_eval_s1": 5000,
+  "n_target_universe": 10320219,
+  "route_budgets": {
+    "name": 200,
+    "sig": 200,
+    "prefix": 60,
+    "token_rare(df<=800)": "min(2000,max(80,df))",
+    "token_common": 40,
+    "num": 80,
+    "pair": null,
+    "toknum": null,
+    "source_split": false
+  },
+  "s3_rowid_boundaries": {},
+  "parity_vs_generate_candidates_v2": {
+    "checked": 200,
+    "identical_top120": 200
+  },
+  "pool_size": {
+    "mean": 316.0914,
+    "p50": 265.0,
+    "p95": 705.0,
+    "p99": 952.0,
+    "max": 1511.0
+  },
+  "cap_sweep": {
+    "120": {
+      "micro_recall": 0.6152779382872992,
+      "macro_recall_nonsingleton": 0.6151749219772474,
+      "full_set_coverage": 0.31606765327695563,
+      "oracle_macro_F0.5": 0.784763195420807,
+      "s2_recall": 0.6522203752077891,
+      "s3_recall": 0.580256641152634,
+      "cand_mean": 118.9944,
+      "cand_p95": 120.0,
+      "cand_p99": 120.0,
+      "cand_max": 120.0,
+      "alloc_s2_mean": 99.3362,
+      "alloc_s3_mean": 19.6582,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 10648
+    },
+    "300": {
+      "micro_recall": 0.6930544319889056,
+      "macro_recall_nonsingleton": 0.691456928084835,
+      "full_set_coverage": 0.41078224101479915,
+      "oracle_macro_F0.5": 0.8388434785011368,
+      "s2_recall": 0.7238185704108288,
+      "s3_recall": 0.6638901395767672,
+      "cand_mean": 248.149,
+      "cand_p95": 300.0,
+      "cand_p99": 300.0,
+      "cand_max": 300.0,
+      "alloc_s2_mean": 202.6324,
+      "alloc_s3_mean": 45.5166,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 11994
+    },
+    "500": {
+      "micro_recall": 0.7081936900496938,
+      "macro_recall_nonsingleton": 0.7070009899661063,
+      "full_set_coverage": 0.433615221987315,
+      "oracle_macro_F0.5": 0.8486673499975693,
+      "s2_recall": 0.7373545476133935,
+      "s3_recall": 0.6805493021161639,
+      "cand_mean": 292.6564,
+      "cand_p95": 500.0,
+      "cand_p99": 500.0,
+      "cand_max": 500.0,
+      "alloc_s2_mean": 233.4188,
+      "alloc_s3_mean": 59.2376,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 12256
+    },
+    "1000": {
+      "micro_recall": 0.711371778573905,
+      "macro_recall_nonsingleton": 0.7099386724386724,
+      "full_set_coverage": 0.44143763213530657,
+      "oracle_macro_F0.5": 0.8496288507245113,
+      "s2_recall": 0.7392543338874377,
+      "s3_recall": 0.684939216569113,
+      "cand_mean": 315.2268,
+      "cand_p95": 705.0,
+      "cand_p99": 952.0,
+      "cand_max": 1000.0,
+      "alloc_s2_mean": 245.8688,
+      "alloc_s3_mean": 69.358,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 12311
+    },
+    "pool": {
+      "micro_recall": 0.711371778573905,
+      "macro_recall_nonsingleton": 0.7099386724386724,
+      "full_set_coverage": 0.44143763213530657,
+      "oracle_macro_F0.5": 0.8496288507245113,
+      "s2_recall": 0.7392543338874377,
+      "s3_recall": 0.684939216569113,
+      "cand_mean": 316.0914,
+      "cand_p95": 705.0,
+      "cand_p99": 952.0,
+      "cand_max": 1511.0,
+      "alloc_s2_mean": 246.4266,
+      "alloc_s3_mean": 69.6648,
+      "zero_candidate_frac": 0.0,
+      "true_total": 17306,
+      "true_retrieved": 12311
+    }
+  },
+  "route_hits_on_retrieved_truth": {
+    "sig": 8675,
+    "token": 6422,
+    "prefix": 1968,
+    "num": 1274,
+    "name": 4719,
+    "tok_intersect": 822
+  },
+  "route_sole_source_of_retrieved_truth": {
+    "token": 1012,
+    "prefix": 44,
+    "sig": 1359,
+    "name": 128,
+    "num": 52
+  },
+  "attribution_cap": 120,
+  "baseline_oracle_at_attribution_cap": 0.784763195420807,
+  "miss_attribution": {
+    "denominator_missed_true_links": 6658,
+    "sampling": "none (all misses)",
+    "counts": {
+      "1_target_absent_from_index": 0,
+      "2_no_shared_retrieval_key": 989,
+      "3_shared_key_not_queried": 0,
+      "4_discarded_by_route_limit": 4006,
+      "5_in_pool_below_final_cap": 1663
+    },
+    "by_source": {
+      "1_target_absent_from_index": {},
+      "2_no_shared_retrieval_key": {
+        "S3": 434,
+        "S2": 555
+      },
+      "3_shared_key_not_queried": {},
+      "4_discarded_by_route_limit": {
+        "S3": 2365,
+        "S2": 1641
+      },
+      "5_in_pool_below_final_cap": {
+        "S3": 930,
+        "S2": 733
+      }
+    },
+    "shared_key_types": {
+      "4_discarded_by_route_limit": {
+        "num": 2611,
+        "prefix": 2521,
+        "sig": 257,
+        "token": 2606,
+        "name": 14
+      }
+    },
+    "oracle_gain_if_category_recovered": {
+      "1_target_absent_from_index": 0.0,
+      "2_no_shared_retrieval_key": 0.04766284837878265,
+      "3_shared_key_not_queried": 0.0,
+      "4_discarded_by_route_limit": 0.15156961301476957,
+      "5_in_pool_below_final_cap": 0.06486565530370436
+    },
+    "examples": {
+      "4_discarded_by_route_limit": [
+        {
+          "s1": "S1-824649116",
+          "target": "S3-518786913",
+          "s1_name": "EXZ Health Private Limited",
+          "target_name_norm": "ariafluxbrix"
+        },
+        {
+          "s1": "S1-777126350",
+          "target": "S3-686682827",
+          "s1_name": "Kritavi Labs Private Limited",
+          "target_name_norm": "kritavilabscom"
+        },
+        {
+          "s1": "S1-107333355",
+          "target": "S3-603061698",
+          "s1_name": "Ss Tech Private Limited",
+          "target_name_norm": "ss tech private"
+        },
+        {
+          "s1": "S1-107333355",
+          "target": "S2-30425044",
+          "s1_name": "Ss Tech Private Limited",
+          "target_name_norm": "\u090f\u0938\u090f\u0938 \u091f \u0915 \u092a\u0930 \u0907\u0935 \u091f \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-107333355",
+          "target": "S2-33157719",
+          "s1_name": "Ss Tech Private Limited",
+          "target_name_norm": "m s ss tech private limited"
+        },
+        {
+          "s1": "S1-964059137",
+          "target": "S2-479912106",
+          "s1_name": "Caldify Financial LLC",
+          "target_name_norm": "caldifyfinancial"
+        }
+      ],
+      "5_in_pool_below_final_cap": [
+        {
+          "s1": "S1-777126350",
+          "target": "S3-880351997",
+          "s1_name": "Kritavi Labs Private Limited",
+          "target_name_norm": "kritavi"
+        },
+        {
+          "s1": "S1-875970876",
+          "target": "S2-281550376",
+          "s1_name": "Family Associates",
+          "target_name_norm": "family assoaciages"
+        },
+        {
+          "s1": "S1-875970876",
+          "target": "S3-816940189",
+          "s1_name": "Family Associates",
+          "target_name_norm": "family aissociteas"
+        },
+        {
+          "s1": "S1-313974774",
+          "target": "S2-247871206",
+          "s1_name": "Eaton Human Rights Ace Fund",
+          "target_name_norm": "eaton human rights ace fund corporation"
+        },
+        {
+          "s1": "S1-887743207",
+          "target": "S3-726156081",
+          "s1_name": "Valdez & Randolph",
+          "target_name_norm": "orbievohaloio f k a valdez and randolph"
+        },
+        {
+          "s1": "S1-363412000",
+          "target": "S3-547428110",
+          "s1_name": "GE Advancement Private Limited",
+          "target_name_norm": "ge advacheemont private limited"
+        }
+      ],
+      "2_no_shared_retrieval_key": [
+        {
+          "s1": "S1-121707072",
+          "target": "S3-642630643",
+          "s1_name": "Jupally Td Limited",
+          "target_name_norm": "jspually td limited"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S2-828389498",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-276739029",
+          "target": "S3-432107880",
+          "s1_name": "Sree Trading Private Limited",
+          "target_name_norm": "\u0cb6\u0cb0 \u0c9f\u0cb0 \u0ca1 \u0c97 \u0caa\u0cb0 \u0cb5 \u0c9f \u0cb2 \u0cae \u0c9f \u0ca1"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-1252732",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-258202952",
+          "target": "S2-108330564",
+          "s1_name": "Shakti Systems Limited",
+          "target_name_norm": "\u0936\u0915\u0924 \u0938 \u0938\u091f\u092e\u0938 \u0932 \u092e \u091f \u0921"
+        },
+        {
+          "s1": "S1-579913285",
+          "target": "S2-614707283",
+          "s1_name": "Blue Hospitality Pvt Ltd",
+          "target_name_norm": "\u092c\u0932 \u0939 \u0938\u092a \u091f \u0932 \u091f \u092a\u0930 \u0932"
+        }
+      ]
+    }
+  },
+  "runtime_sec": {
+    "retrieval": 34.79999542236328,
+    "total": 49.72798752784729
+  },
+  "retrieval_ms_per_s1": 6.959999084472656,
+  "peak_rss_mb": 643.71484375
+}
