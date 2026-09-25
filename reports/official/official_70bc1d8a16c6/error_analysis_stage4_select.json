@@ -1,0 +1,98 @@
+{
+  "singleton_fp": 119,
+  "fp": 1814,
+  "fn_blocking": 6658,
+  "fn_threshold": 1153,
+  "examples": [
+    {
+      "type": "fn_blocking",
+      "s1": "S1-824649116",
+      "miss": "S3-518786913",
+      "name": "EXZ Health Private Limited"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-777126350",
+      "miss": "S3-686682827",
+      "name": "Kritavi Labs Private Limited"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-777126350",
+      "miss": "S3-880351997",
+      "name": "Kritavi Labs Private Limited"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-107333355",
+      "miss": "S3-603061698",
+      "name": "Ss Tech Private Limited"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-107333355",
+      "miss": "S2-33157719",
+      "name": "Ss Tech Private Limited"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-107333355",
+      "miss": "S2-30425044",
+      "name": "Ss Tech Private Limited"
+    },
+    {
+      "type": "fn_threshold",
+      "s1": "S1-676951806",
+      "miss": "S2-378865946",
+      "name": "Kuhn, Dunne and Thomason Stifel"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-964059137",
+      "miss": "S2-479912106",
+      "name": "Caldify Financial LLC"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-121707072",
+      "miss": "S3-642630643",
+      "name": "Jupally Td Limited"
+    },
+    {
+      "type": "fn_threshold",
+      "s1": "S1-923899813",
+      "miss": "S3-972565896",
+      "name": "Neila Gallucci, Esq., P.C."
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-875970876",
+      "miss": "S2-281550376",
+      "name": "Family Associates"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-875970876",
+      "miss": "S3-816940189",
+      "name": "Family Associates"
+    },
+    {
+      "type": "fn_threshold",
+      "s1": "S1-924681356",
+      "miss": "S3-251325637",
+      "name": "Ranna G. Whitted, DMD"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-313974774",
+      "miss": "S3-797383852",
+      "name": "Eaton Human Rights Ace Fund"
+    },
+    {
+      "type": "fn_blocking",
+      "s1": "S1-313974774",
+      "miss": "S2-247871206",
+      "name": "Eaton Human Rights Ace Fund"
+    }
+  ]
+}
