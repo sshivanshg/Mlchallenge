@@ -1,8 +1,18 @@
 {
-  "updated_utc": "2026-09-26T00:32Z",
+  "updated_utc": "2026-09-26T00:45Z",
   "next_action": "Wait for v5 inference; finish_submission.sh validates and packages automatically. If finish_status.json says packaged_ready_to_upload, upload artifacts/submissions/v5_v1/output/matching_results.tsv; otherwise upload v4.",
   "check_progress": "grep '  shard ' artifacts/submissions/v5_v1/run.log | tail -1; cat artifacts/submissions/v5_v1/finish_status.json",
   "resume_inference": "python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v5_v1  (completed shards are reused)",
   "resume_finish": "setsid nohup scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 TEAMNAME > artifacts/submissions/v5_v1/finish.log 2>&1 &",
-  "next_experiment": "typo-tolerant name retrieval (character n-gram keys) for the ~989/17306 selection true links sharing no retrieval key; then same-name/different-address hard negatives"
+  "next_experiment": "typo-tolerant name retrieval (character n-gram keys) for the ~989/17306 selection true links sharing no retrieval key; then same-name/different-address hard negatives",
+  "v5_inference_eta_utc": "~02:32 (inference) / ~02:47 (auto validation + packaging); 12/87 shards done at 00:42",
+  "candidate_v6_not_deployed": {
+    "change": "LightGBM capacity: 127 leaves, 600 trees, min_child 100; same 43 features and 30k fit S1s",
+    "select_macro_F0.5": 0.8795,
+    "paired_delta_vs_v5": "+0.0085 (95% CI +0.0054..+0.0116), 574 better / 285 worse",
+    "threshold": 0.7,
+    "model": "artifacts/official_index/matcher_v5_capacity_l127_t600.pkl",
+    "to_deploy": "freeze as v6 (copy frozen_v5 + run_infer_v5 pointing at this model/threshold), parity-verify, score once on a new unused slice (assess_fresh_v4) vs v5, then ~2.1 h full inference"
+  },
+  "lesson": "Do not run feature-cache or train-index jobs during test inference: a nice'd 9.7M-row job still slowed shards from 347 s to 525 s via page-cache eviction."
 }

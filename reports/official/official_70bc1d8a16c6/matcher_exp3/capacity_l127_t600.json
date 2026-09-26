@@ -1,0 +1,39 @@
+{
+  "hypothesis": "higher-capacity LightGBM recovers rejected retrieved true links",
+  "config": {
+    "num_leaves": 127,
+    "n_estimators": 600,
+    "min_child_samples": 100
+  },
+  "incumbent_v5_select": {
+    "macro_F0.5": 0.8709612132538453,
+    "precision": 0.9633997267563098,
+    "recall": 0.774182364497862,
+    "singleton_accuracy": 0.9185185185185185,
+    "n_s1": 5000,
+    "n_singletons": 270,
+    "tp": 13398,
+    "fp": 509,
+    "fn": 3908
+  },
+  "challenger_select": {
+    "macro_F0.5": 0.8794880550501388,
+    "precision": 0.9625253443333567,
+    "recall": 0.7955044493239339,
+    "singleton_accuracy": 0.8962962962962963,
+    "n_s1": 5000,
+    "n_singletons": 270,
+    "tp": 13767,
+    "fp": 536,
+    "fn": 3539
+  },
+  "challenger_threshold": 0.7,
+  "paired_delta": 0.00852684179629332,
+  "delta_ci95": [
+    0.005356361607639599,
+    0.01158568337819402
+  ],
+  "s1_better": 574,
+  "s1_worse": 285,
+  "sec": 458.2234938144684
+}
