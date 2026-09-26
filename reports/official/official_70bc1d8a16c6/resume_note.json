@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-26T06:52Z",
+  "updated_utc": "2026-09-26T06:53Z",
   "v5_status": "packaged_ready_to_upload",
   "v5_upload_tsv": "artifacts/submissions/v5_v1/output/matching_results.tsv",
   "v5_upload_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
@@ -59,7 +59,7 @@
     "assess_fresh_v4": "frozen, not opened (exclude v1\u2013v3)",
     "full_test_inference": "not started \u2014 needs test_aux_index_v5b + one-shot assess first"
   },
-  "next_action": "One-shot assess_fresh_v4 for v5 vs retrained v6 (addrtok+H4 select 0.8864). If v6 wins, build test_aux_index_v5b and run_infer_v6 for full test package.",
+  "next_action": "Wait for test_aux_index_v5b (--skip-ngram) then run_infer_v6 full test + finish_submission. Upload-ready NOW: v5 packaged TSV.",
   "do_not": "Do not open assess_fresh_v4 repeatedly. Do not claim 0.95 without portal evidence. Do not run competing heavy jobs during test inference.",
   "assess_fresh_v4_once": {
     "ids_sha256": "e0b43056a173788b3ec1fd5ef766e12182e15e42e8b19c10dc94b4f926b1e462",
@@ -68,9 +68,10 @@
     "v5_oracle": 0.9442,
     "v6_oracle": 0.9561,
     "report": "reports/official/official_70bc1d8a16c6/assess_fresh_v4_once.json",
-    "decision": "v6 beats v5 on reserved assess (+0.0114); proceed to test_aux_index_v5b + full test infer"
+    "opened": true,
+    "decision": "v6 beats v5 (+0.0114); do not reopen"
   },
-  "upload_ready_now": "artifacts/submissions/v5_v1/output/matching_results.tsv (packaged); v6 pending",
+  "upload_ready_now": "artifacts/submissions/v5_v1/output/matching_results.tsv",
   "v6_retrained_select": {
     "oracle": 0.959570748303011,
     "macro_F0.5": 0.8863659631488837,
@@ -83,5 +84,15 @@
     "beats_h4_on_v4all_0.8795": true,
     "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
     "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd"
+  },
+  "upload_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
+  "v6_challenger": {
+    "select": 0.8864,
+    "assess_fresh_v4": 0.8804,
+    "assess_delta_vs_v5": 0.0114,
+    "oracle_select": 0.9596,
+    "oracle_assess": 0.9561,
+    "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
+    "infer": "python3 -u code/business_entity_resolution/src/run_infer_v6.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v6_v1"
   }
 }

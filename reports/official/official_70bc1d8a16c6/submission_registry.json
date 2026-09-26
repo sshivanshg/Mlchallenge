@@ -1,5 +1,5 @@
 {
-  "status": "v5 READY_TO_UPLOAD; v6 challenger select 0.8864 (addrtok+H4 retrain); assess_fresh_v4 pending one-shot; nothing uploaded",
+  "status": "v5 READY_TO_UPLOAD (packaged); v6 challenger wins assess_fresh_v4 0.880 vs 0.869; test_aux_v5b building; nothing uploaded",
   "recommended_upload": {
     "policy": "v5_v4all_cap300_lgbm_43f (thr 0.75)",
     "matching_results": "artifacts/submissions/v5_v1/output/matching_results.tsv",
@@ -29,7 +29,8 @@
       "workers": 4,
       "s1_per_sec_new": 89.14,
       "merge_sec": 98.8
-    }
+    },
+    "note": "v5 packaged; upgrade to v6 after full test infer if deadline allows"
   },
   "fallback_1": {
     "policy": "v3b_cap300_lgbm_thr0.98_nogate",
@@ -80,11 +81,12 @@
   "candidate_v6": {
     "policy": "v6_addrtok_cap300_lgbm_h4",
     "select_macro_F0.5": 0.8864,
-    "oracle_select": 0.9596,
+    "assess_fresh_v4_macro_F0.5": 0.8804,
+    "assess_fresh_v4_oracle": 0.9561,
+    "delta_vs_v5_assess": 0.0114,
     "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
     "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd",
     "threshold": 0.7,
-    "vs_v5_on_addrtok": "+0.0214 (95% CI +0.0172..+0.0260)",
-    "assess_fresh_v4": "frozen, opening once next"
+    "status": "test_aux_index_v5b building; full infer next"
   }
 }
