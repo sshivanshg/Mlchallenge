@@ -61,6 +61,19 @@
         0.0116
       ],
       "decision": "keep as next candidate; not deployed (no time for another full run)"
+    },
+    {
+      "utc": "2026-09-26T02:42Z",
+      "event": "status_secure_v5_and_oracle_audit",
+      "v5_ready": false,
+      "candidate_oracle_select": 0.9418,
+      "blocks_0.95": true,
+      "hypothesis_next": "selective rare address-token retrieval for Latin\u2192non-Latin no-key misses",
+      "code": [
+        "build_aux_index_v5b.py",
+        "run_retrieval_v5b_screen.py"
+      ],
+      "branch": "cursor/retrieval-addr-ngram-c003"
     }
   ],
   "v5_loss_decomposition_select": {
@@ -69,5 +82,77 @@
     "matcher_fn": "<=0.047",
     "matcher_fp": 0.024,
     "singleton_false_merges": "22/270"
-  }
+  },
+  "entries": [
+    {
+      "id": "D1",
+      "hypothesis": "per-S1 empty gate on max probability cuts singleton false merges",
+      "select": 0.8419,
+      "delta": 0.0,
+      "decision": "reject (grid chose no gate)"
+    },
+    {
+      "id": "D2",
+      "hypothesis": "relative threshold vs best candidate cuts extra false links",
+      "select": 0.8419,
+      "delta": 0.0,
+      "decision": "reject"
+    },
+    {
+      "id": "F1",
+      "hypothesis": "extra agreement/contradiction features",
+      "select": 0.8638,
+      "delta": 0.022,
+      "ci95": [
+        0.0179,
+        0.0263
+      ],
+      "decision": "keep"
+    },
+    {
+      "id": "N1",
+      "hypothesis": "2x fit S1s (30k)",
+      "select": 0.8484,
+      "delta": 0.0065,
+      "ci95": [
+        0.0034,
+        0.0097
+      ],
+      "decision": "keep"
+    },
+    {
+      "id": "F1N1 (v5)",
+      "select": 0.871,
+      "delta": 0.0291,
+      "ci95": [
+        0.0247,
+        0.0334
+      ],
+      "decision": "selected; assess_fresh_v3 once: 0.8762 vs v4 0.8479; full test inference running"
+    },
+    {
+      "id": "H4 (candidate v6)",
+      "hypothesis": "higher-capacity LightGBM recovers rejected true links",
+      "select": 0.8795,
+      "delta_vs_v5": 0.0085,
+      "ci95": [
+        0.0054,
+        0.0116
+      ],
+      "decision": "keep as next candidate; not deployed (no time for another full run)"
+    },
+    {
+      "utc": "2026-09-26T02:42Z",
+      "event": "status_secure_v5_and_oracle_audit",
+      "v5_ready": false,
+      "candidate_oracle_select": 0.9418,
+      "blocks_0.95": true,
+      "hypothesis_next": "selective rare address-token retrieval for Latin\u2192non-Latin no-key misses",
+      "code": [
+        "build_aux_index_v5b.py",
+        "run_retrieval_v5b_screen.py"
+      ],
+      "branch": "cursor/retrieval-addr-ngram-c003"
+    }
+  ]
 }
