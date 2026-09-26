@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-26T06:50Z",
+  "updated_utc": "2026-09-26T06:49Z",
   "v5_status": "packaged_ready_to_upload",
   "v5_upload_tsv": "artifacts/submissions/v5_v1/output/matching_results.tsv",
   "v5_upload_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
@@ -12,18 +12,23 @@
   ],
   "runtime_profile_n500_select": {
     "report": "reports/official/official_70bc1d8a16c6/runtime_profile_v5.json",
-    "hot_path_frac": {"pair_features": 0.245, "candidate_gen": 0.214, "model_predict": 0.057, "record_fetch": 0.051},
+    "hot_path_frac": {
+      "pair_features": 0.245,
+      "candidate_gen": 0.214,
+      "model_predict": 0.057,
+      "record_fetch": 0.051
+    },
     "s1_per_sec_single_worker_warm": 37.3,
     "full_v5_observed_sec": 19436,
     "extrapolate_ideal_4w_sec": 6584,
     "extrapolate_contended_x2.1_sec": 13826,
-    "uncertainty": "±25% page-cache / contention"
+    "uncertainty": "\u00b125% page-cache / contention"
   },
   "speed_fix": {
     "change": "threshold-only rescoring from hashed feature cache (rescore_threshold_cache.py); BLAS threads pinned to 1 on infer workers",
     "threshold_grid_7_cells_sec": 12.4,
     "predict_sec": 1.95,
-    "grid_sec": 0.50,
+    "grid_sec": 0.5,
     "vs_rebuild_features": "avoids ~minutes of retrieval+features; refuses assess-fold owners in cache",
     "quality": "reproduced v5 select 0.87096 at thr=0.75 (no trade-off)"
   },
@@ -40,7 +45,7 @@
     "cand_mean_addrtok": 295.11,
     "runtime_addrtok_sec": 48.3,
     "norm_audit": "reports/official/official_70bc1d8a16c6/retrieval_exp2/norm_nonlatin_audit.json",
-    "norm_note": "select S1 all latin; 1160 truth links latin→nonlatin; norm_name does not empty; compact_alnum empties non-Latin (ngram blind there)"
+    "norm_note": "select S1 all latin; 1160 truth links latin\u2192nonlatin; norm_name does not empty; compact_alnum empties non-Latin (ngram blind there)"
   },
   "challenger_v6": {
     "select_macro_F0.5": 0.8863659631488837,
@@ -51,9 +56,19 @@
     "vs_h4_on_v4all_reference": "+0.0069 (0.8864 vs 0.8795)",
     "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
     "selected": "code/business_entity_resolution/src/frozen_v6/selected.json",
-    "assess_fresh_v4": "frozen, not opened (exclude v1–v3)",
-    "full_test_inference": "not started — needs test_aux_index_v5b + one-shot assess first"
+    "assess_fresh_v4": "frozen, not opened (exclude v1\u2013v3)",
+    "full_test_inference": "not started \u2014 needs test_aux_index_v5b + one-shot assess first"
   },
-  "next_action": "Build test_aux_index_v5b. Freeze assess_fresh_v4 (exclude v1-v3) and score v6 vs v5 once. Only then full test infer with run_infer_v6.py. Ask user for competition deadline / remaining uploads.",
-  "do_not": "Do not open assess_fresh_v4 repeatedly. Do not claim 0.95 without portal evidence. Do not run competing heavy jobs during test inference."
+  "next_action": "Build test_aux_index_v5b (--skip-ngram), run_infer_v6 full test, validate+package. Ask user for deadline/remaining uploads.",
+  "do_not": "Do not open assess_fresh_v4 repeatedly. Do not claim 0.95 without portal evidence. Do not run competing heavy jobs during test inference.",
+  "assess_fresh_v4_once": {
+    "ids_sha256": "e0b43056a173788b3ec1fd5ef766e12182e15e42e8b19c10dc94b4f926b1e462",
+    "v5_macro_F0.5": 0.869,
+    "v6_macro_F0.5": 0.8804,
+    "v5_oracle": 0.9442,
+    "v6_oracle": 0.9561,
+    "report": "reports/official/official_70bc1d8a16c6/assess_fresh_v4_once.json",
+    "decision": "v6 beats v5 on reserved assess (+0.0114); proceed to test_aux_index_v5b + full test infer"
+  },
+  "upload_ready_now": "artifacts/submissions/v5_v1/output/matching_results.tsv (packaged); v6 pending"
 }
