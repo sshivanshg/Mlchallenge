@@ -59,7 +59,7 @@
     "assess_fresh_v4": "frozen, not opened (exclude v1\u2013v3)",
     "full_test_inference": "not started \u2014 needs test_aux_index_v5b + one-shot assess first"
   },
-  "next_action": "Wait for test_aux_index_v5b (--skip-ngram) then run_infer_v6 full test + finish_submission. Upload-ready NOW: v5 packaged TSV.",
+  "next_action": "Wait for v6 inference + finish_submission.sh. Upload v5 now if a slot is needed; v6 when packaged. Ask user for deadline/remaining uploads.",
   "do_not": "Do not open assess_fresh_v4 repeatedly. Do not claim 0.95 without portal evidence. Do not run competing heavy jobs during test inference.",
   "assess_fresh_v4_once": {
     "ids_sha256": "e0b43056a173788b3ec1fd5ef766e12182e15e42e8b19c10dc94b4f926b1e462",
@@ -94,5 +94,17 @@
     "oracle_assess": 0.9561,
     "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
     "infer": "python3 -u code/business_entity_resolution/src/run_infer_v6.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v6_v1"
+  },
+  "test_aux_index_v5b": {
+    "path": "artifacts/official_index/test_aux_index_v5b.sqlite",
+    "bytes": 750088192,
+    "by_addrtok": 15860023,
+    "skip_ngram": true,
+    "complete": true
+  },
+  "v6_inference": {
+    "out_dir": "artifacts/submissions/v6_v1",
+    "started": true,
+    "eta_note": "expect ~5-6h @ 4 workers if similar to v5; do not run competing heavy jobs"
   }
 }
