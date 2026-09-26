@@ -74,6 +74,20 @@
         "run_retrieval_v5b_screen.py"
       ],
       "branch": "cursor/retrieval-addr-ngram-c003"
+    },
+    {
+      "utc": "2026-09-26T06:50Z",
+      "event": "v5_packaged_v5b_screen_v6_challenger",
+      "v5_ready": true,
+      "v5_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
+      "retrieval_addrtok_oracle": 0.959570748303011,
+      "retrieval_ngram_rejected": true,
+      "v6_select": 0.8863659631488837,
+      "v6_delta_vs_v5_on_addrtok": 0.02141533474937961,
+      "blocks_0.95_oracle": false,
+      "blocks_0.95_matcher": true,
+      "speed_fix": "threshold_rescore_from_feature_cache",
+      "assess_fresh_v4": "frozen_not_opened"
     }
   ],
   "v5_loss_decomposition_select": {
@@ -153,6 +167,20 @@
         "run_retrieval_v5b_screen.py"
       ],
       "branch": "cursor/retrieval-addr-ngram-c003"
+    },
+    {
+      "utc": "2026-09-26T06:50Z",
+      "event": "v5_packaged_v5b_screen_v6_challenger",
+      "v5_ready": true,
+      "v5_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
+      "retrieval_addrtok_oracle": 0.959570748303011,
+      "retrieval_ngram_rejected": true,
+      "v6_select": 0.8863659631488837,
+      "v6_delta_vs_v5_on_addrtok": 0.02141533474937961,
+      "blocks_0.95_oracle": false,
+      "blocks_0.95_matcher": true,
+      "speed_fix": "threshold_rescore_from_feature_cache",
+      "assess_fresh_v4": "frozen_not_opened"
     }
   ]
 }

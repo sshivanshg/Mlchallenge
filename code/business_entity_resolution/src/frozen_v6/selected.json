@@ -1,16 +1,15 @@
 {
-  "model_path": "artifacts/official_index/matcher_v5_capacity_l127_t600.pkl",
-  "model_sha256": "bf1a66af58293a33b677650ebf121490f5d2397c0a3f5536a1446fd84fd0ef46",
+  "model_path": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
+  "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd",
   "model_key": "model",
   "n_features": 43,
-  "threshold": 0.55,
+  "threshold": 0.7,
   "gate": 0.0,
   "rel": 0.0,
-  "selection_macro_F0.5": 0.8747936244240551,
+  "selection_macro_F0.5": 0.8863659631488837,
   "retrieval": "v5b_addrtok_only",
   "ngram_rejected": true,
   "oracle_macro_F0.5": 0.959570748303011,
-  "selected_from": "reports/official/official_70bc1d8a16c6/matcher_exp3/v6_addrtok_h4_select.json",
-  "v5_on_addrtok_macro_F0.5": 0.8649506283995042,
-  "paired_delta_vs_v5_on_addrtok": 0.009842996024550833
+  "selected_from": "reports/official/official_70bc1d8a16c6/matcher_exp3/matcher_v6_addrtok_h4.json",
+  "paired_delta_vs_v5_on_addrtok": 0.02141533474937961
 }
