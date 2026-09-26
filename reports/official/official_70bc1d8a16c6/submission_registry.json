@@ -1,5 +1,5 @@
 {
-  "status": "v5 READY_TO_UPLOAD (validated, packaged); v4/v3b preserved; v5b index built, oracle screen pending; nothing uploaded, no receipt",
+  "status": "v5 READY_TO_UPLOAD; v6 challenger select 0.8864 (addrtok+H4 retrain); assess_fresh_v4 pending one-shot; nothing uploaded",
   "recommended_upload": {
     "policy": "v5_v4all_cap300_lgbm_43f (thr 0.75)",
     "matching_results": "artifacts/submissions/v5_v1/output/matching_results.tsv",
@@ -76,5 +76,15 @@
     "matching_results": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
     "package": "artifacts/packages/TEAMNAME_submission_v4.zip",
     "note": "preserved; previous recommended upload"
+  },
+  "candidate_v6": {
+    "policy": "v6_addrtok_cap300_lgbm_h4",
+    "select_macro_F0.5": 0.8864,
+    "oracle_select": 0.9596,
+    "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
+    "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd",
+    "threshold": 0.7,
+    "vs_v5_on_addrtok": "+0.0214 (95% CI +0.0172..+0.0260)",
+    "assess_fresh_v4": "frozen, opening once next"
   }
 }

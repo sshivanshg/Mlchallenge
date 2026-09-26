@@ -88,6 +88,26 @@
       "blocks_0.95_matcher": true,
       "speed_fix": "threshold_rescore_from_feature_cache",
       "assess_fresh_v4": "frozen_not_opened"
+    },
+    {
+      "id": "R1_v5b_addrtok",
+      "hypothesis": "selective rare address-token retrieval raises candidate oracle above 0.95",
+      "oracle": 0.9596,
+      "oracle_delta": 0.0177,
+      "incremental_true_links": 1018,
+      "decision": "KEEP addrtok; REJECT ngram (oracle -0.0027) and both"
+    },
+    {
+      "id": "V6_addrtok_H4_retrain",
+      "hypothesis": "retrain H4 capacity on addrtok candidates",
+      "select": 0.8864,
+      "delta_vs_v5_on_addrtok": 0.0214,
+      "ci95": [
+        0.0172,
+        0.026
+      ],
+      "beats_h4_on_v4all": true,
+      "decision": "keep as v6 challenger; assess_fresh_v4 once next"
     }
   ],
   "v5_loss_decomposition_select": {
