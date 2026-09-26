@@ -1,12 +1,12 @@
 {
-  "status": "READY_TO_UPLOAD (not uploaded; no receipt recorded)",
+  "status": "v4 READY_TO_UPLOAD (validated, packaged); v5 inference RUNNING with auto validate+package; nothing uploaded, no receipt",
   "recommended_upload": {
     "policy": "v4all_cap300_lgbm_m2_thr0.70",
     "matching_results": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
     "matching_sha256": "dfca3cc0486cd5ca4e98d1e9022f0602e4d45d4669340d8dbc1ee285af9bc01e",
     "candidate_pairs": "artifacts/submissions/v4all_m2_v1/output/candidate_pairs.tsv",
     "candidate_sha256": "4dde1576f6ab7f505fd308026a31cc619a438de0ab21f8c550b9e8b4f256c6a5",
-    "package": "artifacts/packages/TEAMNAME_submission.zip",
+    "package": "artifacts/packages/TEAMNAME_submission_v4.zip",
     "package_sha256": "085a6c028166896652f733981591d1d5230353cfcfc7196a55b0938aed584031",
     "run_hash": "82cfb4effd3d9451",
     "model_sha256": "5f065bda9bd1a11afbf9e3c9f6ae7a455381f44b83a664e7b69075bd0779cdef",
@@ -47,5 +47,24 @@
       "assess_fresh_v1": 0.6642
     }
   },
-  "leaderboard": "unknown \u2014 no score or receipt recorded in the repository"
+  "leaderboard": "unknown \u2014 no score or receipt recorded in the repository",
+  "candidate_v5": {
+    "policy": "v5_v4all_cap300_lgbm_43f (thr 0.75)",
+    "run_dir": "artifacts/submissions/v5_v1",
+    "run_hash": "26424392d88b6110",
+    "model": "artifacts/official_index/matcher_v5.pkl",
+    "model_sha256": "cf1eee3bcd4a657e1bc0aff3e4b0e97bda29f441cf06abe2a7bde64a013125e8",
+    "evidence": {
+      "select_macro_F0.5": 0.871,
+      "paired_delta_vs_v4_select": "+0.029 (95% CI +0.025..+0.033)",
+      "assess_fresh_v3_once": {
+        "v5": 0.8762,
+        "v4": 0.8479
+      },
+      "assess_fresh_v3_oracle": 0.9486
+    },
+    "auto_finish": "scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 TEAMNAME  (status: artifacts/submissions/v5_v1/finish_status.json)",
+    "resume_if_interrupted": "python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v5_v1  (completed shards are reused)",
+    "upload_when_finished": "artifacts/submissions/v5_v1/output/matching_results.tsv  (only after finish_status.json shows packaged_ready_to_upload)"
+  }
 }

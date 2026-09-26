@@ -50,7 +50,20 @@ python3 -m pip install -r requirements.txt
 bash scripts/download_dataset.sh   # if dataset/ not already present
 ```
 
-## Reproduce the submission (final frozen policy `v4all_cap300_lgbm_m2_thr0.70`)
+## Reproduce the submission (final frozen policy `v5_v4all_cap300_lgbm_43f`)
+
+After the v4 steps below (indexes, aux indexes):
+
+```bash
+S=code/business_entity_resolution/src
+python3 -u $S/run_matcher_v5.py --fit-s1 30000 --eval-s1 5000 --tag v5   # writes matcher_v5.pkl
+# frozen_v5/selected.json records the chosen model key (F1N1), sha256, and threshold 0.75
+python3 -u $S/verify_infer_v5.py --n 1000
+python3 -u $S/run_infer_v5.py --split test --workers 4 --shard-size 20000 --out-dir artifacts/submissions/v5_v1
+scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 <TEAM>   # validate + package
+```
+
+## Previous policy `v4all_cap300_lgbm_m2_thr0.70`
 
 Steps 1–3 below build the shared indexes. Then:
 

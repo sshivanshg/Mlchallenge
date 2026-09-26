@@ -7,13 +7,16 @@
 ---
 
 ## 1. Executive Summary
-Local multi-route blocking over SQLite inverted indexes, nine interpretable name/address/number/country
-similarity features, and a LightGBM classifier with a single probability threshold chosen to maximize
-macro F0.5 (singletons included) on a held-out, component-disjoint selection fold. Only the official
-challenge TSVs are used (verified by SHA-256 manifest); no external lookups, APIs, or pretrained models.
+Local multi-route blocking over SQLite inverted indexes, 43 interpretable name/address/number/country,
+candidate-competition, and retrieval-route features, and a LightGBM classifier with a single probability
+threshold chosen to maximize macro F0.5 (singletons included) on a held-out, component-disjoint selection
+fold. Only the official challenge TSVs are used (verified by SHA-256 manifest); no external lookups,
+APIs, or pretrained models.
 
-Final frozen policy: `v4all_cap300_lgbm_m2_thr0.70` (`code/business_entity_resolution/src/frozen_v4/policy.py`).
-Previous validated policy (fallback): `v3b_cap300_lgbm_thr0.98_nogate` (`src/frozen_v3b/policy.py`).
+Final frozen policy: `v5_v4all_cap300_lgbm_43f` (threshold 0.75;
+`code/business_entity_resolution/src/frozen_v5/policy.py` + `frozen_v5/selected.json`).
+Earlier validated policies: `v4all_cap300_lgbm_m2_thr0.70` (`src/frozen_v4/`) and
+`v3b_cap300_lgbm_thr0.98_nogate` (`src/frozen_v3b/`).
 
 ---
 
@@ -75,7 +78,12 @@ rose from 0.05 to 0.34; India recall from 0.69 to 0.79.
 
 ## 4. Matching Model
 
-**Features used (32):**
+**Features used (43 = 32 below + 11 agreement/contradiction features):**
+- Extra pairwise (11): name Jaro-Winkler, name and address token-set ratios, address partial ratio,
+  first address number equal, shared / conflicting long (≥5-digit, PIN/ZIP-like) numbers, name and
+  address length ratios, and token containment in each direction.
+
+The 32 features inherited from v4:
 - Pairwise (9): name token-sort ratio, informative-name-token Jaccard, exact normalized name,
   address token-sort ratio, address-number Jaccard, country equality, a name-high/address-low
   conflict flag, name partial ratio, address-token Jaccard.
@@ -89,10 +97,11 @@ rose from 0.05 to 0.34; India recall from 0.69 to 0.79.
 IDs, row order, and split membership are never features.
 
 **Model type:** LightGBM binary classifier (300 trees, 31 leaves, learning rate 0.05; MIT license;
-≈ tens of thousands of parameters). Trained on **every** v4all candidate of 15,000 fit-fold S1s
-(4,164,594 pairs), so all high-scoring near misses serve as hard negatives.  
+≈ tens of thousands of parameters). Trained on **every** v4all candidate of 30,000 fit-fold S1s
+(≈8.3M pairs), so all high-scoring near misses serve as hard negatives.  
 **Threshold selection method:** grid search of a single probability threshold maximizing exact
-macro F0.5 on the selection fold → 0.70.
+macro F0.5 on the selection fold → 0.75. Per-S1 empty gates on the maximum probability and relative
+(to the S1's best candidate) thresholds were also tuned and gave no gain, so they are not used.
 
 **Model license record:** LightGBM (MIT), scikit-learn (BSD-3), RapidFuzz (MIT), NumPy (BSD).
 No pretrained or external models.
@@ -106,34 +115,40 @@ No pretrained or external models.
 | v2 cap 120, logistic + gate | select 5,000 | 0.664 | 0.872 | 0.523 | 0.652 |
 | v3b cap 300, LightGBM (9 features) | select 5,000 | 0.796 | 0.944 | 0.659 | 0.889 |
 | v3b cap 300, M2 (32 features, all negatives) | select 5,000 | 0.817 | 0.947 | 0.698 | 0.852 |
-| **v4all cap 300, M2 (final)** | select 5,000 | 0.842 | 0.938 | 0.755 | 0.826 |
+| v4all cap 300, M2 (32 features, 15k fit) | select 5,000 | 0.842 | 0.938 | 0.755 | 0.826 |
+| **v5: v4all cap 300, 43 features, 30k fit (final)** | select 5,000 | **0.871** | 0.963 | 0.774 | 0.919 |
 | v2 | assess_fresh_v1 5,000 | 0.664 | 0.863 | 0.532 | 0.612 |
 | v3b | assess_fresh_v1 5,000 | 0.793 | 0.943 | 0.664 | 0.794 |
 | v3b | assess_fresh_v2 5,000 | 0.799 | 0.944 | 0.663 | 0.816 |
-| **v4all + M2 (final)** | **assess_fresh_v2 5,000** | **0.848** | 0.937 | 0.763 | 0.803 |
+| v4all + M2 | assess_fresh_v2 5,000 | 0.848 | 0.937 | 0.763 | 0.803 |
+| v4all + M2 | assess_fresh_v3 5,000 | 0.848 | 0.937 | 0.760 | 0.779 |
+| **v5 (final)** | **assess_fresh_v3 5,000** | **0.876** | 0.963 | 0.782 | 0.851 |
 
-assess_fresh_v1 and assess_fresh_v2 are component-disjoint slices of the assessment fold. Each policy
-was scored once on each; v2 was never used for any development decision before the final comparison.
-By country on assess_fresh_v2 (final policy): India 0.771, US 0.900.
+assess_fresh_v1/v2/v3 are component-disjoint slices of the assessment fold. Each policy was scored
+once per slice, and each slice was first used only after the compared policies were frozen. On the
+selection fold, v5 versus v4 has a paired per-S1 delta of +0.029 (95% bootstrap CI +0.025 to +0.033).
+By country on assess_fresh_v3: India 0.818, US 0.914 (v4: 0.777, 0.894).
 
-- The final policy's fresh candidate oracle is 0.946, so the remaining gap is now mostly matching
-  (≈ 0.10 below the oracle), with ≈ 12% of true links still not retrieved.
+- The final policy's fresh candidate oracle is 0.949 (assess_fresh_v3), so the remaining gap is
+  mostly matching (≈ 0.07 below the oracle), with ≈ 12% of true links still not retrieved.
 - **Common false negatives:** cross-script names (Devanagari/Kannada transliterations) sharing no key;
   typos in rare tokens; true matches ranked beyond the cap for very common names.
 - **Common false positives:** same or near-identical names at different addresses (chains,
   generic names), which hurt singletons most.
-- France has no labels, so its accuracy is unmeasured. Unlabeled check on the final test run:
-  predicted links per S1 are France 3.65, US 3.10, India 2.61 (training mean: 3.46 true matches);
-  empty-prediction rates are 5.4%, 6.2%, and 12.2% (training singleton rate: 5.6%).
+- France has no labels, so its accuracy is unmeasured. Unlabeled check on the v4 test run
+  (per-country statistics for the final run are in its `output/inference_meta.json`): predicted links
+  per S1 were France 3.65, US 3.10, India 2.61 (training mean: 3.46 true matches); empty-prediction
+  rates 5.4%, 6.2%, and 12.2% (training singleton rate: 5.6%).
 
 ---
 
 ## 6. Conclusion
 Retrieval diagnostics showed that most losses came from truncation and from names that share no key.
 Selective composite keys (name-token pairs, name/address and address/address combinations) fixed much of
-it. Together with a tree model trained on all candidates with competition features, held-out macro F0.5
-rose from 0.664 to 0.848. Remaining work: typo-tolerant and cross-script name retrieval, and better
-separation of same-name/different-address candidates (singleton false merges).
+it. A tree model trained on all candidates of 30k S1s, with candidate-competition and name/address
+agreement/contradiction features, did the rest: held-out macro F0.5 rose from 0.664 to 0.876.
+Remaining work: typo-tolerant and cross-script name retrieval (≈ 12% of true links are never
+retrieved), and further separation of same-name/different-address candidates.
 
 ---
 
@@ -145,8 +160,8 @@ Exact reproduction commands are in `code/business_entity_resolution/README.md`
 ("Reproduce the submission"). Final inference:
 
 ```bash
-python3 -u code/business_entity_resolution/src/run_infer_v4.py --split test --workers 4 \
-    --shard-size 20000 --out-dir artifacts/submissions/v4all_m2_v1
+python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --workers 4 \
+    --shard-size 20000 --out-dir artifacts/submissions/v5_v1
 ```
 
 Submission validation:

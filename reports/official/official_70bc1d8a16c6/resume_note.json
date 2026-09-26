@@ -1,0 +1,8 @@
+{
+  "updated_utc": "2026-09-26T00:32Z",
+  "next_action": "Wait for v5 inference; finish_submission.sh validates and packages automatically. If finish_status.json says packaged_ready_to_upload, upload artifacts/submissions/v5_v1/output/matching_results.tsv; otherwise upload v4.",
+  "check_progress": "grep '  shard ' artifacts/submissions/v5_v1/run.log | tail -1; cat artifacts/submissions/v5_v1/finish_status.json",
+  "resume_inference": "python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v5_v1  (completed shards are reused)",
+  "resume_finish": "setsid nohup scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 TEAMNAME > artifacts/submissions/v5_v1/finish.log 2>&1 &",
+  "next_experiment": "typo-tolerant name retrieval (character n-gram keys) for the ~989/17306 selection true links sharing no retrieval key; then same-name/different-address hard negatives"
+}
