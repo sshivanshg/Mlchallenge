@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-26T06:53Z",
+  "updated_utc": "2026-09-26T07:00Z",
   "v5_status": "packaged_ready_to_upload",
   "v5_upload_tsv": "artifacts/submissions/v5_v1/output/matching_results.tsv",
   "v5_upload_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
@@ -59,7 +59,7 @@
     "assess_fresh_v4": "frozen, not opened (exclude v1\u2013v3)",
     "full_test_inference": "not started \u2014 needs test_aux_index_v5b + one-shot assess first"
   },
-  "next_action": "Wait for v6 inference + finish_submission.sh. Upload v5 now if a slot is needed; v6 when packaged. Ask user for deadline/remaining uploads.",
+  "next_action": "Wait for v6 test inference + finish_submission.sh. Do not start competing heavy jobs. Upload-ready NOW remains v5.",
   "do_not": "Do not open assess_fresh_v4 repeatedly. Do not claim 0.95 without portal evidence. Do not run competing heavy jobs during test inference.",
   "assess_fresh_v4_once": {
     "ids_sha256": "e0b43056a173788b3ec1fd5ef766e12182e15e42e8b19c10dc94b4f926b1e462",
@@ -104,7 +104,9 @@
   },
   "v6_inference": {
     "out_dir": "artifacts/submissions/v6_v1",
-    "started": true,
-    "eta_note": "expect ~5-6h @ 4 workers if similar to v5; do not run competing heavy jobs"
+    "workers": 4,
+    "shard_size": 20000,
+    "test_aux": "artifacts/official_index/test_aux_index_v5b.sqlite",
+    "finisher": "scripts/finish_submission.sh artifacts/submissions/v6_v1 artifacts/packages/v6 TEAMNAME"
   }
 }
