@@ -1,0 +1,13 @@
+{
+  "model_path": "artifacts/official_index/matcher_v5_capacity_l127_t600.pkl",
+  "model_sha256": "",
+  "model_key": "model",
+  "n_features": 43,
+  "threshold": 0.7,
+  "gate": 0.0,
+  "rel": 0.0,
+  "selection_macro_F0.5": null,
+  "retrieval": "v5b_addrtok_only",
+  "ngram_rejected": true,
+  "note": "threshold and select score filled by run_select_v6_combine.py; model_sha256 filled at freeze time"
+}
