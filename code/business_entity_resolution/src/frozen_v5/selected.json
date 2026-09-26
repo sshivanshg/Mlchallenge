@@ -1,0 +1,11 @@
+{
+  "model_path": "artifacts/official_index/matcher_v5.pkl",
+  "model_sha256": "cf1eee3bcd4a657e1bc0aff3e4b0e97bda29f441cf06abe2a7bde64a013125e8",
+  "model_key": "F1N1",
+  "n_features": 43,
+  "threshold": 0.75,
+  "gate": 0.0,
+  "rel": 0.0,
+  "selection_macro_F0.5": 0.8709612132538453,
+  "selected_from": "reports/official/official_70bc1d8a16c6/matcher_exp3/matcher_v5.json"
+}

@@ -1,0 +1,167 @@
+{
+  "timestamp": "2026-09-26T00:17:03Z",
+  "provenance": "official_challenge_dataset:dataset-v1",
+  "role": "selection-fold development; paired deltas vs incumbent on identical S1s",
+  "candidate_policy": "v4all_cap300_lgbm_m2_thr0.70",
+  "n_select": 5000,
+  "n_fit_max": 30000,
+  "feature_cache": "/workspace/artifacts/cache_v5/features_0eeb455fcd161532.npz",
+  "results": {
+    "M2_incumbent_repro": {
+      "cfg": {
+        "threshold": 0.7,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8418605268893232,
+        "precision": 0.9380073270598377,
+        "recall": 0.7545359990754652,
+        "singleton_accuracy": 0.825925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13058,
+        "fp": 863,
+        "fn": 4248
+      },
+      "sec": 38.94356632232666
+    },
+    "D1_empty_gate_on_max_prob": {
+      "cfg": {
+        "threshold": 0.7,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8418605268893232,
+        "precision": 0.9380073270598377,
+        "recall": 0.7545359990754652,
+        "singleton_accuracy": 0.825925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13058,
+        "fp": 863,
+        "fn": 4248
+      },
+      "delta_vs_incumbent": 0.0,
+      "delta_ci95": [
+        0.0,
+        0.0
+      ],
+      "s1_improved": 0,
+      "s1_worse": 0,
+      "sec": 84.50621199607849
+    },
+    "D2_relative_threshold": {
+      "cfg": {
+        "threshold": 0.7,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8418605268893232,
+        "precision": 0.9380073270598377,
+        "recall": 0.7545359990754652,
+        "singleton_accuracy": 0.825925925925926,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13058,
+        "fp": 863,
+        "fn": 4248
+      },
+      "delta_vs_incumbent": 0.0,
+      "delta_ci95": [
+        0.0,
+        0.0
+      ],
+      "s1_improved": 0,
+      "s1_worse": 0,
+      "sec": 85.847092628479
+    },
+    "F1_extra_pairwise_features_fit15k": {
+      "cfg": {
+        "threshold": 0.7,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8638369556392991,
+        "precision": 0.9516799323800803,
+        "recall": 0.7807118918294234,
+        "singleton_accuracy": 0.8555555555555555,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13511,
+        "fp": 686,
+        "fn": 3795
+      },
+      "delta_vs_incumbent": 0.021976428749975917,
+      "delta_ci95": [
+        0.017859693759564477,
+        0.026301321101212447
+      ],
+      "s1_improved": 892,
+      "s1_worse": 387,
+      "sec": 40.58546590805054,
+      "features": 43
+    },
+    "N1_M2_features_fit30k": {
+      "cfg": {
+        "threshold": 0.7,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8483910698125495,
+        "precision": 0.9454097885896322,
+        "recall": 0.7545359990754652,
+        "singleton_accuracy": 0.8555555555555555,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13058,
+        "fp": 754,
+        "fn": 4248
+      },
+      "delta_vs_incumbent": 0.006530542923226489,
+      "delta_ci95": [
+        0.003395866240853226,
+        0.009741427826428704
+      ],
+      "s1_improved": 424,
+      "s1_worse": 335,
+      "sec": 60.33578109741211,
+      "fit_rows": 8317646
+    },
+    "F1N1_extra_features_fit30k": {
+      "cfg": {
+        "threshold": 0.75,
+        "gate": 0.0,
+        "rel": 0.0
+      },
+      "select": {
+        "macro_F0.5": 0.8709612132538453,
+        "precision": 0.9633997267563098,
+        "recall": 0.774182364497862,
+        "singleton_accuracy": 0.9185185185185185,
+        "n_s1": 5000,
+        "n_singletons": 270,
+        "tp": 13398,
+        "fp": 509,
+        "fn": 3908
+      },
+      "delta_vs_incumbent": 0.029100686364522243,
+      "delta_ci95": [
+        0.024696284576077664,
+        0.03339986028307436
+      ],
+      "s1_improved": 911,
+      "s1_worse": 368,
+      "sec": 63.227712869644165,
+      "features": 43
+    }
+  },
+  "runtime_sec": {
+    "build": 662.7080659866333,
+    "total": 1047.1954860687256
+  }
+}
