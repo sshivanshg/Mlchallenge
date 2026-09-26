@@ -1,13 +1,16 @@
 {
   "model_path": "artifacts/official_index/matcher_v5_capacity_l127_t600.pkl",
-  "model_sha256": "",
+  "model_sha256": "bf1a66af58293a33b677650ebf121490f5d2397c0a3f5536a1446fd84fd0ef46",
   "model_key": "model",
   "n_features": 43,
-  "threshold": 0.7,
+  "threshold": 0.55,
   "gate": 0.0,
   "rel": 0.0,
-  "selection_macro_F0.5": null,
+  "selection_macro_F0.5": 0.8747936244240551,
   "retrieval": "v5b_addrtok_only",
   "ngram_rejected": true,
-  "note": "threshold and select score filled by run_select_v6_combine.py; model_sha256 filled at freeze time"
+  "oracle_macro_F0.5": 0.959570748303011,
+  "selected_from": "reports/official/official_70bc1d8a16c6/matcher_exp3/v6_addrtok_h4_select.json",
+  "v5_on_addrtok_macro_F0.5": 0.8649506283995042,
+  "paired_delta_vs_v5_on_addrtok": 0.009842996024550833
 }

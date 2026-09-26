@@ -1,0 +1,85 @@
+{
+  "hypothesis": "addrtok retrieval (oracle 0.9596) + H4 capacity matcher beats v5-on-addrtok and unlocks >0.95 ceiling",
+  "fold": "select_bounded_n5000",
+  "seed": 42,
+  "n_target_universe": 10320219,
+  "feature_dim": 43,
+  "candidate_oracle": {
+    "macro_F0.5": 0.959570748303011,
+    "precision": 1.0,
+    "recall": 0.9022882237374321,
+    "singleton_accuracy": 1.0,
+    "n_s1": 5000,
+    "n_singletons": 270,
+    "tp": 15615,
+    "fp": 0,
+    "fn": 1691
+  },
+  "v5_on_addrtok": {
+    "label": "v5_matcher_on_addrtok",
+    "threshold": 0.6,
+    "metrics": {
+      "macro_F0.5": 0.8649506283995042,
+      "precision": 0.9138263238323036,
+      "recall": 0.7947532647636658,
+      "singleton_accuracy": 0.8333333333333334,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 13754,
+      "fp": 1297,
+      "fn": 3552
+    },
+    "default_threshold": 0.75,
+    "default_metrics": {
+      "macro_F0.5": 0.8611615756832871,
+      "precision": 0.9257429187834922,
+      "recall": 0.7686351554374206,
+      "singleton_accuracy": 0.8925925925925926,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 13302,
+      "fp": 1067,
+      "fn": 4004
+    }
+  },
+  "h4_on_addrtok": {
+    "label": "h4_capacity_on_addrtok",
+    "threshold": 0.55,
+    "metrics": {
+      "macro_F0.5": 0.8747936244240551,
+      "precision": 0.9495947142565221,
+      "recall": 0.8055587657459841,
+      "singleton_accuracy": 0.8407407407407408,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 13941,
+      "fp": 740,
+      "fn": 3365
+    },
+    "default_threshold": 0.7,
+    "default_metrics": {
+      "macro_F0.5": 0.8720837340296373,
+      "precision": 0.9605953224663359,
+      "recall": 0.7831965792210794,
+      "singleton_accuracy": 0.8740740740740741,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 13554,
+      "fp": 556,
+      "fn": 3752
+    }
+  },
+  "paired_h4_vs_v5_on_addrtok": {
+    "mean_delta_h4_minus_v5": 0.009842996024550833,
+    "ci95": [
+      0.005607685172565859,
+      0.01382471114466623
+    ],
+    "n_better": 659,
+    "n_worse": 413,
+    "n_tie": 3928
+  },
+  "h4_model_sha256": "bf1a66af58293a33b677650ebf121490f5d2397c0a3f5536a1446fd84fd0ef46",
+  "runtime_sec": 164.37344813346863,
+  "assess_fresh_v4": "frozen, not opened"
+}
