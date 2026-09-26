@@ -1,0 +1,89 @@
+{
+  "ids_file": "experiments/splits/official_70bc1d8a16c6_assess_fresh_v4.json",
+  "ids_sha256": "e0b43056a173788b3ec1fd5ef766e12182e15e42e8b19c10dc94b4f926b1e462",
+  "n": 5000,
+  "results": {
+    "artifacts/assess_fresh_v4/v5/output": {
+      "macro_F0.5": 0.8689633407503372,
+      "precision": 0.9626812114252906,
+      "recall": 0.7726958525345622,
+      "singleton_accuracy": 0.8259109311740891,
+      "n_s1": 5000,
+      "n_singletons": 247,
+      "tp": 13414,
+      "fp": 520,
+      "fn": 3946,
+      "candidate_recall": 0.8756336405529954,
+      "candidate_oracle_macro_F0.5": 0.9442080063286438,
+      "by_country": {
+        "India": {
+          "n": 1979,
+          "macro_F0.5": 0.805319356369312,
+          "precision": 0.9559489501852614,
+          "recall": 0.6744118501306999,
+          "singleton_accuracy": 0.8043478260869565
+        },
+        "US": {
+          "n": 3021,
+          "macro_F0.5": 0.9106553119817337,
+          "precision": 0.9662847069193478,
+          "recall": 0.8373114378460951,
+          "singleton_accuracy": 0.8387096774193549
+        }
+      },
+      "by_source": {
+        "S2": {
+          "candidate_recall": 0.8727164179104477,
+          "recall": 0.7863880597014925,
+          "precision": 0.9554620629624256
+        },
+        "S3": {
+          "candidate_recall": 0.8783528102392877,
+          "recall": 0.7599332220367279,
+          "precision": 0.9697486152535151
+        }
+      }
+    },
+    "artifacts/assess_fresh_v4/v6/output": {
+      "macro_F0.5": 0.8803550789512404,
+      "precision": 0.9496573715991586,
+      "recall": 0.806278801843318,
+      "singleton_accuracy": 0.805668016194332,
+      "n_s1": 5000,
+      "n_singletons": 247,
+      "tp": 13997,
+      "fp": 742,
+      "fn": 3363,
+      "candidate_recall": 0.8996543778801843,
+      "candidate_oracle_macro_F0.5": 0.9560795019587307,
+      "by_country": {
+        "India": {
+          "n": 1979,
+          "macro_F0.5": 0.8313718682609932,
+          "precision": 0.9264140582097748,
+          "recall": 0.7349695033401104,
+          "singleton_accuracy": 0.7717391304347826
+        },
+        "US": {
+          "n": 3021,
+          "macro_F0.5": 0.9124430544414753,
+          "precision": 0.9633462699439413,
+          "recall": 0.8531602062249379,
+          "singleton_accuracy": 0.8258064516129032
+        }
+      },
+      "by_source": {
+        "S2": {
+          "candidate_recall": 0.9065074626865671,
+          "recall": 0.8218507462686567,
+          "precision": 0.943911135490949
+        },
+        "S3": {
+          "candidate_recall": 0.8932665553700612,
+          "recall": 0.7917640511964386,
+          "precision": 0.9552840069826776
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "cache": "artifacts/cache_v5/features_0eeb455fcd161532.npz",
+  "v5_select": 0.8709612132538453,
+  "h4_select_retuned": 0.8794880550501388,
+  "h4_threshold_retuned": 0.7,
+  "h4_select_saved_thr": 0.8794880550501388,
+  "h4_threshold_saved": 0.7,
+  "paired_delta_vs_v5": 0.00852684179629332,
+  "s1_better": 574,
+  "s1_worse": 285,
+  "total_sec": 1681.1882593631744
+}

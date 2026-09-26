@@ -1,33 +1,36 @@
 {
-  "status": "v4 READY_TO_UPLOAD (validated, packaged); v5 inference RUNNING with auto validate+package; nothing uploaded, no receipt",
+  "status": "v5 READY_TO_UPLOAD (packaged); v6 challenger wins assess_fresh_v4 0.880 vs 0.869; test_aux_v5b building; nothing uploaded",
   "recommended_upload": {
-    "policy": "v4all_cap300_lgbm_m2_thr0.70",
-    "matching_results": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
-    "matching_sha256": "dfca3cc0486cd5ca4e98d1e9022f0602e4d45d4669340d8dbc1ee285af9bc01e",
-    "candidate_pairs": "artifacts/submissions/v4all_m2_v1/output/candidate_pairs.tsv",
+    "policy": "v5_v4all_cap300_lgbm_43f (thr 0.75)",
+    "matching_results": "artifacts/submissions/v5_v1/output/matching_results.tsv",
+    "matching_sha256": "48eba5e2030e57a25d996feb0e0a54c51a30f193037edb364f3edfdefbd0d7e2",
+    "candidate_pairs": "artifacts/submissions/v5_v1/output/candidate_pairs.tsv",
     "candidate_sha256": "4dde1576f6ab7f505fd308026a31cc619a438de0ab21f8c550b9e8b4f256c6a5",
-    "package": "artifacts/packages/TEAMNAME_submission_v4.zip",
-    "package_sha256": "085a6c028166896652f733981591d1d5230353cfcfc7196a55b0938aed584031",
-    "run_hash": "82cfb4effd3d9451",
-    "model_sha256": "5f065bda9bd1a11afbf9e3c9f6ae7a455381f44b83a664e7b69075bd0779cdef",
+    "package": "artifacts/packages/v5/TEAMNAME_submission.zip",
+    "package_sha256": "523e84289a694a6743e73774d63d2a769173de4cdf69afae68b20f0582ed8341",
+    "run_hash": "26424392d88b61109415d897eddd11000d5342dbd637251c75d03cb2a72d74cf",
+    "model_sha256": "cf1eee3bcd4a657e1bc0aff3e4b0e97bda29f441cf06abe2a7bde64a013125e8",
     "validation": {
       "official_validator_matching_check_ids": "PASS",
       "streaming_validator_both_files": "PASS",
       "candidate_ids_unknown": 0,
-      "candidate_ids_total": 476889176,
-      "merge_checks": "coverage/order/duplicates/subset PASS"
+      "candidate_ids_total": 476889176
     },
     "evidence": {
-      "select_macro_F0.5": 0.8419,
-      "assess_fresh_v2_macro_F0.5_once": 0.8477,
-      "assess_fresh_v2_oracle": 0.9464
+      "select_macro_F0.5": 0.871,
+      "assess_fresh_v3_once": {
+        "v5": 0.8762,
+        "v4": 0.8479
+      },
+      "assess_fresh_v3_oracle": 0.9486
     },
     "runtime": {
-      "inference_sec": 6747.5,
+      "inference_sec": 19436.4,
       "workers": 4,
-      "s1_per_sec": 256.8,
-      "merge_sec": 99.2
-    }
+      "s1_per_sec_new": 89.14,
+      "merge_sec": 98.8
+    },
+    "note": "v5 packaged; upgrade to v6 after full test infer if deadline allows"
   },
   "fallback_1": {
     "policy": "v3b_cap300_lgbm_thr0.98_nogate",
@@ -65,6 +68,25 @@
     },
     "auto_finish": "scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 TEAMNAME  (status: artifacts/submissions/v5_v1/finish_status.json)",
     "resume_if_interrupted": "python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v5_v1  (completed shards are reused)",
-    "upload_when_finished": "artifacts/submissions/v5_v1/output/matching_results.tsv  (only after finish_status.json shows packaged_ready_to_upload)"
+    "upload_when_finished": "READY: artifacts/submissions/v5_v1/output/matching_results.tsv",
+    "status": "packaged_ready_to_upload",
+    "package": "artifacts/packages/v5/TEAMNAME_submission.zip"
+  },
+  "fallback_v4": {
+    "policy": "v4all_cap300_lgbm_m2_thr0.70",
+    "matching_results": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
+    "package": "artifacts/packages/TEAMNAME_submission_v4.zip",
+    "note": "preserved; previous recommended upload"
+  },
+  "candidate_v6": {
+    "policy": "v6_addrtok_cap300_lgbm_h4",
+    "select_macro_F0.5": 0.8864,
+    "assess_fresh_v4_macro_F0.5": 0.8804,
+    "assess_fresh_v4_oracle": 0.9561,
+    "delta_vs_v5_assess": 0.0114,
+    "model": "artifacts/official_index/matcher_v6_addrtok_h4.pkl",
+    "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd",
+    "threshold": 0.7,
+    "status": "test_aux_index_v5b building; full infer next"
   }
 }

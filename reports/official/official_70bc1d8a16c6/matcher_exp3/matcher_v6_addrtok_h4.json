@@ -1,0 +1,54 @@
+{
+  "hypothesis": "retrain H4 capacity on addrtok candidates recovers matcher F0.5 under raised oracle",
+  "cache": "/workspace/artifacts/cache_v6/features_501c7d6dc081114d.npz",
+  "oracle_macro_F0.5": 0.959570748303011,
+  "challenger": {
+    "threshold": 0.7,
+    "metrics": {
+      "macro_F0.5": 0.8863659631488837,
+      "precision": 0.9535991291332154,
+      "recall": 0.8098925228244539,
+      "singleton_accuracy": 0.8666666666666667,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 14016,
+      "fp": 682,
+      "fn": 3290
+    },
+    "config": {
+      "num_leaves": 127,
+      "n_estimators": 600,
+      "min_child_samples": 100
+    },
+    "model": "/workspace/artifacts/official_index/matcher_v6_addrtok_h4.pkl",
+    "model_sha256": "2b5b64fdbd6d07f68306f0b7c47f7e5209656b911bcea45e0fc717ea2026b5fd"
+  },
+  "incumbent_v5_retuned_on_addrtok": {
+    "threshold": 0.6,
+    "metrics": {
+      "macro_F0.5": 0.8649506283995042,
+      "precision": 0.9138263238323036,
+      "recall": 0.7947532647636658,
+      "singleton_accuracy": 0.8333333333333334,
+      "n_s1": 5000,
+      "n_singletons": 270,
+      "tp": 13754,
+      "fp": 1297,
+      "fn": 3552
+    }
+  },
+  "paired_challenger_minus_v5": {
+    "mean": 0.02141533474937961,
+    "ci95": [
+      0.01717871218513227,
+      0.025987656729559654
+    ],
+    "n_better": 774,
+    "n_worse": 438,
+    "n_tie": 3788
+  },
+  "reference_h4_on_v4all_select": 0.8795,
+  "reference_v5_on_v4all_select": 0.871,
+  "runtime_sec": 1001.2606818675995,
+  "assess_fresh_v4": "frozen, not opened"
+}

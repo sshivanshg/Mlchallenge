@@ -1,0 +1,80 @@
+{
+  "cache": "/workspace/artifacts/cache_v5/features_0eeb455fcd161532.npz",
+  "cache_bytes": 2610715164,
+  "model": "artifacts/official_index/matcher_v5.pkl",
+  "model_key": "F1N1",
+  "n_eval_s1": 5000,
+  "n_pairs_scored": 1387610,
+  "predict_sec": 1.9455511569976807,
+  "grid_sec": 0.5042262077331543,
+  "total_sec": 12.388061046600342,
+  "pairs_per_sec_predict": 713222.0579289831,
+  "grid_cells": 7,
+  "best": {
+    "threshold": 0.75,
+    "gate": 0.0,
+    "rel": 0.0,
+    "macro_F0.5": 0.8709612132538453,
+    "precision": 0.9633997267563098,
+    "recall": 0.774182364497862
+  },
+  "results": [
+    {
+      "threshold": 0.55,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8682293180285895,
+      "precision": 0.9453913280610854,
+      "recall": 0.8012827920952271
+    },
+    {
+      "threshold": 0.6,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8694178649367444,
+      "precision": 0.9493382961124897,
+      "recall": 0.7958511498902114
+    },
+    {
+      "threshold": 0.65,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8704982960417786,
+      "precision": 0.9540157700090712,
+      "recall": 0.7900150236912054
+    },
+    {
+      "threshold": 0.7,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8704265986568904,
+      "precision": 0.9584277620396601,
+      "recall": 0.7819831272391078
+    },
+    {
+      "threshold": 0.75,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8709612132538453,
+      "precision": 0.9633997267563098,
+      "recall": 0.774182364497862
+    },
+    {
+      "threshold": 0.8,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.8683261100990259,
+      "precision": 0.9682679594535037,
+      "recall": 0.7617011441118687
+    },
+    {
+      "threshold": 0.85,
+      "gate": 0.0,
+      "rel": 0.0,
+      "macro_F0.5": 0.861762310948308,
+      "precision": 0.9730260672459388,
+      "recall": 0.7441349820871375
+    }
+  ],
+  "note": "threshold-only; retrieval/features not recomputed"
+}

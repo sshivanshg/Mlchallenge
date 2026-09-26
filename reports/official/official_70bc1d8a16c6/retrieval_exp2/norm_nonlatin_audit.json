@@ -1,0 +1,17 @@
+{
+  "n_s1": 5000,
+  "seed": 42,
+  "s1_script_counts": {
+    "latin": 5000
+  },
+  "s1_norm_name_emptied": 0,
+  "s1_compact_alnum_emptied": 0,
+  "gt_target_norm_name_emptied": 0,
+  "truth_pair_script_flows": {
+    "latin->latin": 16043,
+    "latin->nonlatin": 1160,
+    "latin->mixed": 103
+  },
+  "examples": [],
+  "note": "compact_alnum strips non [a-z0-9]; non-Latin names yield empty ngrams \u2014 expected v5b ngram miss mode"
+}
