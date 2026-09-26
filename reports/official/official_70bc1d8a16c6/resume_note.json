@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-09-26T02:42Z",
-  "next_action": "Let v5 finish + finish_submission.sh package. Then build train_aux_index_v5b and screen oracle. Freeze assess_fresh_v4 (exclude v1-v3) before opening it. Reproduce capacity H4 as v6 after retrieval screen.",
-  "check_progress": "grep '  shard ' artifacts/submissions/v5_v1/run.log | tail -1; cat artifacts/submissions/v5_v1/finish_status.json",
+  "updated_utc": "2026-09-26T06:08Z",
+  "next_action": "Screen v5b oracle on select_n5000 (addrtok / ngram / both). If oracle improves past 0.95 or meaningfully toward it, freeze assess_fresh_v4 excluding v1-v3, then combine with H4 capacity matcher as v6.",
+  "check_progress": "tail -20 artifacts/official_index/build_aux_v5b_train.log; ls reports/official/official_70bc1d8a16c6/retrieval_exp2/",
   "resume_inference": "python3 -u code/business_entity_resolution/src/run_infer_v5.py --split test --shard-size 20000 --workers 4 --out-dir artifacts/submissions/v5_v1  (completed shards are reused)",
   "resume_finish": "setsid nohup scripts/finish_submission.sh artifacts/submissions/v5_v1 artifacts/packages/v5 TEAMNAME > artifacts/submissions/v5_v1/finish.log 2>&1 &",
   "next_experiment": "typo-tolerant name retrieval (character n-gram keys) for the ~989/17306 selection true links sharing no retrieval key; then same-name/different-address hard negatives",
@@ -15,10 +15,10 @@
     "to_deploy": "freeze as v6 (copy frozen_v5 + run_infer_v5 pointing at this model/threshold), parity-verify, score once on a new unused slice (assess_fresh_v4) vs v5, then ~2.1 h full inference"
   },
   "lesson": "Do not run feature-cache or train-index jobs during test inference: a nice'd 9.7M-row job still slowed shards from 347 s to 525 s via page-cache eviction.",
-  "v5_status": "inference_running",
-  "v5_shards_done_at_update": 40,
+  "v5_status": "packaged_ready_to_upload",
+  "v5_shards_done_at_update": 87,
   "v5_shards_total": 87,
-  "upload_ready_now": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv (validated fallback); v5 not ready",
+  "upload_ready_now": "artifacts/submissions/v5_v1/output/matching_results.tsv",
   "candidate_oracle_ceiling_select_n5000": 0.9418279818962985,
   "blocks_0.95": true,
   "miss_breakdown_v4all_cap300": {
@@ -32,5 +32,32 @@
   },
   "highest_value_experiment": "v5b selective by_addrtok (DF<=5000) + rare name 4-grams; code on branch cursor/retrieval-addr-ngram-c003",
   "metric_verified": "5TP/(5TP+4FP+FN); empty/empty=1; skill unit tests OK",
-  "do_not": "Do not run heavy index builds or feature caches until v5 packaging completes."
+  "do_not": "Do not open assess_fresh_v4 until final challenger is frozen; exclude v1-v3 when freezing.",
+  "upload_package": "artifacts/packages/v5/TEAMNAME_submission.zip",
+  "upload_package_sha256": "523e84289a694a6743e73774d63d2a769173de4cdf69afae68b20f0582ed8341",
+  "v5_validation": {
+    "official_validator_matching_check_ids": "PASS",
+    "streaming_validator_both_files": "PASS",
+    "candidate_ids_unknown": 0,
+    "candidate_ids_total": 476889176,
+    "finish_status": "packaged_ready_to_upload",
+    "matching_sha256": "48eba5e2030e57a25d996feb0e0a54c51a30f193037edb364f3edfdefbd0d7e2",
+    "candidate_sha256": "4dde1576f6ab7f505fd308026a31cc619a438de0ab21f8c550b9e8b4f256c6a5"
+  },
+  "preserved": {
+    "v4": "artifacts/submissions/v4all_m2_v1/output/matching_results.tsv",
+    "v3b": "artifacts/submissions/v3b_cap300_lgbm_v1/output/matching_results.tsv",
+    "v4_package": "artifacts/packages/TEAMNAME_submission_v4.zip",
+    "v3b_package": "artifacts/packages/TEAMNAME_submission_v3b_fallback.zip"
+  },
+  "train_aux_index_v5b": {
+    "path": "artifacts/official_index/train_aux_index_v5b.sqlite",
+    "complete": true,
+    "runtime_sec": 491.3,
+    "bytes": 2022674432,
+    "keep_addr_keys": 531535,
+    "keep_ngram_keys": 462632,
+    "by_addrtok": 15480558,
+    "by_ngram4": 32075853
+  }
 }
